@@ -10,8 +10,8 @@ const grayDark = '#808A8D';
 export default {
 	light: {
 		text: '#000',
-		background: '#fff',
-		lightBackground: '#FFFBFF',
+		background: '#FFFBFF',
+		lightBackground: '#fff',
 		orange: orangeColorLight,
 		gray: grayLight,
 		tabIconDefault: '#ccc',
@@ -22,7 +22,7 @@ export default {
 	dark: {
 		text: '#fff',
 		background: '#0F0F0F',
-		lightBackground: '#0D0D0D',
+		darkBackground: '#131313',
 		orange: orangeColorDark,
 		gray: grayDark,
 		tabIconDefault: '#ccc',
