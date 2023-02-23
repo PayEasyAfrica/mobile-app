@@ -7,7 +7,7 @@ const inactiveTintColorDark = '#805B4D';
 const grayLight = '#7F7572';
 const grayDark = '#808A8D';
 
-export default {
+const Colors: { light: ColorScheme; dark: ColorScheme } = {
 	light: {
 		text: '#000',
 		background: '#FFFBFF',
@@ -31,3 +31,9 @@ export default {
 		iconBackground: '#191919'
 	}
 };
+
+interface ColorScheme {
+	[key: string]: string;
+}
+
+export default Colors;

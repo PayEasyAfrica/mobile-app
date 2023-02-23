@@ -1,22 +1,18 @@
+import { useCallback } from 'react';
+import { Pressable, SectionList, TouchableOpacity } from 'react-native';
 import {
-	Pressable,
-	SectionList,
-	StyleSheet,
-	TouchableOpacity
-} from 'react-native';
-import {
-	CustomTabBarIconProps,
 	EyeIcon,
+	MoreSearchIcon,
 	PlusIcon,
 	RecieveIcon,
 	SendIcon,
 	WithdrawIcon
-} from '../components/CustomIcons';
-import { SafeAreaView, Text, View } from '../components/Themed';
-import Colors from '../constants/Colors';
-import useColorScheme from '../hooks/useColorScheme';
-import { RootTabScreenProps } from '../types';
-import React, { useCallback } from 'react';
+} from '../../../components/CustomIcons';
+import { SafeAreaView, Text, View } from '../../../components/Themed';
+import styles from './HomeScreen.styles';
+import Colors from '../../../constants/Colors';
+import useColorScheme from '../../../hooks/useColorScheme';
+import { RootTabScreenProps } from '../../../types';
 
 const DATA = [
 	{
@@ -59,12 +55,22 @@ const HomeScreen: React.FC<RootTabScreenProps<'TabOne'>> = ({ navigation }) => {
 						<Text style={styles.moneyTagId}>123765BF</Text>
 					</View>
 
-					<Pressable onPress={() => {}} style={styles.addButton}>
-						<PlusIcon color={orange} />
-						<Text style={[styles.addButtonTitle, { color: orange }]}>
-							Add Money
-						</Text>
-					</Pressable>
+					<View>
+						<Pressable
+							onPress={() => {
+								console.log('Add btn pressed!');
+							}}
+							style={styles.addButton}
+						>
+							<PlusIcon color={orange} />
+							<Text style={[styles.addButtonTitle, { color: orange }]}>
+								Add Money
+							</Text>
+						</Pressable>
+						{/* <Drawer.Navigator drawerContent={() => <DrawerContent />}>
+							// Add your screens here
+						</Drawer.Navigator> */}
+					</View>
 				</View>
 
 				<View
@@ -179,7 +185,6 @@ const HomeScreen: React.FC<RootTabScreenProps<'TabOne'>> = ({ navigation }) => {
 
 			<SectionList
 				sections={DATA}
-				style={{ marginTop: 24 }}
 				keyExtractor={(item, index) => item.time + index}
 				renderItem={({ item }) => (
 					<View
@@ -261,61 +266,34 @@ const HomeScreen: React.FC<RootTabScreenProps<'TabOne'>> = ({ navigation }) => {
 						</Text>
 					</View>
 				)}
+				ListFooterComponent={
+					<TouchableOpacity onPress={() => navigation.navigate('Transactions')}>
+						<View
+							style={{
+								position: 'relative',
+								flexDirection: 'row',
+								alignSelf: 'center',
+								alignItems: 'center',
+								backgroundColor: Colors[colorScheme].iconBackground,
+								paddingVertical: 8,
+								paddingHorizontal: 12,
+								borderRadius: 8
+							}}
+						>
+							<MoreSearchIcon color={orange} />
+							<Text
+								style={[styles.buttonText, { marginLeft: 4 }]}
+								lightColor={orange}
+								darkColor={orange}
+							>
+								View more
+							</Text>
+						</View>
+					</TouchableOpacity>
+				}
 			/>
 		</SafeAreaView>
 	);
 };
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		// paddingHorizontal: 24,
-		paddingTop: 25
-	},
-	containerPadding: {
-		paddingHorizontal: 24
-	},
-	moneyTagContainer: {
-		// flexDirection: 'row',
-		// justifyContent: 'space-between'
-	},
-	moneyTagTitle: {
-		fontSize: 10,
-		fontFamily: 'Roboto_500Medium',
-		marginBottom: 4
-	},
-	moneyTagId: {
-		fontSize: 14,
-		fontFamily: 'Roboto_500Medium'
-	},
-	addButton: { flexDirection: 'row', alignItems: 'center' },
-	addButtonTitle: {
-		fontSize: 12,
-		fontFamily: 'Roboto_500Medium',
-		marginLeft: 8
-	},
-
-	buttonsContainer: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		marginTop: 24
-	},
-	button: {
-		flex: 1,
-		flexDirection: 'row',
-		justifyContent: 'center',
-		alignItems: 'center',
-		fontSize: 12,
-		fontFamily: 'Roboto_500Medium',
-		borderRadius: 8,
-		padding: 12
-	},
-	sendButton: {
-		marginHorizontal: 14
-	},
-	buttonText: {
-		marginLeft: 8
-	}
-});
 
 export default HomeScreen;
