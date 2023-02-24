@@ -10,9 +10,16 @@ import {
 } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useEffect } from 'react';
-import { ColorSchemeName, Platform, TouchableOpacity } from 'react-native';
+import {
+	ColorSchemeName,
+	Platform,
+	StyleSheet,
+	TouchableOpacity,
+	View
+} from 'react-native';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { RootState } from '../app/store';
+import ActivityIndicator from '../components/ActivityIndicator';
 import { CalenderIcon } from '../components/CustomIcons';
 
 import Colors from '../constants/Colors';
@@ -50,7 +57,8 @@ export default function Navigation({
 			linking={LinkingConfiguration}
 			theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
 		>
-			<RootNavigator isLoggedIn={!!isLoggedIn} isLoading={!!loading} />
+			{loading && <ActivityIndicator />}
+			<RootNavigator isLoggedIn={!!isLoggedIn} isLoading={loading} />
 		</NavigationContainer>
 	);
 }
