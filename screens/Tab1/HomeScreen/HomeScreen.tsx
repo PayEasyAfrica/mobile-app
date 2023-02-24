@@ -13,6 +13,8 @@ import styles from './HomeScreen.styles';
 import Colors from '../../../constants/Colors';
 import useColorScheme from '../../../hooks/useColorScheme';
 import { RootTabScreenProps } from '../../../types';
+import { useAppDispatch } from '../../../app/hooks';
+import { logout } from '../../../features/auth/authSlice';
 
 const DATA = [
 	{
@@ -33,11 +35,14 @@ const DATA = [
 
 const HomeScreen: React.FC<RootTabScreenProps<'TabOne'>> = ({ navigation }) => {
 	const colorScheme = useColorScheme();
+	const dispatch = useAppDispatch();
 
 	const { orange, gray, lightBackground, darkBackground } = Colors[colorScheme];
 
 	const handleButtonPress = useCallback(() => {
 		// handle button press
+
+		dispatch(logout());
 	}, []);
 
 	return (

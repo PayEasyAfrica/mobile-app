@@ -3,40 +3,30 @@
  * https://reactnavigation.org/docs/getting-started
  *
  */
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {
 	NavigationContainer,
 	DefaultTheme,
 	DarkTheme
 } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import * as React from 'react';
-import {
-	ColorSchemeName,
-	Platform,
-	Pressable,
-	TouchableOpacity
-} from 'react-native';
-import {
-	CalenderIcon,
-	HomeTabBarIcon,
-	ReferralTabBarIcon
-} from '../components/CustomIcons';
+import { useEffect } from 'react';
+import { ColorSchemeName, Platform, TouchableOpacity } from 'react-native';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { RootState } from '../app/store';
+import { CalenderIcon } from '../components/CustomIcons';
 
 import Colors from '../constants/Colors';
+import { checkTokenAsync, selectToken } from '../features/auth/authSlice';
 import useColorScheme from '../hooks/useColorScheme';
 import {
-	HomeScreen,
-	notFoundScreen,
-	ReferralScreen,
+	LoadingScreen,
+	NotFoundScreen,
+	SigninScreen,
 	TransactionsModal
 } from '../screens';
 
-import {
-	RootStackParamList,
-	RootTabParamList,
-	RootTabScreenProps
-} from '../types';
+import { RootStackParamList } from '../types';
+import BottomTabNavigator from './BottomTabNavigation';
 import LinkingConfiguration from './LinkingConfiguration';
 
 export default function Navigation({
@@ -44,12 +34,23 @@ export default function Navigation({
 }: {
 	colorScheme: ColorSchemeName;
 }) {
+	const dispatch = useAppDispatch();
+	const token = useAppSelector(selectToken);
+
+	const { token: isLoggedIn, loading } = useAppSelector(
+		(state: RootState) => state.auth
+	);
+
+	useEffect(() => {
+		dispatch(checkTokenAsync());
+	}, []);
+
 	return (
 		<NavigationContainer
 			linking={LinkingConfiguration}
 			theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
 		>
-			<RootNavigator />
+			<RootNavigator isLoggedIn={!!isLoggedIn} isLoading={!!loading} />
 		</NavigationContainer>
 	);
 }
@@ -60,7 +61,13 @@ export default function Navigation({
  */
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-function RootNavigator() {
+function RootNavigator({
+	isLoggedIn,
+	isLoading
+}: {
+	isLoggedIn: boolean;
+	isLoading: boolean;
+}) {
 	const colorScheme = useColorScheme();
 	const { orange, background } = Colors[colorScheme];
 	return (
@@ -77,84 +84,56 @@ function RootNavigator() {
 				...(Platform.OS === 'android' && { headerTitleAlign: 'center' })
 			}}
 		>
-			<Stack.Screen
-				name="Root"
-				component={BottomTabNavigator}
-				options={{ headerShown: false }}
-			/>
-			<Stack.Screen
-				name="NotFound"
-				component={notFoundScreen}
-				options={{ title: 'Oops!' }}
-			/>
-			<Stack.Group
-				screenOptions={{
-					presentation: 'modal'
-				}}
-			>
+			{isLoading ? (
 				<Stack.Screen
-					name="Transactions"
-					component={TransactionsModal}
-					options={({ navigation }) => ({
-						headerTitle: 'Transactions History',
-
-						headerRight: () => (
-							<TouchableOpacity
-								onPress={() => {
-									console.log('Header Right Button Pressed', navigation);
-									navigation.navigate('TransactionsStatement');
-								}}
-							>
-								<CalenderIcon color={orange} />
-							</TouchableOpacity>
-						)
-					})}
+					name="Loading"
+					component={LoadingScreen}
+					options={{ headerShown: false }}
 				/>
-			</Stack.Group>
+			) : isLoggedIn ? (
+				<>
+					<Stack.Screen
+						name="Root"
+						component={BottomTabNavigator}
+						options={{ headerShown: false }}
+					/>
+					<Stack.Screen
+						name="NotFound"
+						component={NotFoundScreen}
+						options={{ title: 'Oops!' }}
+					/>
+					<Stack.Group
+						screenOptions={{
+							presentation: 'modal'
+						}}
+					>
+						<Stack.Screen
+							name="Transactions"
+							component={TransactionsModal}
+							options={({ navigation }) => ({
+								headerTitle: 'Transactions History',
+
+								headerRight: () => (
+									<TouchableOpacity
+										onPress={() => {
+											console.log('Header Right Button Pressed', navigation);
+											navigation.navigate('TransactionsStatement');
+										}}
+									>
+										<CalenderIcon color={orange} />
+									</TouchableOpacity>
+								)
+							})}
+						/>
+					</Stack.Group>
+				</>
+			) : (
+				<Stack.Screen
+					name="Signin"
+					component={SigninScreen}
+					options={{ headerShown: false }}
+				/>
+			)}
 		</Stack.Navigator>
-	);
-}
-
-/**
- * A bottom tab navigator displays tab buttons on the bottom of the display to switch screens.
- * https://reactnavigation.org/docs/bottom-tab-navigator
- */
-const BottomTab = createBottomTabNavigator<RootTabParamList>();
-
-function BottomTabNavigator() {
-	const colorScheme = useColorScheme();
-	const { tabIconActive, tabIconInactive } = Colors[colorScheme];
-
-	return (
-		<BottomTab.Navigator
-			initialRouteName="TabOne"
-			screenOptions={{
-				tabBarActiveTintColor: tabIconActive,
-				tabBarInactiveTintColor: tabIconInactive,
-				tabBarStyle: { height: Platform.OS === 'android' ? '8%' : '10%' },
-				tabBarLabelStyle: {
-					fontFamily: 'Roboto_400Regular',
-					...(Platform.OS === 'android' && { marginTop: 8, marginBottom: 12 })
-				}
-			}}
-		>
-			<BottomTab.Screen
-				name="TabOne"
-				component={HomeScreen}
-				options={{
-					title: 'Home',
-					tabBarIcon: ({ color }) => <HomeTabBarIcon color={color} />,
-					headerShown: false
-				}}
-			/>
-			<BottomTab.Screen
-				name="TabTwo"
-				component={ReferralScreen}
-				options={{
-					title: 'Referral',
-					tabBarIcon: ({ color }) => <ReferralTabBarIcon color={color} />
-				}}
-			/>
-		</BottomTab.Navigator>
 	);
 }
