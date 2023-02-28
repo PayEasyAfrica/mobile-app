@@ -25,6 +25,11 @@ const linking: LinkingOptions<RootStackParamList> = {
 						screens: {
 							ReferralScreen: 'referral'
 						}
+					},
+					TabThree: {
+						screens: {
+							SettingsScreen: 'settings'
+						}
 					}
 				}
 			},

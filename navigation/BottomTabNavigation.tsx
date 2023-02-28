@@ -1,6 +1,10 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Platform } from 'react-native';
-import { HomeTabBarIcon, ReferralTabBarIcon } from '../components/CustomIcons';
+import {
+	HomeTabBarIcon,
+	ReferralTabBarIcon,
+	SettingsTabBarIcon
+} from '../components/CustomIcons';
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import { HomeScreen, ReferralScreen } from '../screens';
@@ -14,7 +18,7 @@ const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function BottomTabNavigator() {
 	const colorScheme = useColorScheme();
-	const { tabIconActive, tabIconInactive } = Colors[colorScheme];
+	const { tabIconActive, tabIconInactive, background } = Colors[colorScheme];
 
 	return (
 		<BottomTab.Navigator
@@ -42,8 +46,18 @@ function BottomTabNavigator() {
 				name="TabTwo"
 				component={ReferralScreen}
 				options={{
-					title: 'Referral',
-					tabBarIcon: ({ color }) => <ReferralTabBarIcon color={color} />
+					title: 'Referral code',
+					tabBarIcon: ({ color }) => <ReferralTabBarIcon color={color} />,
+					headerShown: false
+				}}
+			/>
+
+			<BottomTab.Screen
+				name="TabThree"
+				component={ReferralScreen}
+				options={{
+					title: 'Settings',
+					tabBarIcon: ({ color }) => <SettingsTabBarIcon color={color} />
 				}}
 			/>
 		</BottomTab.Navigator>

@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
 	},
 	signoutContainer: {
 		position: 'absolute',
-		bottom: Layout.window.height * (Layout.window.height > 667 ? 0.1 : 0.05), // set to 10% of the window height
+		bottom: Layout.window.height * (Layout.window.height > 667 ? 0.1 : 0.05),
 		left: 0,
 		right: 0,
 		flexDirection: 'row',

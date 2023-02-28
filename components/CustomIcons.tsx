@@ -1,10 +1,19 @@
-import { Svg, Path } from 'react-native-svg';
+import {
+	Svg,
+	Path,
+	Circle,
+	G,
+	Defs,
+	Pattern,
+	Use,
+	Image
+} from 'react-native-svg';
 
-export interface CustomTabBarIconProps {
+export interface IconProps {
 	color: string;
 }
 
-export const HomeTabBarIcon: React.FC<CustomTabBarIconProps> = (props) => {
+export const HomeTabBarIcon: React.FC<IconProps> = (props) => {
 	const { color } = props;
 	return (
 		<Svg width={24} height={24} viewBox="0 0 24 24" {...props}>
@@ -13,7 +22,7 @@ export const HomeTabBarIcon: React.FC<CustomTabBarIconProps> = (props) => {
 	);
 };
 
-export const ReferralTabBarIcon: React.FC<CustomTabBarIconProps> = (props) => {
+export const ReferralTabBarIcon: React.FC<IconProps> = (props) => {
 	const { color } = props;
 	return (
 		<Svg width={25} height={24} viewBox="0 0 25 24" {...props}>
@@ -25,7 +34,19 @@ export const ReferralTabBarIcon: React.FC<CustomTabBarIconProps> = (props) => {
 	);
 };
 
-export const PlusIcon: React.FC<CustomTabBarIconProps> = (props) => {
+export const SettingsTabBarIcon: React.FC<IconProps> = (props) => {
+	const { color } = props;
+	return (
+		<Svg width={25} height={24} viewBox="0 0 25 24" {...props}>
+			<Path
+				d="m10.2 22-.5-3.15a6.702 6.702 0 0 1-1-.475c-.35-.2-.658-.408-.925-.625l-2.95 1.35L2.5 15l2.7-1.975a2.972 2.972 0 0 1-.063-.513A11.94 11.94 0 0 1 5.126 12c0-.15.004-.32.013-.512.008-.192.029-.363.062-.513L2.5 9l2.325-4.1 2.95 1.35a6.87 6.87 0 0 1 .925-.625c.35-.2.683-.35 1-.45L10.2 2h4.6l.5 3.15a8.1 8.1 0 0 1 1.012.462c.359.192.663.405.913.638l2.95-1.35L22.5 9l-2.7 1.925c.033.167.054.346.063.537a12.473 12.473 0 0 1 0 1.063c-.009.183-.03.358-.063.525L22.5 15l-2.325 4.1-2.95-1.35c-.267.217-.57.43-.913.637a4.36 4.36 0 0 1-1.012.463L14.8 22h-4.6Zm2.3-6.75c.9 0 1.667-.317 2.3-.95.633-.633.95-1.4.95-2.3 0-.9-.317-1.667-.95-2.3a3.133 3.133 0 0 0-2.3-.95c-.9 0-1.667.317-2.3.95-.633.633-.95 1.4-.95 2.3 0 .9.317 1.667.95 2.3.633.633 1.4.95 2.3.95Z"
+				fill={color}
+			/>
+		</Svg>
+	);
+};
+
+export const PlusIcon: React.FC<IconProps> = (props) => {
 	const { color } = props;
 	return (
 		<Svg width={18} height={18} viewBox="0 0 18 18" {...props}>
@@ -37,7 +58,7 @@ export const PlusIcon: React.FC<CustomTabBarIconProps> = (props) => {
 	);
 };
 
-export const EyeIcon: React.FC<CustomTabBarIconProps> = (props) => {
+export const EyeIcon: React.FC<IconProps> = (props) => {
 	const { color } = props;
 	return (
 		<Svg width={24} height={24} viewBox="0 0 24 24" {...props}>
@@ -49,7 +70,7 @@ export const EyeIcon: React.FC<CustomTabBarIconProps> = (props) => {
 	);
 };
 
-export const RecieveIcon: React.FC<CustomTabBarIconProps> = (props) => {
+export const RecieveIcon: React.FC<IconProps> = (props) => {
 	const { color } = props;
 	return (
 		<Svg width={19} height={18} viewBox="0 0 19 18" {...props}>
@@ -61,7 +82,7 @@ export const RecieveIcon: React.FC<CustomTabBarIconProps> = (props) => {
 	);
 };
 
-export const SendIcon: React.FC<CustomTabBarIconProps> = (props) => {
+export const SendIcon: React.FC<IconProps> = (props) => {
 	const { color } = props;
 	return (
 		<Svg width={18} height={18} fill={color}>
@@ -73,7 +94,7 @@ export const SendIcon: React.FC<CustomTabBarIconProps> = (props) => {
 	);
 };
 
-export const WithdrawIcon: React.FC<CustomTabBarIconProps> = (props) => {
+export const WithdrawIcon: React.FC<IconProps> = (props) => {
 	const { color } = props;
 	return (
 		<Svg width={18} height={18} viewBox="0 0 18 18" {...props}>
@@ -85,7 +106,7 @@ export const WithdrawIcon: React.FC<CustomTabBarIconProps> = (props) => {
 	);
 };
 
-export const SearchIcon: React.FC<CustomTabBarIconProps> = (props) => {
+export const SearchIcon: React.FC<IconProps> = (props) => {
 	const { color } = props;
 	return (
 		<Svg width={24} height={24} viewBox="0 0 24 24" {...props}>
@@ -99,7 +120,7 @@ export const SearchIcon: React.FC<CustomTabBarIconProps> = (props) => {
 	);
 };
 
-export const MoreSearchIcon: React.FC<CustomTabBarIconProps> = (props) => {
+export const MoreSearchIcon: React.FC<IconProps> = (props) => {
 	const { color } = props;
 	return (
 		<Svg width={19} height={18} viewBox="0 0 19 18" {...props}>
@@ -111,7 +132,7 @@ export const MoreSearchIcon: React.FC<CustomTabBarIconProps> = (props) => {
 	);
 };
 
-export const CalenderIcon: React.FC<CustomTabBarIconProps> = (props) => {
+export const CalenderIcon: React.FC<IconProps> = (props) => {
 	const { color } = props;
 	return (
 		<Svg width={30} height={30} viewBox="0 0 30 30" {...props}>
@@ -123,7 +144,7 @@ export const CalenderIcon: React.FC<CustomTabBarIconProps> = (props) => {
 	);
 };
 
-export const FingerprintIcon: React.FC<CustomTabBarIconProps> = (props) => {
+export const FingerprintIcon: React.FC<IconProps> = (props) => {
 	const { color } = props;
 	return (
 		<Svg width={40} height={40} {...props}>
@@ -135,12 +156,24 @@ export const FingerprintIcon: React.FC<CustomTabBarIconProps> = (props) => {
 	);
 };
 
-export const CancelPinIcon: React.FC<CustomTabBarIconProps> = (props) => {
+export const CancelPinIcon: React.FC<IconProps> = (props) => {
 	const { color } = props;
 	return (
 		<Svg width="30" height="30" viewBox="0 0 30 30" {...props}>
 			<Path
 				d="M23.75 8.0125L21.9875 6.25L15 13.2375L8.0125 6.25L6.25 8.0125L13.2375 15L6.25 21.9875L8.0125 23.75L15 16.7625L21.9875 23.75L23.75 21.9875L16.7625 15L23.75 8.0125Z"
+				fill={color}
+			/>
+		</Svg>
+	);
+};
+
+export const CopyIcon: React.FC<IconProps> = (props) => {
+	const { color } = props;
+	return (
+		<Svg width={24} height={24} fill="none" {...props}>
+			<Path
+				d="M4.5 23c-.4 0-.75-.15-1.05-.45-.3-.3-.45-.65-.45-1.05V6.425h1.5V21.5h11.85V23H4.5Zm3-3c-.4 0-.75-.15-1.05-.45-.3-.3-.45-.65-.45-1.05v-14c0-.4.15-.75.45-1.05.3-.3.65-.45 1.05-.45h11c.4 0 .75.15 1.05.45.3.3.45.65.45 1.05v14c0 .4-.15.75-.45 1.05-.3.3-.65.45-1.05.45h-11Zm0-1.5h11v-14h-11v14Z"
 				fill={color}
 			/>
 		</Svg>
