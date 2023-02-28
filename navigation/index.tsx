@@ -10,13 +10,7 @@ import {
 } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useEffect } from 'react';
-import {
-	ColorSchemeName,
-	Platform,
-	StyleSheet,
-	TouchableOpacity,
-	View
-} from 'react-native';
+import { ColorSchemeName, Platform, TouchableOpacity } from 'react-native';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { RootState } from '../app/store';
 import ActivityIndicator from '../components/ActivityIndicator';
@@ -28,9 +22,11 @@ import useColorScheme from '../hooks/useColorScheme';
 import {
 	LoadingScreen,
 	NotFoundScreen,
-	SigninScreen,
+	EnterPinScreen,
 	TransactionsModal
 } from '../screens';
+import OTPVerificationScreen from '../screens/Auth/OTPVerificationScreen';
+import PhoneVerificationScreen from '../screens/Auth/PhoneVerificationScreen';
 
 import { RootStackParamList } from '../types';
 import BottomTabNavigator from './BottomTabNavigation';
@@ -42,11 +38,12 @@ export default function Navigation({
 	colorScheme: ColorSchemeName;
 }) {
 	const dispatch = useAppDispatch();
-	const token = useAppSelector(selectToken);
 
 	const { token: isLoggedIn, loading } = useAppSelector(
 		(state: RootState) => state.auth
 	);
+
+	const { isLoading } = useAppSelector((state: RootState) => state.loading);
 
 	useEffect(() => {
 		dispatch(checkTokenAsync());
@@ -57,7 +54,7 @@ export default function Navigation({
 			linking={LinkingConfiguration}
 			theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
 		>
-			{loading && <ActivityIndicator />}
+			{(loading || isLoading) && <ActivityIndicator />}
 			<RootNavigator isLoggedIn={!!isLoggedIn} isLoading={loading} />
 		</NavigationContainer>
 	);
@@ -136,11 +133,26 @@ function RootNavigator({
 					</Stack.Group>
 				</>
 			) : (
-				<Stack.Screen
-					name="Signin"
-					component={SigninScreen}
-					options={{ headerShown: false }}
-				/>
+				<>
+					<Stack.Screen
+						name="PhoneVerification"
+						component={PhoneVerificationScreen}
+						options={{ headerShown: false }}
+					/>
+
+					<Stack.Screen
+						name="OTPVerification"
+						component={OTPVerificationScreen}
+						options={{
+							headerTitle: ''
+						}}
+					/>
+					<Stack.Screen
+						name="EnterPin"
+						component={EnterPinScreen}
+						options={{ headerShown: false }}
+					/>
+				</>
 			)}
 		</Stack.Navigator>
 	);

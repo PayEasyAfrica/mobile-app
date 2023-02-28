@@ -1,9 +1,9 @@
 import { StyleSheet } from 'react-native';
+import Layout from '../../../constants/Layout';
 
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		// paddingHorizontal: 24,
 		paddingTop: 25
 	},
 	containerPadding: {
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
 		marginBottom: 24
 	},
 	button: {
-		flex: 1,
+		...(!Layout.isSmallDevice && { flex: 1 }),
 		flexDirection: 'row',
 		justifyContent: 'center',
 		alignItems: 'center',

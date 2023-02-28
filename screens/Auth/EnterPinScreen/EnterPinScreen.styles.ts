@@ -1,6 +1,5 @@
-import { StyleSheet, Dimensions } from 'react-native';
-
-const windowHeight = Dimensions.get('window').height;
+import { StyleSheet } from 'react-native';
+import Layout from '../../../constants/Layout';
 
 const styles = StyleSheet.create({
 	container: {
@@ -21,7 +20,7 @@ const styles = StyleSheet.create({
 	},
 	signoutContainer: {
 		position: 'absolute',
-		bottom: windowHeight * 0.1, // set to 10% of the window height
+		bottom: Layout.window.height * (Layout.window.height > 667 ? 0.1 : 0.05), // set to 10% of the window height
 		left: 0,
 		right: 0,
 		flexDirection: 'row',
@@ -65,8 +64,8 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	keypadIcon: {
-		width: 65,
-		height: 65,
+		width: Layout.isSmallDevice ? 50 : 65,
+		height: Layout.isSmallDevice ? 50 : 65,
 		justifyContent: 'center',
 		alignItems: 'center'
 		// marginVertical: 19,
@@ -74,8 +73,8 @@ const styles = StyleSheet.create({
 	},
 	keypadButton: {
 		borderRadius: 50,
-		width: 65,
-		height: 65,
+		width: Layout.isSmallDevice ? 50 : 65,
+		height: Layout.isSmallDevice ? 50 : 65,
 		marginVertical: 19,
 		marginHorizontal: 27,
 		alignItems: 'center',

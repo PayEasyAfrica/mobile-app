@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import {
 	Alert,
+	Dimensions,
 	TouchableOpacity,
 	Vibration,
 	View as DefaultView
@@ -17,13 +18,18 @@ import Colors from '../../../constants/Colors';
 import { login } from '../../../features/auth/authSlice';
 import useColorScheme from '../../../hooks/useColorScheme';
 
-import styles from './SigninScreen.styles';
+import styles from './EnterPinScreen.styles';
 
-const SigninScreen = () => {
+const EnterPinScreen = () => {
 	const dispatch = useAppDispatch();
 	const colorScheme = useColorScheme();
 
 	const { orange } = Colors[colorScheme];
+
+	useEffect(() => {
+		const { width, height } = Dimensions.get('screen');
+		console.log('Dimensions: ', { width, height });
+	}, []);
 
 	const handlePinEntered = useCallback(async (pin: string) => {
 		// TODO: Use the pin enter to handle login
@@ -211,4 +217,4 @@ const PinPad: React.FC<PinPadProps> = ({
 	);
 };
 
-export default SigninScreen;
+export default EnterPinScreen;

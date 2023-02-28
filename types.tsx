@@ -20,7 +20,9 @@ export type RootStackParamList = {
 	Root: NavigatorScreenParams<RootTabParamList> | undefined;
 	Transactions: undefined;
 	NotFound: undefined;
-	Signin: undefined;
+	EnterPin: undefined;
+	PhoneVerification: undefined;
+	OTPVerification: undefined;
 	Modal: undefined;
 	Loading: undefined;
 };

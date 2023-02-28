@@ -1,5 +1,5 @@
-import { useCallback } from 'react';
-import { Pressable, SectionList, TouchableOpacity } from 'react-native';
+import { useCallback, useState } from 'react';
+import { Button, Pressable, SectionList, TouchableOpacity } from 'react-native';
 import {
 	EyeIcon,
 	MoreSearchIcon,
@@ -15,6 +15,7 @@ import useColorScheme from '../../../hooks/useColorScheme';
 import { RootTabScreenProps } from '../../../types';
 import { useAppDispatch } from '../../../app/hooks';
 import { logout } from '../../../features/auth/authSlice';
+import Modal from '../../../components/Modal';
 
 const DATA = [
 	{
@@ -27,6 +28,7 @@ const DATA = [
 	{
 		date: '08 Feb, 2023',
 		data: [
+			{ name: 'Abolorunke Blessing', time: '12:20pm', amount: '-₦10,000' },
 			{ name: 'Abolorunke Blessing', time: '12:20pm', amount: '+₦10,000' },
 			{ name: 'Abolorunke Blessing', time: '12:20pm', amount: '+₦10,000' }
 		]
@@ -36,6 +38,7 @@ const DATA = [
 const HomeScreen: React.FC<RootTabScreenProps<'TabOne'>> = ({ navigation }) => {
 	const colorScheme = useColorScheme();
 	const dispatch = useAppDispatch();
+	const [modalVisible, setModalVisible] = useState(false);
 
 	const { orange, gray, lightBackground, darkBackground } = Colors[colorScheme];
 
@@ -44,6 +47,15 @@ const HomeScreen: React.FC<RootTabScreenProps<'TabOne'>> = ({ navigation }) => {
 
 		dispatch(logout());
 	}, []);
+
+	const handleShowModal = () => {
+		setModalVisible(true);
+	};
+
+	const handleCloseModal = () => {
+		setModalVisible(false);
+		// Do any necessary cleanup or state changes here
+	};
 
 	return (
 		<SafeAreaView style={styles.container}>
@@ -157,7 +169,7 @@ const HomeScreen: React.FC<RootTabScreenProps<'TabOne'>> = ({ navigation }) => {
 							{ backgroundColor: Colors[colorScheme].iconBackground },
 							styles.sendButton
 						]}
-						onPress={handleButtonPress}
+						onPress={handleShowModal}
 					>
 						<SendIcon color={orange} />
 						<Text
@@ -189,6 +201,7 @@ const HomeScreen: React.FC<RootTabScreenProps<'TabOne'>> = ({ navigation }) => {
 			</View>
 
 			<SectionList
+				style={{ flex: 1, marginBottom: 5 }}
 				sections={DATA}
 				keyExtractor={(item, index) => item.time + index}
 				renderItem={({ item }) => (
@@ -296,6 +309,14 @@ const HomeScreen: React.FC<RootTabScreenProps<'TabOne'>> = ({ navigation }) => {
 						</View>
 					</TouchableOpacity>
 				}
+			/>
+
+			<Modal
+				visible={modalVisible}
+				onClose={handleCloseModal}
+				renderContent={() => (
+					<Button title="Cancel" onPress={handleCloseModal} />
+				)}
 			/>
 		</SafeAreaView>
 	);

@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { StyleSheet, View, Animated } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
+import Colors from '../constants/Colors';
+import useColorScheme from '../hooks/useColorScheme';
 
 const Spinner = () => {
 	const spinValue = new Animated.Value(0);
@@ -38,8 +40,12 @@ const Spinner = () => {
 };
 
 const ActivityIndicator = () => {
+	const colorScheme = useColorScheme();
+
 	return (
-		<View style={styles.overlay}>
+		<View
+			style={[styles.overlay, { backgroundColor: Colors[colorScheme].mask }]}
+		>
 			<Spinner />
 		</View>
 	);
@@ -48,7 +54,7 @@ const ActivityIndicator = () => {
 const styles = StyleSheet.create({
 	overlay: {
 		...StyleSheet.absoluteFillObject,
-		backgroundColor: 'rgba(33, 0, 93, 0.16);',
+		// backgroundColor: 'rgba(33, 0, 93, 0.16);',
 		zIndex: 9999
 	},
 	spinnerContainer: {
