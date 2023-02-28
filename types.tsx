@@ -27,14 +27,24 @@ export type RootStackParamList = {
 	Loading: undefined;
 };
 
-export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
-	NativeStackScreenProps<RootStackParamList, Screen>;
+export type HomeStackParamList = {
+	Home: undefined;
+	Transactions: undefined;
+	RecieveMoney: undefined;
+	SendMoney: undefined;
+};
 
 export type RootTabParamList = {
 	TabOne: undefined;
 	TabTwo: undefined;
 	TabThree: undefined;
 };
+
+export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
+	NativeStackScreenProps<RootStackParamList, Screen>;
+
+export type HomeStackScreenProps<Screen extends keyof HomeStackParamList> =
+	NativeStackScreenProps<HomeStackParamList, Screen>;
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> =
 	CompositeScreenProps<

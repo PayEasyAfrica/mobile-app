@@ -12,7 +12,7 @@ import { SafeAreaView, Text, View } from '../../../components/Themed';
 import styles from './HomeScreen.styles';
 import Colors from '../../../constants/Colors';
 import useColorScheme from '../../../hooks/useColorScheme';
-import { RootTabScreenProps } from '../../../types';
+import { HomeStackScreenProps } from '../../../types';
 import { useAppDispatch } from '../../../app/hooks';
 import { logout } from '../../../features/auth/authSlice';
 import Modal from '../../../components/Modal';
@@ -35,7 +35,7 @@ const DATA = [
 	}
 ];
 
-const HomeScreen: React.FC<RootTabScreenProps<'TabOne'>> = ({ navigation }) => {
+const HomeScreen: React.FC<HomeStackScreenProps<'Home'>> = ({ navigation }) => {
 	const colorScheme = useColorScheme();
 	const dispatch = useAppDispatch();
 	const [modalVisible, setModalVisible] = useState(false);

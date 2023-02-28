@@ -14,17 +14,11 @@ import { ColorSchemeName, Platform, TouchableOpacity } from 'react-native';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { RootState } from '../app/store';
 import ActivityIndicator from '../components/ActivityIndicator';
-import { CalenderIcon } from '../components/CustomIcons';
 
 import Colors from '../constants/Colors';
-import { checkTokenAsync, selectToken } from '../features/auth/authSlice';
+import { checkTokenAsync } from '../features/auth/authSlice';
 import useColorScheme from '../hooks/useColorScheme';
-import {
-	LoadingScreen,
-	NotFoundScreen,
-	EnterPinScreen,
-	TransactionsModal
-} from '../screens';
+import { LoadingScreen, NotFoundScreen, EnterPinScreen } from '../screens';
 import OTPVerificationScreen from '../screens/Auth/OTPVerificationScreen';
 import PhoneVerificationScreen from '../screens/Auth/PhoneVerificationScreen';
 
@@ -74,7 +68,7 @@ function RootNavigator({
 	isLoading: boolean;
 }) {
 	const colorScheme = useColorScheme();
-	const { orange, background } = Colors[colorScheme];
+	const { background } = Colors[colorScheme];
 	return (
 		<Stack.Navigator
 			screenOptions={{
@@ -107,30 +101,6 @@ function RootNavigator({
 						component={NotFoundScreen}
 						options={{ title: 'Oops!' }}
 					/>
-					<Stack.Group
-						screenOptions={{
-							presentation: 'modal'
-						}}
-					>
-						<Stack.Screen
-							name="Transactions"
-							component={TransactionsModal}
-							options={({ navigation }) => ({
-								headerTitle: 'Transactions History',
-
-								headerRight: () => (
-									<TouchableOpacity
-										onPress={() => {
-											console.log('Header Right Button Pressed', navigation);
-											navigation.navigate('TransactionsStatement');
-										}}
-									>
-										<CalenderIcon color={orange} />
-									</TouchableOpacity>
-								)
-							})}
-						/>
-					</Stack.Group>
 				</>
 			) : (
 				<>

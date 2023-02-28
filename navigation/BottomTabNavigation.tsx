@@ -7,8 +7,9 @@ import {
 } from '../components/CustomIcons';
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
-import { HomeScreen, ReferralScreen } from '../screens';
+import { ReferralScreen } from '../screens';
 import { RootTabParamList } from '../types';
+import HomeStackScreen from './HomeStackNavigator';
 
 /**
  * A bottom tab navigator displays tab buttons on the bottom of the display to switch screens.
@@ -35,7 +36,7 @@ function BottomTabNavigator() {
 		>
 			<BottomTab.Screen
 				name="TabOne"
-				component={HomeScreen}
+				component={HomeStackScreen}
 				options={{
 					title: 'Home',
 					tabBarIcon: ({ color }) => <HomeTabBarIcon color={color} />,
