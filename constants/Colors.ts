@@ -7,10 +7,15 @@ const inactiveTintColorDark = '#805B4D';
 const grayLight = '#7F7572';
 const grayDark = '#808A8D';
 
+const TextIputLight = '#808A8D';
+const TextIputDark = '#FFFFFF';
+
 const Colors: { light: ColorScheme; dark: ColorScheme } = {
 	light: {
 		text: '#000',
+		textInput: TextIputLight,
 		background: '#FFFBFF',
+		border: '#EDE0DC',
 		lightBackground: '#fff',
 		orange: orangeColorLight,
 		mask: 'rgba(33, 0, 93, 0.16);',
@@ -22,7 +27,9 @@ const Colors: { light: ColorScheme; dark: ColorScheme } = {
 	},
 	dark: {
 		text: '#fff',
+		textInput: TextIputDark,
 		background: '#0F0F0F',
+		border: grayDark,
 		darkBackground: '#131313',
 		orange: orangeColorDark,
 		mask: 'rgba(195, 162, 255, 0.16);',

@@ -30,6 +30,14 @@
     },
     "web": {
       "favicon": "./assets/splash/favicon.png"
-    }
+    },
+    "plugins": [
+      [
+        "expo-barcode-scanner",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access camera."
+        }
+      ]
+    ]
   }
 }

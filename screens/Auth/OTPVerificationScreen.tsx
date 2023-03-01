@@ -132,6 +132,7 @@ const styles = StyleSheet.create({
 	},
 	label: {
 		marginBottom: 8,
+		fontSize: 14,
 		fontFamily: 'Roboto_400Regular'
 	},
 	otpContainer: {

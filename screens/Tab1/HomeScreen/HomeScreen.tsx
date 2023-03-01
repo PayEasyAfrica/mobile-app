@@ -167,7 +167,9 @@ const HomeScreen: React.FC<HomeStackScreenProps<'Home'>> = ({ navigation }) => {
 							{ backgroundColor: Colors[colorScheme].iconBackground },
 							styles.sendButton
 						]}
-						onPress={handleShowModal}
+						onPress={() => {
+							navigation.navigate('Send');
+						}}
 					>
 						<SendIcon color={orange} />
 						<Text

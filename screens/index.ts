@@ -1,6 +1,7 @@
 export { HomeScreen } from './Tab1/HomeScreen';
 export { TransactionStatementScreen } from './Tab1/TransactionStatementScreen';
 export { RecieveScreen } from './Tab1/RecieveScreen';
+export { SendScreen } from './Tab1/SendScreen';
 export { ReferralScreen } from './Tab2/ReferralScreen';
 export { default as EnterPinScreen } from './Auth/EnterPinScreen/EnterPinScreen';
 export { default as TransactionsModal } from './Modals/TransactionsModal';

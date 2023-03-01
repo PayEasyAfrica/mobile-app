@@ -18,7 +18,9 @@ const linking: LinkingOptions<RootStackParamList> = {
 					TabOne: {
 						screens: {
 							HomeScreen: 'home',
-							RecieveMoneyScreen: 'recieve',
+							RecieveScreen: 'recieve',
+							SendScreen: 'recieve',
+							QRCodeScannerScreen: 'scanner',
 							TransactionsStatementScreen: 'TransactionsStatement'
 						}
 					},

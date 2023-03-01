@@ -3,7 +3,13 @@ import { Platform, TouchableOpacity } from 'react-native';
 import { CalenderIcon, HomeTabBarIcon } from '../components/CustomIcons';
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
-import { HomeScreen, RecieveScreen, TransactionsModal } from '../screens';
+import {
+	HomeScreen,
+	RecieveScreen,
+	SendScreen,
+	TransactionsModal
+} from '../screens';
+import QRCodeScannerScreen from '../screens/Tab1/QRCodeScannerScreen/QRCodeScannerScreen';
 import { HomeStackParamList } from '../types';
 
 const HomeStack = createNativeStackNavigator<HomeStackParamList>();
@@ -40,7 +46,22 @@ function HomeStackScreen() {
 				component={RecieveScreen}
 				options={{
 					headerTitle: 'Receive Money'
-					// headerTitleStyle: { fontSize: 24, fontFamily: 'Roboto_500Medium' }
+				}}
+			/>
+
+			<HomeStack.Screen
+				name="Send"
+				component={SendScreen}
+				options={{
+					headerTitle: 'Send Money'
+				}}
+			/>
+
+			<HomeStack.Screen
+				name="Scanner"
+				component={QRCodeScannerScreen}
+				options={{
+					headerTitle: 'Scan Code'
 				}}
 			/>
 

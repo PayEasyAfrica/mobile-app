@@ -32,6 +32,7 @@ export type HomeStackParamList = {
 	Transactions: undefined;
 	Receive: undefined;
 	Send: undefined;
+	Scanner: undefined;
 };
 
 export type RootTabParamList = {

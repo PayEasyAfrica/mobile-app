@@ -1,16 +1,7 @@
-import {
-	Svg,
-	Path,
-	Circle,
-	G,
-	Defs,
-	Pattern,
-	Use,
-	Image
-} from 'react-native-svg';
+import { Svg, Path } from 'react-native-svg';
 
 export interface IconProps {
-	color: string;
+	color?: string;
 }
 
 export const HomeTabBarIcon: React.FC<IconProps> = (props) => {
@@ -189,6 +180,34 @@ export const ShareIcon: React.FC<IconProps> = (props) => {
 				clipRule="evenodd"
 				d="M15.97 16.81c.53-.5 1.24-.81 2.03-.81 1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3c0-.24.04-.47.09-.69l-7.05-4.12c-.54.5-1.25.81-2.04.81-1.66 0-3-1.34-3-3s1.34-3 3-3c.79 0 1.5.31 2.04.81l7.05-4.11c-.05-.22-.09-.46-.09-.7 0-1.66 1.34-3 3-3s3 1.34 3 3-1.34 3-3 3c-.79 0-1.51-.31-2.04-.81L8.91 11.3c.05.23.09.46.09.7 0 .24-.04.47-.09.7l7.06 4.11ZM19 5c0-.55-.45-1-1-1s-1 .45-1 1 .45 1 1 1 1-.45 1-1ZM6 13c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1Zm11 6c0 .55.45 1 1 1s1-.45 1-1-.45-1-1-1-1 .45-1 1Z"
 				fill={color}
+			/>
+		</Svg>
+	);
+};
+
+export const QRIcon: React.FC<IconProps> = (props) => {
+	const { color } = props;
+	return (
+		<Svg width={31} height={30} {...props}>
+			<Path
+				d="M16.75 26.25v-2.5h2.5v2.5h-2.5Zm-2.5-2.5V17.5h2.5v6.25h-2.5Zm10-3.75v-5h2.5v5h-2.5Zm-2.5-5v-2.5h2.5V15h-2.5Zm-15 2.5V15h2.5v2.5h-2.5ZM4.25 15v-2.5h2.5V15h-2.5ZM15.5 6.25v-2.5H18v2.5h-2.5ZM5.812 9.688h4.375V5.311H5.814v4.375ZM4.25 11.25v-7.5h7.5v7.5h-7.5Zm1.563 13.438h4.375v-4.375H5.811v4.375ZM4.25 26.25v-7.5h7.5v7.5h-7.5ZM20.813 9.687h4.375V5.314h-4.375v4.375ZM19.25 11.25v-7.5h7.5v7.5h-7.5Zm2.5 15V22.5h-2.5V20h5v3.75h2.5v2.5h-5Zm-5-8.75V15h5v2.5h-5Zm-5 0V15h-2.5v-2.5h7.5V15h-2.5v2.5h-2.5ZM13 11.25v-5h2.5v2.5H18v2.5h-5ZM7.062 8.437V6.563h1.875v1.875H7.063Zm0 15v-1.875h1.875v1.875H7.063Zm15-15V6.563h1.875v1.875h-1.875Z"
+				fill={color}
+			/>
+		</Svg>
+	);
+};
+
+export const QRScannerFrameIcon: React.FC<IconProps> = (props) => {
+	const { color } = props;
+	return (
+		<Svg width={280} height={325} {...props}>
+			<Path
+				fill="#FFDBCE"
+				d="M0 0h67v12H0zM12 12v67H0V12zM278 12h-67V0h67zM266.374 79V12h12v67zM.282 311.232l66.986 1.373-.246 11.997L.036 323.23z"
+			/>
+			<Path
+				fill="#FFDBCE"
+				d="m13.6 245.246-1.372 66.986-11.998-.246L1.603 245zM279.626 324h-67v-12h67zM267.626 312v-67h12v67z"
 			/>
 		</Svg>
 	);
