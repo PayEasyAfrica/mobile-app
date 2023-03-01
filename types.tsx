@@ -30,8 +30,8 @@ export type RootStackParamList = {
 export type HomeStackParamList = {
 	Home: undefined;
 	Transactions: undefined;
-	RecieveMoney: undefined;
-	SendMoney: undefined;
+	Receive: undefined;
+	Send: undefined;
 };
 
 export type RootTabParamList = {

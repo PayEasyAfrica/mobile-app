@@ -42,12 +42,6 @@ const HomeScreen: React.FC<HomeStackScreenProps<'Home'>> = ({ navigation }) => {
 
 	const { orange, gray, lightBackground, darkBackground } = Colors[colorScheme];
 
-	const handleButtonPress = useCallback(() => {
-		// handle button press
-
-		dispatch(logout());
-	}, []);
-
 	const handleShowModal = () => {
 		setModalVisible(true);
 	};
@@ -151,7 +145,11 @@ const HomeScreen: React.FC<HomeStackScreenProps<'Home'>> = ({ navigation }) => {
 							styles.button,
 							{ backgroundColor: Colors[colorScheme].iconBackground }
 						]}
-						onPress={handleButtonPress}
+						onPress={() => {
+							navigation.navigate('Receive');
+
+							// dispatch(logout());
+						}}
 					>
 						<RecieveIcon color={orange} />
 						<Text
@@ -186,7 +184,9 @@ const HomeScreen: React.FC<HomeStackScreenProps<'Home'>> = ({ navigation }) => {
 							styles.button,
 							{ backgroundColor: Colors[colorScheme].iconBackground }
 						]}
-						onPress={handleButtonPress}
+						onPress={() => {
+							dispatch(logout());
+						}}
 					>
 						<WithdrawIcon color={orange} />
 						<Text

@@ -3,7 +3,7 @@ import { Platform, TouchableOpacity } from 'react-native';
 import { CalenderIcon, HomeTabBarIcon } from '../components/CustomIcons';
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
-import { HomeScreen, TransactionsModal } from '../screens';
+import { HomeScreen, RecieveScreen, TransactionsModal } from '../screens';
 import { HomeStackParamList } from '../types';
 
 const HomeStack = createNativeStackNavigator<HomeStackParamList>();
@@ -19,7 +19,7 @@ function HomeStackScreen() {
 					backgroundColor: background
 				},
 				headerTitleStyle: {
-					fontSize: 20,
+					fontSize: 24,
 					fontFamily: 'Roboto_500Medium'
 				},
 				headerShadowVisible: false,
@@ -35,11 +35,14 @@ function HomeStackScreen() {
 				}}
 			/>
 
-			{/* <HomeStack.Screen
-				name="Details"
-				component={DetailsScreen}
-				options={{ headerShown: false }}
-			/> */}
+			<HomeStack.Screen
+				name="Receive"
+				component={RecieveScreen}
+				options={{
+					headerTitle: 'Receive Money'
+					// headerTitleStyle: { fontSize: 24, fontFamily: 'Roboto_500Medium' }
+				}}
+			/>
 
 			<HomeStack.Group
 				screenOptions={{
