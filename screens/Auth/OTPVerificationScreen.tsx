@@ -72,40 +72,57 @@ const OTPVerificationScreen = ({
 
 	const handleOTPVerification = useCallback(async () => {
 		dispatch(startLoading());
-		const api = new Http({ baseURL });
+
 		const isValidOTP = otp.some(
 			(value) => !isNaN(Number(value)) && value !== ''
 		);
 
-		try {
-			if (isValidOTP) {
-				// All elements in otp are valid numbers
-				console.log('Before request', otp.join(''));
-
-				const apiResponse = await api.post('/auth/login', {
-					phoneNumber,
-					otp: otp.join('')
-				});
-
-				const { message, data } = apiResponse as {
-					message: string;
-					data: unknown;
-				};
-
-				console.log(message);
-
-				AsyncStorage.setItem('userData', JSON.stringify(data));
+		if (isValidOTP) {
+			setTimeout(() => {
 				dispatch(finishLoading());
-
-				navigation.navigate('EnterPin');
-			}
-		} catch (error) {
-			const axiosError = error as AxiosError;
-			console.debug(axiosError.response?.data);
+				navigation.navigate('SetPasscode');
+			}, 2000);
+		} else {
 			dispatch(finishLoading());
-
 			Alert.alert(INVALID_OTP_TITLE, INVALID_OTP_MESSAGE);
 		}
+
+		// TODO: Implement OTP verification with backend
+		// dispatch(startLoading());
+		// const api = new Http({ baseURL });
+		// const isValidOTP = otp.some(
+		// 	(value) => !isNaN(Number(value)) && value !== ''
+		// );
+
+		// try {
+		// 	if (isValidOTP) {
+		// 		// All elements in otp are valid numbers
+		// 		console.log('Before request', otp.join(''));
+
+		// 		const apiResponse = await api.post('/auth/login', {
+		// 			phoneNumber,
+		// 			otp: otp.join('')
+		// 		});
+
+		// 		const { message, data } = apiResponse as {
+		// 			message: string;
+		// 			data: unknown;
+		// 		};
+
+		// 		console.log(message);
+
+		// 		AsyncStorage.setItem('userData', JSON.stringify(data));
+		// 		dispatch(finishLoading());
+
+		// 		navigation.navigate('SetPasscode');
+		// 	}
+		// } catch (error) {
+		// 	const axiosError = error as AxiosError;
+		// 	console.debug(axiosError.response?.data);
+		// 	dispatch(finishLoading());
+
+		// 	Alert.alert(INVALID_OTP_TITLE, INVALID_OTP_MESSAGE);
+		// }
 	}, [otp]);
 
 	const handleKeyPress = (index: number, event: any) => {

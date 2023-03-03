@@ -19,9 +19,15 @@ import Colors from '../constants/Colors';
 import { FONT_500 } from '../constants/Style';
 import { checkTokenAsync } from '../features/auth/authSlice';
 import useColorScheme from '../hooks/useColorScheme';
-import { LoadingScreen, NotFoundScreen, EnterPinScreen } from '../screens';
-import OTPVerificationScreen from '../screens/Auth/OTPVerificationScreen';
-import PhoneVerificationScreen from '../screens/Auth/PhoneVerificationScreen';
+import {
+	LoadingScreen,
+	NotFoundScreen,
+	OTPVerificationScreen,
+	PasscodeScreen,
+	PhoneVerificationScreen,
+	SetPasscodeScreen,
+	VerifyPasscodeScreen
+} from '../screens';
 
 import { RootStackParamList } from '../types';
 import BottomTabNavigator from './BottomTabNavigation';
@@ -119,8 +125,22 @@ function RootNavigator({
 						}}
 					/>
 					<Stack.Screen
-						name="EnterPin"
-						component={EnterPinScreen}
+						name="SetPasscode"
+						component={SetPasscodeScreen}
+						options={{
+							headerTitle: ''
+						}}
+					/>
+					<Stack.Screen
+						name="VerifyPasscode"
+						component={VerifyPasscodeScreen}
+						options={{
+							headerTitle: ''
+						}}
+					/>
+					<Stack.Screen
+						name="Passcode"
+						component={PasscodeScreen}
 						options={{ headerShown: false }}
 					/>
 				</>

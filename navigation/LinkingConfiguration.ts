@@ -21,7 +21,7 @@ const linking: LinkingOptions<RootStackParamList> = {
 							RecieveScreen: 'recieve',
 							SendScreen: 'recieve',
 							QRCodeScannerScreen: 'scanner',
-							TransactionsStatementScreen: 'TransactionsStatement'
+							Transactions: 'Transactions'
 						}
 					},
 					TabTwo: {
@@ -36,7 +36,7 @@ const linking: LinkingOptions<RootStackParamList> = {
 					}
 				}
 			},
-			Transactions: 'Transactions',
+			Passcode: 'passcode',
 			NotFound: '*'
 		}
 	}

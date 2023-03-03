@@ -16,7 +16,7 @@ import { HomeStackScreenProps } from '../../../types';
 import { useAppDispatch } from '../../../app/hooks';
 import { logout } from '../../../features/auth/authSlice';
 import Modal from '../../../components/Modal';
-import { FONT_400, FONT_500 } from '../../../constants/Style';
+import { FONT_400, FONT_500, FONT_700 } from '../../../constants/Style';
 
 const DATA = [
 	{
@@ -121,7 +121,7 @@ const HomeScreen: React.FC<HomeStackScreenProps<'Home'>> = ({ navigation }) => {
 					</View>
 
 					<Text
-						style={{ fontSize: 24, fontFamily: 'Roboto_700Bold' }}
+						style={{ fontSize: 24, fontFamily: FONT_700 }}
 						lightColor={lightBackground}
 						darkColor={darkBackground}
 					>

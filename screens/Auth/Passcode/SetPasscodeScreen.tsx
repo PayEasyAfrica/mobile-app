@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import {
 	Alert,
-	Dimensions,
 	TouchableOpacity,
 	Vibration,
 	View as DefaultView
@@ -9,19 +8,19 @@ import {
 import * as LocalAuthentication from 'expo-local-authentication';
 
 import { useAppDispatch } from '../../../app/hooks';
-import {
-	CancelPinIcon,
-	FingerprintIcon
-} from '../../../components/CustomIcons';
+import { CancelPinIcon } from '../../../components/CustomIcons';
 import { SafeAreaView, Text, View } from '../../../components/Themed';
 import Colors from '../../../constants/Colors';
-import { login } from '../../../features/auth/authSlice';
 import useColorScheme from '../../../hooks/useColorScheme';
 
-import styles from './EnterPinScreen.styles';
+import styles from './PasscodeScreen.styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { RootStackScreenProps } from '../../../types';
+import { HandlePressFunc, PinPadProps } from './types';
 
-const EnterPinScreen = () => {
+const SetPasscodeScreen = ({
+	navigation
+}: RootStackScreenProps<'SetPasscode'>) => {
 	const dispatch = useAppDispatch();
 	const colorScheme = useColorScheme();
 
@@ -40,47 +39,25 @@ const EnterPinScreen = () => {
 		});
 	}, []);
 
-	const handlePinEntered = useCallback(async (pin: string) => {
-		// TODO: Use the pin enter to handle login
-		console.log(pin);
-		handleLoginDispatch();
-	}, []);
+	const handlePinEntered = useCallback(
+		(pin: string, handleResetPin?: () => void) => {
+			if (handleResetPin) {
+				handleResetPin();
+			}
 
-	const handleBiometricLogin = useCallback(async () => {
-		handleLoginDispatch();
-	}, []);
-
-	const handleLoginDispatch = useCallback(async () => {
-		/* Dispatching the login action to the redux store. */
-		await dispatch(login('admin', 'admin'))
-			.then(() => {
-				// Do nothing
-			})
-			.catch((error: Error) => {
-				console.log(error.message);
-				Alert.alert('Login failed', error.message, [
-					{
-						text: 'Retry',
-						onPress: () => console.log('retry pressed')
-					}
-				]);
-			});
-	}, []);
+			navigation.navigate('VerifyPasscode', { pin } as never);
+		},
+		[]
+	);
 
 	return (
 		// Login screen UI code goes here
 		<SafeAreaView style={styles.container}>
-			{userFirstname && (
-				<Text style={styles.title}>Welcome {userFirstname}!</Text>
-			)}
-			<Text style={styles.subtitle} lightColor="#5F5E62">
-				Enter code or fingerprint to login
+			<Text style={[styles.title, { textAlign: 'center', marginBottom: 32 }]}>
+				Set Passcode.
 			</Text>
 
-			<PinPad
-				onPinEntered={handlePinEntered}
-				handleBiometricLogin={handleBiometricLogin}
-			/>
+			<PinPad onPinEntered={handlePinEntered} />
 
 			<View style={styles.signoutContainer}>
 				<Text style={styles.signoutText}>Not your account? </Text>
@@ -107,15 +84,7 @@ const EnterPinScreen = () => {
 	);
 };
 
-type PinPadProps = {
-	onPinEntered: (pin: string) => void;
-	handleBiometricLogin: () => void;
-};
-
-const PinPad: React.FC<PinPadProps> = ({
-	onPinEntered,
-	handleBiometricLogin
-}) => {
+const PinPad: React.FC<PinPadProps> = ({ onPinEntered }) => {
 	const [pin, setPin] = useState('');
 	const [hasBiometricHardware, setHasBiometricHardware] = useState(false);
 
@@ -131,47 +100,34 @@ const PinPad: React.FC<PinPadProps> = ({
 		checkHardware();
 	}, []);
 
-	type HandlePressFunc = (number: number | string) => void;
-
-	const handlePress: HandlePressFunc = (number) => {
-		if (pin.length < 6) {
-			Vibration.vibrate(60);
-			setPin(pin + number);
-			if (pin.length === 5) {
-				setTimeout(() => {
-					onPinEntered(pin + number);
-				}, 500);
+	const handlePress: HandlePressFunc = useCallback(
+		(number) => {
+			if (pin.length < 6) {
+				Vibration.vibrate(60);
+				setPin(pin + number);
+				if (pin.length === 5) {
+					setTimeout(() => {
+						onPinEntered(pin + number, handleResetPin);
+					}, 500);
+				}
 			}
-		}
-	};
+		},
+		[pin]
+	);
 
-	const handleDelete = () => {
+	const handleDelete = useCallback(() => {
 		if (pin.length > 0) {
 			Vibration.vibrate(60);
 			setPin(pin.substring(0, pin.length - 1));
 		}
-	};
+	}, [pin]);
 
-	const handleBiometricAuthentication = async () => {
-		Vibration.vibrate(60);
-
-		const result = await LocalAuthentication.authenticateAsync({
-			promptMessage: 'Scan your fingerprint',
-			cancelLabel: 'Cancel',
-			disableDeviceFallback: true
-		});
-
-		if (result.success) {
-			console.log('Biometric authentication successful');
-			handleBiometricLogin();
-		} else {
-			console.log('Biometric authentication failed');
-			// TODO: Handle Biometric authentication failed prompt
-		}
-	};
+	const handleResetPin = useCallback(() => {
+		setPin('');
+	}, []);
 
 	return (
-		<View style={styles.pinContainer}>
+		<View style={[styles.pinContainer, { marginTop: 20 }]}>
 			<View style={styles.pinDisplay}>
 				{Array.from({ length: 6 }, (_, i) => (
 					<View
@@ -190,7 +146,6 @@ const PinPad: React.FC<PinPadProps> = ({
 				{[1, 2, 3, 4, 5, 6, 7, 8, 9, 'fingerprint', 0, 'cancel'].map(
 					(value) => {
 						const isNumber = typeof value === 'number';
-						const isFingerprint = value === 'fingerprint';
 						const isCancel = value === 'cancel';
 
 						return (
@@ -202,16 +157,8 @@ const PinPad: React.FC<PinPadProps> = ({
 								]}
 								onPress={() => (isNumber ? handlePress(value) : handleDelete())}
 							>
-								{isFingerprint && !hasBiometricHardware ? (
+								{!isCancel && !isNumber ? (
 									<DefaultView style={styles.keypadButton} />
-								) : isFingerprint && hasBiometricHardware ? (
-									<TouchableOpacity
-										key={value}
-										style={[styles.keypadButton]}
-										onPress={handleBiometricAuthentication}
-									>
-										<FingerprintIcon color={orange} />
-									</TouchableOpacity>
 								) : isNumber ? (
 									<Text style={[styles.keypadButtonText, { color: orange }]}>
 										{value}
@@ -228,4 +175,4 @@ const PinPad: React.FC<PinPadProps> = ({
 	);
 };
 
-export default EnterPinScreen;
+export default SetPasscodeScreen;

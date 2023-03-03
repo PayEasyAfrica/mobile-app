@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import Layout from '../../../constants/Layout';
-import { FONT_500 } from '../../../constants/Style';
+import { FONT_500, FONT_700 } from '../../../constants/Style';
 
 const styles = StyleSheet.create({
 	container: {
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
 	},
 	keypadButtonText: {
 		fontSize: 28,
-		fontFamily: 'Roboto_700Bold'
+		fontFamily: FONT_700
 	},
 	deleteButton: {
 		borderWidth: 1,

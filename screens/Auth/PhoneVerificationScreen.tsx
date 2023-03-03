@@ -6,7 +6,6 @@ import {
 	TouchableOpacity,
 	TouchableWithoutFeedback
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { RootStackScreenProps } from '../../types';
 import { useAppDispatch } from '../../app/hooks';
 import { finishLoading, startLoading } from '../../features/loadingSlice';
@@ -14,7 +13,7 @@ import { baseURL, Http } from '../../components/utils/http';
 import Colors from '../../constants/Colors';
 import useColorScheme from '../../hooks/useColorScheme';
 import { AxiosError } from 'axios';
-import { Text, View } from '../../components/Themed';
+import { SafeAreaView, Text, View } from '../../components/Themed';
 import { BORDER_RADIUS, FONT_400, FONT_500 } from '../../constants/Style';
 
 const INVALID_PHONE_NUMBER_TITLE = 'Invalid phone number';
@@ -53,38 +52,47 @@ const PhoneVerificationScreen = ({
 	}, [phoneInputRef.current]);
 
 	const handleContinue = useCallback(async () => {
-		const api = new Http({ baseURL });
-
 		if (phoneNumber && phoneNumber.length >= 11) {
 			dispatch(startLoading());
-			try {
-				const apiResponse = await api.get('/auth/checks', {
-					params: { phoneNumber }
-				});
 
-				const {
-					message,
-					data: { userExists }
-				} = apiResponse as {
-					message: string;
-					data: { userExists: boolean };
-				};
-
-				if (userExists) {
-					api.post('/auth/otps', { phoneNumber }).catch(console.debug);
-					dispatch(finishLoading());
-					navigation.navigate('OTPVerification', { phoneNumber } as never);
-				} else {
-					// navigation.navigate('SignUp', { phoneNumber });
-				}
-			} catch (error) {
-				const axiosError = error as AxiosError;
-				console.debug(axiosError?.response?.data);
+			setTimeout(() => {
 				dispatch(finishLoading());
-			}
+				navigation.navigate('OTPVerification', { phoneNumber } as never);
+			}, 2000);
 		} else {
 			Alert.alert(INVALID_PHONE_NUMBER_TITLE, INVALID_PHONE_NUMBER_MESSAGE);
 		}
+
+		// TODO: Implement Phone verification with backend
+		// const api = new Http({ baseURL });
+		// if (phoneNumber && phoneNumber.length >= 11) {
+		// 	dispatch(startLoading());
+		// 	try {
+		// 		const apiResponse = await api.get('/auth/checks', {
+		// 			params: { phoneNumber }
+		// 		});
+		// 		const {
+		// 			message,
+		// 			data: { userExists }
+		// 		} = apiResponse as {
+		// 			message: string;
+		// 			data: { userExists: boolean };
+		// 		};
+		// 		if (userExists) {
+		// 			api.post('/auth/otps', { phoneNumber }).catch(console.debug);
+		// 			dispatch(finishLoading());
+		// 			navigation.navigate('OTPVerification', { phoneNumber } as never);
+		// 		} else {
+		// 			// navigation.navigate('SignUp', { phoneNumber });
+		// 		}
+		// 	} catch (error) {
+		// 		const axiosError = error as AxiosError;
+		// 		console.debug(axiosError?.response?.data);
+		// 		dispatch(finishLoading());
+		// 	}
+		// } else {
+		// 	Alert.alert(INVALID_PHONE_NUMBER_TITLE, INVALID_PHONE_NUMBER_MESSAGE);
+		// }
 	}, [phoneNumber]);
 
 	return (
