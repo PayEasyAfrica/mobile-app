@@ -19,16 +19,25 @@ import { login } from '../../../features/auth/authSlice';
 import useColorScheme from '../../../hooks/useColorScheme';
 
 import styles from './EnterPinScreen.styles';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const EnterPinScreen = () => {
 	const dispatch = useAppDispatch();
 	const colorScheme = useColorScheme();
 
+	const [userFirstname, setUserFirstname] = useState('');
+
 	const { orange } = Colors[colorScheme];
 
 	useEffect(() => {
-		const { width, height } = Dimensions.get('screen');
-		console.log('Dimensions: ', { width, height });
+		AsyncStorage.getItem('userData').then((userData) => {
+			if (userData) {
+				const { user, token } = JSON.parse(userData);
+				console.log(user, token);
+				// dispatch(login(username, password));
+				setUserFirstname(user.name.split(' ')[0]);
+			}
+		});
 	}, []);
 
 	const handlePinEntered = useCallback(async (pin: string) => {
@@ -61,7 +70,9 @@ const EnterPinScreen = () => {
 	return (
 		// Login screen UI code goes here
 		<SafeAreaView style={styles.container}>
-			<Text style={styles.title}>Welcome Blessing!</Text>
+			{userFirstname && (
+				<Text style={styles.title}>Welcome {userFirstname}!</Text>
+			)}
 			<Text style={styles.subtitle} lightColor="#5F5E62">
 				Enter code or fingerprint to login
 			</Text>

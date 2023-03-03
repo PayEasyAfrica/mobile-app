@@ -2,6 +2,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Platform, TouchableOpacity } from 'react-native';
 import { CalenderIcon, HomeTabBarIcon } from '../components/CustomIcons';
 import Colors from '../constants/Colors';
+import { FONT_500 } from '../constants/Style';
 import useColorScheme from '../hooks/useColorScheme';
 import {
 	HomeScreen,
@@ -26,7 +27,7 @@ function HomeStackScreen() {
 				},
 				headerTitleStyle: {
 					fontSize: 24,
-					fontFamily: 'Roboto_500Medium'
+					fontFamily: FONT_500
 				},
 				headerShadowVisible: false,
 				...(Platform.OS === 'android' && { headerTitleAlign: 'center' })

@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { FONT_400, FONT_500 } from '../../../constants/Style';
 
 const styles = StyleSheet.create({
 	container: {
@@ -8,12 +9,12 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		fontSize: 24,
-		fontFamily: 'Roboto_500Medium',
+		fontFamily: FONT_500,
 		marginBottom: 16
 	},
 	subtitle: {
 		fontSize: 14,
-		fontFamily: 'Roboto_500Medium'
+		fontFamily: FONT_500
 	},
 	inputContainer: {
 		marginTop: 48
@@ -21,12 +22,12 @@ const styles = StyleSheet.create({
 	label: {
 		marginBottom: 8,
 		fontSize: 14,
-		fontFamily: 'Roboto_400Regular'
+		fontFamily: FONT_400
 	},
 	amountInput: {
 		borderWidth: 1,
 		borderColor: '#78767A',
-		fontFamily: 'Roboto_500Medium',
+		fontFamily: FONT_500,
 		borderRadius: 8,
 		paddingVertical: 18,
 		paddingHorizontal: 14
@@ -37,7 +38,7 @@ const styles = StyleSheet.create({
 	},
 	qrText: {
 		fontSize: 16,
-		fontFamily: 'Roboto_400Regular',
+		fontFamily: FONT_400,
 		marginTop: 30
 	},
 	button: {
@@ -49,7 +50,7 @@ const styles = StyleSheet.create({
 	},
 	buttonText: {
 		fontSize: 16,
-		fontFamily: 'Roboto_500Medium',
+		fontFamily: FONT_500,
 		marginLeft: 22
 	}
 });

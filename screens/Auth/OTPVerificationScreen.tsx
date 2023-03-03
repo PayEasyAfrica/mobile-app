@@ -2,16 +2,27 @@ import {
 	TouchableOpacity,
 	StyleSheet,
 	TextInput,
-	TouchableWithoutFeedback
+	TouchableWithoutFeedback,
+	Alert
 } from 'react-native';
+
+import { useRoute } from '@react-navigation/native';
 
 import { SafeAreaView, Text, View } from '../../components/Themed';
 import useColorScheme from '../../hooks/useColorScheme';
 import Colors from '../../constants/Colors';
-import { RefObject, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { RootStackScreenProps } from '../../types';
 import { finishLoading, startLoading } from '../../features/loadingSlice';
 import { useAppDispatch } from '../../app/hooks';
+
+import axios, { AxiosError } from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { baseURL, Http } from '../../components/utils/http';
+import { BORDER_RADIUS, FONT_400, FONT_500 } from '../../constants/Style';
+
+const INVALID_OTP_TITLE = 'Invalid OTP';
+const INVALID_OTP_MESSAGE = 'Please enter a valid OTP';
 
 const OTPVerificationScreen = ({
 	navigation
@@ -23,26 +34,79 @@ const OTPVerificationScreen = ({
 	const colorScheme = useColorScheme();
 	const dispatch = useAppDispatch();
 
+	const route = useRoute();
+	const { phoneNumber } = route.params as { phoneNumber: string };
+
 	const { orange, lightBackground, darkBackground } = Colors[colorScheme];
 
-	const handleOTPChange = (index: number, value: string) => {
-		const newOTP = [...otp];
-		newOTP[index] = value;
+	const hiddenPhoneNumber = useMemo(
+		() => phoneNumber.slice(0, 3) + '*'.repeat(5) + phoneNumber.slice(7),
+		[phoneNumber]
+	);
 
-		setOTP(newOTP);
+	useEffect(() => {
+		console.log('valid phone number', phoneNumber);
+	}, []);
 
-		if (index < inputRefs.current.length - 1 && value) {
-			inputRefs.current[index + 1].focus();
-		}
-	};
+	const handleOTPChange = useCallback(
+		(index: number, value: string) => {
+			const newOTP = [...otp];
+			newOTP[index] = value;
 
-	const handleFocus = (index: number) => {
+			setOTP(newOTP);
+
+			if (index < inputRefs.current.length - 1 && value) {
+				inputRefs.current[index + 1].focus();
+			}
+		},
+		[otp]
+	);
+
+	const handleFocus = useCallback((index: number) => {
 		setFocusedIndex(index);
-	};
+	}, []);
 
 	const handleBlur = () => {
 		setFocusedIndex(-1);
 	};
+
+	const handleOTPVerification = useCallback(async () => {
+		dispatch(startLoading());
+		const api = new Http({ baseURL });
+		const isValidOTP = otp.some(
+			(value) => !isNaN(Number(value)) && value !== ''
+		);
+
+		try {
+			if (isValidOTP) {
+				// All elements in otp are valid numbers
+				console.log('Before request', otp.join(''));
+
+				const apiResponse = await api.post('/auth/login', {
+					phoneNumber,
+					otp: otp.join('')
+				});
+
+				const { message, data } = apiResponse as {
+					message: string;
+					data: unknown;
+				};
+
+				console.log(message);
+
+				AsyncStorage.setItem('userData', JSON.stringify(data));
+				dispatch(finishLoading());
+
+				navigation.navigate('EnterPin');
+			}
+		} catch (error) {
+			const axiosError = error as AxiosError;
+			console.debug(axiosError.response?.data);
+			dispatch(finishLoading());
+
+			Alert.alert(INVALID_OTP_TITLE, INVALID_OTP_MESSAGE);
+		}
+	}, [otp]);
 
 	const handleKeyPress = (index: number, event: any) => {
 		if (event.nativeEvent.key === 'Backspace' && !otp[index]) {
@@ -57,7 +121,7 @@ const OTPVerificationScreen = ({
 			<SafeAreaView style={styles.container}>
 				<Text style={styles.title}>OTP Verification</Text>
 				<Text style={styles.subtitle} lightColor="#5F5E62">
-					Enter the OTP sent to 080...524.
+					Enter the OTP sent to {hiddenPhoneNumber}.
 				</Text>
 
 				<View style={styles.inputContainer}>
@@ -88,14 +152,7 @@ const OTPVerificationScreen = ({
 				</View>
 
 				<TouchableOpacity
-					onPress={() => {
-						dispatch(startLoading());
-
-						setTimeout(() => {
-							dispatch(finishLoading());
-							navigation.navigate('EnterPin');
-						}, 2000);
-					}}
+					onPress={handleOTPVerification}
 					style={{ marginTop: 101 }}
 				>
 					<View style={[styles.button, { backgroundColor: orange }]}>
@@ -120,12 +177,12 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		fontSize: 24,
-		fontFamily: 'Roboto_500Medium',
+		fontFamily: FONT_500,
 		marginBottom: 16
 	},
 	subtitle: {
 		fontSize: 14,
-		fontFamily: 'Roboto_500Medium'
+		fontFamily: FONT_500
 	},
 	inputContainer: {
 		marginTop: 48
@@ -133,7 +190,7 @@ const styles = StyleSheet.create({
 	label: {
 		marginBottom: 8,
 		fontSize: 14,
-		fontFamily: 'Roboto_400Regular'
+		fontFamily: FONT_400
 	},
 	otpContainer: {
 		flexDirection: 'row',
@@ -143,20 +200,21 @@ const styles = StyleSheet.create({
 		borderWidth: 1,
 		borderColor: '#78767A',
 		fontSize: 20,
-		fontFamily: 'Roboto_500Medium',
-		borderRadius: 8,
+		fontFamily: FONT_500,
+		borderRadius: BORDER_RADIUS,
 		padding: 18,
-		textAlign: 'center'
+		textAlign: 'center',
+		width: 50
 	},
 	button: {
 		paddingVertical: 18,
 		justifyContent: 'center',
 		alignItems: 'center',
-		borderRadius: 8
+		borderRadius: BORDER_RADIUS
 	},
 	buttonText: {
 		fontSize: 16,
-		fontFamily: 'Roboto_500Medium'
+		fontFamily: FONT_500
 	}
 });
 

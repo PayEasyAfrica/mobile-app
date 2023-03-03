@@ -16,6 +16,7 @@ import { RootState } from '../app/store';
 import ActivityIndicator from '../components/ActivityIndicator';
 
 import Colors from '../constants/Colors';
+import { FONT_500 } from '../constants/Style';
 import { checkTokenAsync } from '../features/auth/authSlice';
 import useColorScheme from '../hooks/useColorScheme';
 import { LoadingScreen, NotFoundScreen, EnterPinScreen } from '../screens';
@@ -77,7 +78,7 @@ function RootNavigator({
 				},
 				headerTitleStyle: {
 					fontSize: 20,
-					fontFamily: 'Roboto_500Medium'
+					fontFamily: FONT_500
 				},
 				headerShadowVisible: false,
 				...(Platform.OS === 'android' && { headerTitleAlign: 'center' })

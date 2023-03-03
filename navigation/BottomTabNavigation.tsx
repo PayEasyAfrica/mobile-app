@@ -6,6 +6,7 @@ import {
 	SettingsTabBarIcon
 } from '../components/CustomIcons';
 import Colors from '../constants/Colors';
+import { FONT_400 } from '../constants/Style';
 import useColorScheme from '../hooks/useColorScheme';
 import { ReferralScreen } from '../screens';
 import { RootTabParamList } from '../types';
@@ -29,7 +30,7 @@ function BottomTabNavigator() {
 				tabBarInactiveTintColor: tabIconInactive,
 				tabBarStyle: { height: Platform.OS === 'android' ? '8%' : '10%' },
 				tabBarLabelStyle: {
-					fontFamily: 'Roboto_400Regular',
+					fontFamily: FONT_400,
 					...(Platform.OS === 'android' && { marginTop: 8, marginBottom: 12 })
 				}
 			}}

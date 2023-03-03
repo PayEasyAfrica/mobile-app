@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import Layout from '../../../constants/Layout';
+import { FONT_500 } from '../../../constants/Style';
 
 const styles = StyleSheet.create({
 	container: {
@@ -15,17 +16,17 @@ const styles = StyleSheet.create({
 	},
 	moneyTagTitle: {
 		fontSize: 10,
-		fontFamily: 'Roboto_500Medium',
+		fontFamily: FONT_500,
 		marginBottom: 4
 	},
 	moneyTagId: {
 		fontSize: 14,
-		fontFamily: 'Roboto_500Medium'
+		fontFamily: FONT_500
 	},
 	addButton: { flexDirection: 'row', alignItems: 'center' },
 	addButtonTitle: {
 		fontSize: 12,
-		fontFamily: 'Roboto_500Medium',
+		fontFamily: FONT_500,
 		marginLeft: 8
 	},
 
@@ -49,7 +50,7 @@ const styles = StyleSheet.create({
 	},
 	buttonText: {
 		marginLeft: 8,
-		fontFamily: 'Roboto_500Medium'
+		fontFamily: FONT_500
 	}
 });
 

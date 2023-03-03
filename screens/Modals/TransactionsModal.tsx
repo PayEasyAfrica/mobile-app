@@ -3,6 +3,7 @@ import { Platform, SectionList, StyleSheet, TextInput } from 'react-native';
 import { RecieveIcon, SearchIcon } from '../../components/CustomIcons';
 import { Text, View } from '../../components/Themed';
 import Colors from '../../constants/Colors';
+import { FONT_500 } from '../../constants/Style';
 import useColorScheme from '../../hooks/useColorScheme';
 
 const DATA = [
@@ -115,14 +116,14 @@ export default function TransactionsModal() {
 							</View>
 
 							<View lightColor={lightBackground} darkColor={darkBackground}>
-								<Text style={{ fontSize: 14, fontFamily: 'Roboto_500Medium' }}>
+								<Text style={{ fontSize: 14, fontFamily: FONT_500 }}>
 									{item.name}
 								</Text>
 								<Text
 									style={{
 										color: Colors[colorScheme].gray,
 										fontSize: 10,
-										fontFamily: 'Roboto_500Medium',
+										fontFamily: FONT_500,
 										marginTop: 4
 									}}
 								>
@@ -134,7 +135,7 @@ export default function TransactionsModal() {
 						<Text
 							style={{
 								fontSize: 12,
-								fontFamily: 'Roboto_500Medium',
+								fontFamily: FONT_500,
 								color:
 									item.amount.charAt(0) === '+'
 										? '#04D400'
@@ -151,7 +152,7 @@ export default function TransactionsModal() {
 							style={{
 								color: Colors[colorScheme].gray,
 								fontSize: 10,
-								fontFamily: 'Roboto_500Medium',
+								fontFamily: FONT_500,
 								marginBottom: 16
 							}}
 						>
@@ -185,7 +186,7 @@ const styles = StyleSheet.create({
 	input: {
 		flex: 1,
 		fontSize: 14,
-		fontFamily: 'Roboto_500Medium',
+		fontFamily: FONT_500,
 		marginLeft: 8
 	}
 });

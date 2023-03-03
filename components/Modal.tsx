@@ -1,6 +1,7 @@
 import React, { useState, useEffect, ReactNode } from 'react';
 import { StyleSheet, View, Animated, Dimensions } from 'react-native';
 import Colors from '../constants/Colors';
+import { FONT_500 } from '../constants/Style';
 import useColorScheme from '../hooks/useColorScheme';
 import { Text } from './Themed';
 
@@ -75,7 +76,7 @@ const styles = StyleSheet.create({
 	},
 	modalText: {
 		fontSize: 16,
-		fontFamily: 'Roboto_500Medium',
+		fontFamily: FONT_500,
 		textAlign: 'center'
 	}
 });

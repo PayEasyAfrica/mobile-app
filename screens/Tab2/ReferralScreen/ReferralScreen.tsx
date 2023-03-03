@@ -9,6 +9,7 @@ import { CopyIcon } from '../../../components/CustomIcons';
 import EditScreenInfo from '../../../components/EditScreenInfo';
 import { SafeAreaView, Text, View } from '../../../components/Themed';
 import Colors from '../../../constants/Colors';
+import { FONT_500 } from '../../../constants/Style';
 import useColorScheme from '../../../hooks/useColorScheme';
 
 export default function ReferralScreen() {
@@ -82,7 +83,7 @@ export default function ReferralScreen() {
 				<Text
 					style={{
 						fontSize: 20,
-						fontFamily: 'Roboto_500Medium',
+						fontFamily: FONT_500,
 						textAlign: 'center',
 						marginBottom: 24
 					}}
@@ -93,7 +94,7 @@ export default function ReferralScreen() {
 				<Text
 					style={{
 						fontSize: 16,
-						fontFamily: 'Roboto_500Medium',
+						fontFamily: FONT_500,
 						textAlign: 'center',
 						color: gray,
 						maxWidth: 331,
@@ -118,7 +119,7 @@ export default function ReferralScreen() {
 				<Text
 					style={{
 						fontSize: 20,
-						fontFamily: 'Roboto_500Medium',
+						fontFamily: FONT_500,
 						marginRight: 8
 					}}
 				>
@@ -151,7 +152,7 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		fontSize: 24,
-		fontFamily: 'Roboto_500Medium',
+		fontFamily: FONT_500,
 		textAlign: 'center',
 		marginTop: 25
 	},
@@ -173,6 +174,6 @@ const styles = StyleSheet.create({
 	},
 	buttonText: {
 		fontSize: 16,
-		fontFamily: 'Roboto_500Medium'
+		fontFamily: FONT_500
 	}
 });

@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { FONT_400, FONT_500 } from '../../../constants/Style';
 
 const styles = StyleSheet.create({
 	container: {
@@ -17,7 +18,7 @@ const styles = StyleSheet.create({
 	},
 	scanButtonText: {
 		fontSize: 20,
-		fontFamily: 'Roboto_500Medium',
+		fontFamily: FONT_500,
 		marginLeft: 8
 	},
 	inputContainer: {
@@ -26,12 +27,12 @@ const styles = StyleSheet.create({
 	label: {
 		marginBottom: 8,
 		fontSize: 14,
-		fontFamily: 'Roboto_400Regular'
+		fontFamily: FONT_400
 	},
 	input: {
 		borderWidth: 1,
 		borderColor: '#EDE0DC',
-		fontFamily: 'Roboto_500Medium',
+		fontFamily: FONT_500,
 		borderRadius: 8,
 		paddingVertical: 18,
 		paddingHorizontal: 14
@@ -46,7 +47,7 @@ const styles = StyleSheet.create({
 	},
 	buttonText: {
 		fontSize: 16,
-		fontFamily: 'Roboto_500Medium',
+		fontFamily: FONT_500,
 		marginLeft: 22
 	}
 });

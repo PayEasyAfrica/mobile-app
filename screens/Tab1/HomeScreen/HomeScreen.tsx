@@ -16,6 +16,7 @@ import { HomeStackScreenProps } from '../../../types';
 import { useAppDispatch } from '../../../app/hooks';
 import { logout } from '../../../features/auth/authSlice';
 import Modal from '../../../components/Modal';
+import { FONT_400, FONT_500 } from '../../../constants/Style';
 
 const DATA = [
 	{
@@ -103,7 +104,7 @@ const HomeScreen: React.FC<HomeStackScreenProps<'Home'>> = ({ navigation }) => {
 						darkColor={orange}
 					>
 						<Text
-							style={{ fontSize: 14, fontFamily: 'Roboto_400Regular' }}
+							style={{ fontSize: 14, fontFamily: FONT_400 }}
 							lightColor={lightBackground}
 							darkColor={darkBackground}
 						>
@@ -129,7 +130,7 @@ const HomeScreen: React.FC<HomeStackScreenProps<'Home'>> = ({ navigation }) => {
 					<Text
 						style={{
 							fontSize: 16,
-							fontFamily: 'Roboto_400Regular',
+							fontFamily: FONT_400,
 							marginTop: 34
 						}}
 						lightColor={lightBackground}
@@ -242,14 +243,14 @@ const HomeScreen: React.FC<HomeStackScreenProps<'Home'>> = ({ navigation }) => {
 							</View>
 
 							<View lightColor={lightBackground} darkColor={darkBackground}>
-								<Text style={{ fontSize: 14, fontFamily: 'Roboto_500Medium' }}>
+								<Text style={{ fontSize: 14, fontFamily: FONT_500 }}>
 									{item.name}
 								</Text>
 								<Text
 									style={{
 										color: Colors[colorScheme].gray,
 										fontSize: 10,
-										fontFamily: 'Roboto_500Medium',
+										fontFamily: FONT_500,
 										marginTop: 4
 									}}
 								>
@@ -261,7 +262,7 @@ const HomeScreen: React.FC<HomeStackScreenProps<'Home'>> = ({ navigation }) => {
 						<Text
 							style={{
 								fontSize: 12,
-								fontFamily: 'Roboto_500Medium',
+								fontFamily: FONT_500,
 								color:
 									item.amount.charAt(0) === '+'
 										? '#04D400'
@@ -278,7 +279,7 @@ const HomeScreen: React.FC<HomeStackScreenProps<'Home'>> = ({ navigation }) => {
 							style={{
 								color: Colors[colorScheme].gray,
 								fontSize: 10,
-								fontFamily: 'Roboto_500Medium',
+								fontFamily: FONT_500,
 								marginBottom: 16
 							}}
 						>

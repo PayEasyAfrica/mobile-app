@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { FONT_500 } from '../../../constants/Style';
 
 const styles = StyleSheet.create({
 	container: {
@@ -21,7 +22,7 @@ const styles = StyleSheet.create({
 	input: {
 		flex: 1,
 		fontSize: 14,
-		fontFamily: 'Roboto_500Medium',
+		fontFamily: FONT_500,
 		marginLeft: 8
 	}
 });

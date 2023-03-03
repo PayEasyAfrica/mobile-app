@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import Layout from '../../../constants/Layout';
+import { FONT_500 } from '../../../constants/Style';
 
 const styles = StyleSheet.create({
 	container: {
@@ -11,12 +12,12 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		fontSize: 24,
-		fontFamily: 'Roboto_500Medium',
+		fontFamily: FONT_500,
 		marginBottom: 16
 	},
 	subtitle: {
 		fontSize: 14,
-		fontFamily: 'Roboto_500Medium'
+		fontFamily: FONT_500
 	},
 	signoutContainer: {
 		position: 'absolute',
@@ -29,7 +30,7 @@ const styles = StyleSheet.create({
 	},
 	signoutText: {
 		fontSize: 14,
-		fontFamily: 'Roboto_500Medium'
+		fontFamily: FONT_500
 	},
 	pinContainer: {
 		alignItems: 'center',
