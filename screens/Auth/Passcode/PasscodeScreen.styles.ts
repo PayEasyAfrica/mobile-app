@@ -17,7 +17,8 @@ const styles = StyleSheet.create({
 	},
 	subtitle: {
 		fontSize: 14,
-		fontFamily: FONT_500
+		fontFamily: FONT_500,
+		marginBottom: 60
 	},
 	signoutContainer: {
 		position: 'absolute',

@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { FONT_400, FONT_500 } from '../../../constants/Style';
+import { BORDER_RADIUS, FONT_400, FONT_500 } from '../../../constants/Style';
 
 const styles = StyleSheet.create({
 	container: {
@@ -26,6 +26,16 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		fontFamily: FONT_400,
 		marginHorizontal: 14
+	},
+	button: {
+		paddingVertical: 18,
+		justifyContent: 'center',
+		alignItems: 'center',
+		borderRadius: BORDER_RADIUS
+	},
+	buttonText: {
+		fontSize: 16,
+		fontFamily: FONT_500
 	}
 });
 

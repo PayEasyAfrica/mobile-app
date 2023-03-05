@@ -18,7 +18,12 @@ import styles from './SettingsScreen.styles';
 interface SettingsItem {
 	name: string;
 	icon: (color: string) => JSX.Element;
-	navigationLink: 'Settings' | 'Profile' | 'Notifications';
+	navigationLink:
+		| 'Settings'
+		| 'Profile'
+		| 'Notifications'
+		| 'ResetPIN'
+		| 'ConfirmPIN';
 	verificationStatus?: string;
 }
 
@@ -48,6 +53,7 @@ const DATA = [
 		data: [
 			{
 				name: 'Change Pin',
+				navigationLink: 'ResetPIN',
 				icon: (color: string) => <LockIcon color={color} />
 			}
 		] as SettingsItem[]

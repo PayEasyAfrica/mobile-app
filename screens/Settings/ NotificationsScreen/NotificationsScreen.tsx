@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
-import { SectionList, Switch, View as RNView } from 'react-native';
+import {
+	SectionList,
+	Switch,
+	TouchableOpacity,
+	View as RNView
+} from 'react-native';
 import { MailIcon, PersonIcon } from '../../../components/CustomIcons';
 
 import { SafeAreaView, Text, View } from '../../../components/Themed';
@@ -50,7 +55,13 @@ export default function NotificationsScreen() {
 		useState<NotificationStates>({});
 
 	const colorScheme = useColorScheme();
-	const { border, text: textColor } = Colors[colorScheme];
+	const {
+		border,
+		text: textColor,
+		lightBackground,
+		darkBackground,
+		orange
+	} = Colors[colorScheme];
 
 	const toggleSwitch = (name: string) => {
 		setNotificationStates((prevState) => ({
@@ -95,6 +106,19 @@ export default function NotificationsScreen() {
 						<Text style={styles.sectionName}>{sectionName}</Text>
 					</View>
 				)}
+				ListFooterComponent={
+					<TouchableOpacity onPress={() => {}} style={{ marginTop: 52 }}>
+						<View style={[styles.button, { backgroundColor: orange }]}>
+							<Text
+								style={styles.buttonText}
+								lightColor={lightBackground}
+								darkColor={darkBackground}
+							>
+								Continue
+							</Text>
+						</View>
+					</TouchableOpacity>
+				}
 			/>
 		</SafeAreaView>
 	);

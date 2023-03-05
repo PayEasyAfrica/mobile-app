@@ -4,6 +4,8 @@ import Colors from '../constants/Colors';
 import { FONT_500 } from '../constants/Style';
 import useColorScheme from '../hooks/useColorScheme';
 import { NotificationsScreen, ProfileScreen, SettingsScreen } from '../screens';
+import ConfirmPINScreen from '../screens/Settings/ChangePIN/ConfirmPINScreen';
+import ResetPINScreen from '../screens/Settings/ChangePIN/ResetPINScreen';
 
 import { SettingStackParamList } from '../types';
 
@@ -49,6 +51,20 @@ function SettingsStackScreen() {
 				component={NotificationsScreen}
 				options={{
 					title: 'Notifications'
+				}}
+			/>
+			<SettingsStack.Screen
+				name="ResetPIN"
+				component={ResetPINScreen}
+				options={{
+					title: 'Security'
+				}}
+			/>
+			<SettingsStack.Screen
+				name="ConfirmPIN"
+				component={ConfirmPINScreen}
+				options={{
+					title: 'Security'
 				}}
 			/>
 		</SettingsStack.Navigator>

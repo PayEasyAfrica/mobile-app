@@ -41,6 +41,8 @@ export type SettingStackParamList = {
 	Settings: undefined;
 	Profile: undefined;
 	Notifications: undefined;
+	ResetPIN: undefined;
+	ConfirmPIN: undefined;
 };
 
 export type RootTabParamList = {
@@ -64,3 +66,11 @@ export type RootTabScreenProps<Screen extends keyof RootTabParamList> =
 		BottomTabScreenProps<RootTabParamList, Screen>,
 		NativeStackScreenProps<RootStackParamList>
 	>;
+
+export type HandlePressFunc = (number: number | string) => void;
+
+export type PinPadProps = {
+	onPinEntered: (pin: string, handleResetPin?: () => void) => void;
+	handleBiometricLogin?: () => void;
+	showBiometricAuth?: boolean;
+};
