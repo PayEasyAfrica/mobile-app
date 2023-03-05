@@ -39,6 +39,8 @@ export type HomeStackParamList = {
 
 export type SettingStackParamList = {
 	Settings: undefined;
+	Profile: undefined;
+	Notifications: undefined;
 };
 
 export type RootTabParamList = {
@@ -52,6 +54,10 @@ export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
 
 export type HomeStackScreenProps<Screen extends keyof HomeStackParamList> =
 	NativeStackScreenProps<HomeStackParamList, Screen>;
+
+export type SettingsStackScreenProps<
+	Screen extends keyof SettingStackParamList
+> = NativeStackScreenProps<SettingStackParamList, Screen>;
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> =
 	CompositeScreenProps<

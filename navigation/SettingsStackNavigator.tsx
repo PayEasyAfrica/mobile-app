@@ -3,7 +3,7 @@ import { Platform } from 'react-native';
 import Colors from '../constants/Colors';
 import { FONT_500 } from '../constants/Style';
 import useColorScheme from '../hooks/useColorScheme';
-import { SettingsScreen } from '../screens';
+import { NotificationsScreen, ProfileScreen, SettingsScreen } from '../screens';
 
 import { SettingStackParamList } from '../types';
 
@@ -11,7 +11,7 @@ const SettingsStack = createNativeStackNavigator<SettingStackParamList>();
 
 function SettingsStackScreen() {
 	const colorScheme = useColorScheme();
-	const { orange, background } = Colors[colorScheme];
+	const { background } = Colors[colorScheme];
 
 	return (
 		<SettingsStack.Navigator
@@ -33,6 +33,22 @@ function SettingsStackScreen() {
 				options={{
 					title: 'Settings',
 					headerShown: false
+				}}
+			/>
+
+			<SettingsStack.Screen
+				name="Profile"
+				component={ProfileScreen}
+				options={{
+					title: 'Profile'
+				}}
+			/>
+
+			<SettingsStack.Screen
+				name="Notifications"
+				component={NotificationsScreen}
+				options={{
+					title: 'Notifications'
 				}}
 			/>
 		</SettingsStack.Navigator>

@@ -5,6 +5,8 @@ export { SendScreen } from './Home/SendScreen';
 export { QRCodeScannerScreen } from './Home/QRCodeScannerScreen';
 export { ReferralScreen } from './Referral/ReferralScreen';
 export { SettingsScreen } from './Settings/SettingsScreen';
+export { ProfileScreen } from './Settings/ProfileScreen';
+export { NotificationsScreen } from './Settings/ NotificationsScreen';
 export { default as TransactionsModal } from './Modals/TransactionsModal';
 export { default as LoadingScreen } from './LoadingScreen';
 export { default as NotFoundScreen } from './NotFoundScreen';

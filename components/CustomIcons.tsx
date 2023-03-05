@@ -1,4 +1,4 @@
-import { Svg, Path } from 'react-native-svg';
+import { Svg, Path, Circle } from 'react-native-svg';
 
 export interface IconProps {
 	color?: string;
@@ -291,6 +291,31 @@ export const LogoutIcon: React.FC<IconProps> = (props) => {
 		<Svg width={24} height={24} {...props}>
 			<Path
 				d="M4.486 21.354a1.926 1.926 0 0 1-1.407-.584 1.9 1.9 0 0 1-.588-1.397V4.627c0-.545.196-1.014.588-1.406a1.92 1.92 0 0 1 1.407-.588h7.374v1.994H4.486v14.746h7.374v1.98H4.486Zm12.178-4.47-1.428-1.4 2.493-2.494H9.191v-1.98h8.488l-2.493-2.493 1.428-1.4 4.895 4.908-4.845 4.859Z"
+				fill={color}
+			/>
+		</Svg>
+	);
+};
+
+export const SelectImageIcon: React.FC<IconProps> = (props) => {
+	const { color } = props;
+	return (
+		<Svg width={32} height={32} {...props}>
+			<Circle cx={16} cy={16} r={16} fill="#EF672A" />
+			<Path
+				d="M8.627 25.354a1.905 1.905 0 0 1-1.396-.584 1.906 1.906 0 0 1-.584-1.397V8.627c0-.545.194-1.014.584-1.406.389-.392.854-.588 1.396-.588h14.746a1.92 1.92 0 0 1 1.406.588c.392.392.588.86.588 1.406v14.746a1.9 1.9 0 0 1-.588 1.397c-.392.389-.86.584-1.406.584H8.627Zm0-1.981h14.746V8.627H8.627v14.746Zm1.09-2.17h12.592l-3.859-5.24-3.3 4.275-2.325-3.175-3.109 4.14Z"
+				fill="#fff"
+			/>
+		</Svg>
+	);
+};
+
+export const MailIcon: React.FC<IconProps> = (props) => {
+	const { color } = props;
+	return (
+		<Svg width={24} height={24} {...props}>
+			<Path
+				d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2Zm0 14H4V8l8 5 8-5v10Zm-8-7L4 6h16l-8 5Z"
 				fill={color}
 			/>
 		</Svg>

@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-	Platform,
-	ScrollView,
-	SectionList,
-	TouchableOpacity,
-	TouchableWithoutFeedback
-} from 'react-native';
+import { Platform, SectionList, TouchableOpacity } from 'react-native';
 import {
 	AgentIcon,
 	LockIcon,
@@ -18,12 +12,14 @@ import {
 import { SafeAreaView, Text, View } from '../../../components/Themed';
 import Colors from '../../../constants/Colors';
 import useColorScheme from '../../../hooks/useColorScheme';
+import { SettingsStackScreenProps } from '../../../types';
 import styles from './SettingsScreen.styles';
 
 interface SettingsItem {
 	name: string;
 	icon: (color: string) => JSX.Element;
-	verificationStatus: string;
+	navigationLink: 'Settings' | 'Profile' | 'Notifications';
+	verificationStatus?: string;
 }
 
 const DATA = [
@@ -32,10 +28,12 @@ const DATA = [
 		data: [
 			{
 				name: 'My Profile',
+				navigationLink: 'Profile',
 				icon: (color: string) => <PersonIcon color={color} />
 			},
 			{
-				name: 'Notification',
+				name: 'Notifications',
+				navigationLink: 'Notifications',
 				icon: (color: string) => <NotificationIcon color={color} />
 			},
 			{
@@ -96,14 +94,11 @@ const DATA = [
 	}
 ];
 
-export default function SettingsScreen() {
+const SettingsScreen: React.FC<SettingsStackScreenProps<'Settings'>> = ({
+	navigation
+}) => {
 	const colorScheme = useColorScheme();
-	const {
-		orange,
-		lightBackground,
-		darkBackground,
-		text: textColor
-	} = Colors[colorScheme];
+	const { border, orange, text: textColor } = Colors[colorScheme];
 
 	return (
 		<SafeAreaView style={styles.container}>
@@ -114,16 +109,19 @@ export default function SettingsScreen() {
 				sections={DATA}
 				keyExtractor={(item, index) => item.name + index}
 				renderItem={({ item, index, section }) => (
-					<TouchableOpacity>
+					<TouchableOpacity
+						onPress={() => {
+							if (item.navigationLink) {
+								navigation.navigate(item.navigationLink);
+							}
+						}}
+					>
 						<View
 							style={[
 								styles.settingsItem,
 								index === section.data.length - 1 && styles.settingslastItem,
 								{
-									borderColor:
-										colorScheme === 'light'
-											? 'rgba(167, 58, 0, 0.05)'
-											: 'rgba(255, 197, 168, 0.1)'
+									borderColor: border
 								},
 								!section.sectionName && styles.settingsItemWithoutIcon
 							]}
@@ -161,4 +159,6 @@ export default function SettingsScreen() {
 			/>
 		</SafeAreaView>
 	);
-}
+};
+
+export default SettingsScreen;
