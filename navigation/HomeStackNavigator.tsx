@@ -6,11 +6,11 @@ import { FONT_500 } from '../constants/Style';
 import useColorScheme from '../hooks/useColorScheme';
 import {
 	HomeScreen,
+	QRCodeScannerScreen,
 	RecieveScreen,
 	SendScreen,
 	TransactionsModal
 } from '../screens';
-import QRCodeScannerScreen from '../screens/Tab1/QRCodeScannerScreen/QRCodeScannerScreen';
 import { HomeStackParamList } from '../types';
 
 const HomeStack = createNativeStackNavigator<HomeStackParamList>();
