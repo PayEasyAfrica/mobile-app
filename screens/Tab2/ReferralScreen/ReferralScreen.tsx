@@ -1,9 +1,4 @@
-import {
-	Image,
-	StyleSheet,
-	TouchableOpacity,
-	View as RNView
-} from 'react-native';
+import { TouchableOpacity, View as RNView } from 'react-native';
 import { CopyIcon } from '../../../components/CustomIcons';
 
 import EditScreenInfo from '../../../components/EditScreenInfo';
@@ -11,6 +6,7 @@ import { SafeAreaView, Text, View } from '../../../components/Themed';
 import Colors from '../../../constants/Colors';
 import { FONT_500 } from '../../../constants/Style';
 import useColorScheme from '../../../hooks/useColorScheme';
+import styles from './ReferralScreen.style';
 
 export default function ReferralScreen() {
 	const colorScheme = useColorScheme();
@@ -144,36 +140,3 @@ export default function ReferralScreen() {
 		</SafeAreaView>
 	);
 }
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		paddingHorizontal: 24
-	},
-	title: {
-		fontSize: 24,
-		fontFamily: FONT_500,
-		textAlign: 'center',
-		marginTop: 25
-	},
-	shadow: {
-		// elevation: 8,
-		shadowColor: '#000',
-		shadowOffset: {
-			width: 10,
-			height: 10
-		},
-		shadowOpacity: 0.04,
-		shadowRadius: 20
-	},
-	button: {
-		paddingVertical: 18,
-		justifyContent: 'center',
-		alignItems: 'center',
-		borderRadius: 8
-	},
-	buttonText: {
-		fontSize: 16,
-		fontFamily: FONT_500
-	}
-});

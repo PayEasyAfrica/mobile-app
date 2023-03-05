@@ -11,6 +11,7 @@ import useColorScheme from '../hooks/useColorScheme';
 import { ReferralScreen } from '../screens';
 import { RootTabParamList } from '../types';
 import HomeStackScreen from './HomeStackNavigator';
+import SettingsStackScreen from './SettingsStackNavigator';
 
 /**
  * A bottom tab navigator displays tab buttons on the bottom of the display to switch screens.
@@ -56,10 +57,11 @@ function BottomTabNavigator() {
 
 			<BottomTab.Screen
 				name="TabThree"
-				component={ReferralScreen}
+				component={SettingsStackScreen}
 				options={{
 					title: 'Settings',
-					tabBarIcon: ({ color }) => <SettingsTabBarIcon color={color} />
+					tabBarIcon: ({ color }) => <SettingsTabBarIcon color={color} />,
+					headerShown: false
 				}}
 			/>
 		</BottomTab.Navigator>

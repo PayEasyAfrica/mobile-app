@@ -5,7 +5,8 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		paddingHorizontal: 24,
-		paddingTop: 30
+		paddingTop: 30,
+		paddingBottom: 130
 	},
 	title: {
 		fontSize: 24,
@@ -52,6 +53,34 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		fontFamily: FONT_500,
 		marginLeft: 22
+	},
+	qrSharedImageContainer: {
+		position: 'absolute',
+		top: -10000,
+		backgroundColor: '#fff',
+		alignItems: 'center',
+		paddingHorizontal: 42,
+		paddingVertical: 80
+	},
+	qrSharedImageTitle: {
+		fontSize: 28,
+		fontFamily: FONT_500,
+		textAlign: 'center',
+		marginBottom: 23
+	},
+	qrSharedImage: {
+		alignItems: 'center',
+		justifyContent: 'center',
+		width: 300,
+		paddingHorizontal: 50,
+		paddingVertical: 44,
+		borderRadius: 20
+	},
+	qrSharedImageText: {
+		fontSize: 20,
+		fontFamily: FONT_500,
+		textAlign: 'center',
+		marginTop: 26
 	}
 });
 

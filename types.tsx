@@ -37,6 +37,10 @@ export type HomeStackParamList = {
 	Scanner: undefined;
 };
 
+export type SettingStackParamList = {
+	Settings: undefined;
+};
+
 export type RootTabParamList = {
 	TabOne: undefined;
 	TabTwo: undefined;
