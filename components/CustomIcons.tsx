@@ -321,3 +321,15 @@ export const MailIcon: React.FC<IconProps> = (props) => {
 		</Svg>
 	);
 };
+
+export const TouchlightIcon: React.FC<IconProps> = (props) => {
+	const { color } = props;
+	return (
+		<Svg width={48} height={48} fill="none" {...props}>
+			<Path
+				d="M16.5 44V21.85l-4.5-6.6V4h24v11.25l-4.5 6.6V44h-15Zm7.509-12.3a2.48 2.48 0 0 1-1.809-.741 2.436 2.436 0 0 1-.75-1.8c0-.706.247-1.309.741-1.809s1.094-.75 1.8-.75a2.48 2.48 0 0 1 1.809.741c.5.494.75 1.094.75 1.8a2.48 2.48 0 0 1-.741 1.809c-.494.5-1.094.75-1.8.75ZM15 9.8h18V7H15v2.8Zm18 3H15v1.75l4.5 6.55V41h9V21.1l4.5-6.55V12.8Z"
+				fill={color}
+			/>
+		</Svg>
+	);
+};

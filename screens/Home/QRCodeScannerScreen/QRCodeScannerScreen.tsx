@@ -1,14 +1,33 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import {
+	StyleSheet,
+	Text,
+	TouchableOpacity,
+	View,
+	Platform,
+	Alert
+} from 'react-native';
 import { BarCodeScanner, BarCodeScannedCallback } from 'expo-barcode-scanner';
+import { Camera, FlashMode } from 'expo-camera';
 import { HomeStackScreenProps } from '../../../types';
-import { QRScannerFrameIcon } from '../../../components/CustomIcons';
+import {
+	QRScannerFrameIcon,
+	TouchlightIcon
+} from '../../../components/CustomIcons';
+import useColorScheme from '../../../hooks/useColorScheme';
+import Colors from '../../../constants/Colors';
 
 const QRCodeScannerScreen: React.FC<HomeStackScreenProps<'Scanner'>> = ({
 	navigation
 }) => {
 	const [hasPermission, setHasPermission] = useState<boolean | null>(null);
 	const [scanned, setScanned] = useState<boolean>(false);
+	const [flashOn, setFlashOn] = useState<boolean>(false);
+	const cameraRef = useRef<Camera>(null);
+
+	const colorScheme = useColorScheme();
+
+	const { iconBackground, orange } = Colors[colorScheme];
 
 	useEffect(() => {
 		(async () => {
@@ -19,7 +38,32 @@ const QRCodeScannerScreen: React.FC<HomeStackScreenProps<'Scanner'>> = ({
 
 	const handleBarCodeScanned: BarCodeScannedCallback = ({ type, data }) => {
 		setScanned(true);
-		alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+		Alert.alert(
+			'',
+			`Bar code with type ${type} and data ${data} has been scanned!`,
+			[
+				{
+					text: 'Ok',
+					onPress: () => navigation.navigate('Authorize')
+				}
+			]
+		);
+	};
+
+	const toggleFlash = () => {
+		setFlashOn((prev) => !prev);
+	};
+
+	const handleFlashlight = async () => {
+		if (cameraRef.current) {
+			const { status } = await Camera.requestCameraPermissionsAsync();
+			if (status === 'granted') {
+				toggleFlash();
+				// cameraRef.current?.setFlashMode(
+				// 	flashOn ? FlashMode.off : FlashMode.torch
+				// );
+			}
+		}
 	};
 
 	if (hasPermission === null) {
@@ -31,28 +75,31 @@ const QRCodeScannerScreen: React.FC<HomeStackScreenProps<'Scanner'>> = ({
 
 	return (
 		<View style={styles.container}>
-			<BarCodeScanner
+			<Camera
+				ref={cameraRef}
 				onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
 				style={StyleSheet.absoluteFillObject}
+				flashMode={flashOn ? FlashMode.torch : FlashMode.off}
 			/>
-			{/* {scanned && ( */}
 			<View style={styles.scanAgainContainer}>
-				{/* <Text style={styles.scanAgainText} onPress={() => setScanned(false)}>
-					Tap to Scan Again
-				</Text> */}
-
 				<QRScannerFrameIcon />
 			</View>
-			{/* )} */}
+
+			<TouchableOpacity
+				style={[styles.flashlightButton, { backgroundColor: iconBackground }]}
+				onPress={handleFlashlight}
+			>
+				<TouchlightIcon color={orange} />
+			</TouchableOpacity>
 		</View>
 	);
 };
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
-		flexDirection: 'column',
-		justifyContent: 'center'
+		flex: 1
+		// flexDirection: 'column',
+		// justifyContent: 'center'
 	},
 	scanAgainContainer: {
 		position: 'absolute',
@@ -68,6 +115,13 @@ const styles = StyleSheet.create({
 	scanAgainText: {
 		color: '#fff',
 		fontSize: 20
+	},
+	flashlightButton: {
+		position: 'absolute',
+		bottom: 40,
+		alignSelf: 'center',
+		borderRadius: 50,
+		padding: 10
 	}
 });
 

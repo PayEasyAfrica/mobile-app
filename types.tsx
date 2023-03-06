@@ -35,6 +35,7 @@ export type HomeStackParamList = {
 	Receive: undefined;
 	Send: undefined;
 	Scanner: undefined;
+	Authorize: undefined;
 };
 
 export type SettingStackParamList = {

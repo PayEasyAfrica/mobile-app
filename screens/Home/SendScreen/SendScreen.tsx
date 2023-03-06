@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react';
 import {
 	ScrollView,
-	TextInput as RNTextInput,
 	TextInput,
 	TouchableOpacity,
 	TouchableWithoutFeedback

@@ -41,7 +41,8 @@
     "react-native-view-shot": "3.4.0",
     "react-native-web": "~0.18.9",
     "react-redux": "^8.0.5",
-    "expo-file-system": "~15.1.1"
+    "expo-file-system": "~15.1.1",
+    "expo-camera": "~13.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

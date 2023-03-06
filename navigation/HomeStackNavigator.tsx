@@ -11,6 +11,7 @@ import {
 	SendScreen,
 	TransactionsModal
 } from '../screens';
+import AuthorizeScreen from '../screens/Home/AuthorizeTransaction/AuthorizeScreen';
 import { HomeStackParamList } from '../types';
 
 const HomeStack = createNativeStackNavigator<HomeStackParamList>();
@@ -63,6 +64,14 @@ function HomeStackScreen() {
 				component={QRCodeScannerScreen}
 				options={{
 					headerTitle: 'Scan Code'
+				}}
+			/>
+
+			<HomeStack.Screen
+				name="Authorize"
+				component={AuthorizeScreen}
+				options={{
+					headerTitle: ''
 				}}
 			/>
 
