@@ -1,51 +1,48 @@
 import { useCallback } from 'react';
-import { StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 
-import { useAppDispatch } from '../../../app/hooks';
 import { SafeAreaView, Text, View } from '../../../components/Themed';
-import Colors from '../../../constants/Colors';
-import useColorScheme from '../../../hooks/useColorScheme';
 import { HomeStackScreenProps } from '../../../types';
 import AuthenticationPinPad from '../../../components/AuthenticationPinPad';
 import { FONT_500 } from '../../../constants/Style';
 
 const AuthorizeScreen = ({ navigation }: HomeStackScreenProps<'Authorize'>) => {
-	const colorScheme = useColorScheme();
-
-	const { orange } = Colors[colorScheme];
-
 	const handlePinEntered = useCallback(
 		(pin: string, handleResetPin?: () => void) => {
 			if (handleResetPin) {
 				handleResetPin();
 			}
 
-			// navigation.navigate('ConfirmPIN', { pin } as never);
+			navigation.navigate('DebitSummary');
 		},
 		[]
 	);
 
 	const handleBiometricLogin = useCallback(async () => {
-		// handleLoginDispatch();
+		navigation.navigate('DebitSummary');
 	}, []);
 
 	return (
 		// Login screen UI code goes here
 		<SafeAreaView style={styles.container}>
-			<View>
-				<Text style={styles.text}>
-					Enter your pin or fingerprint to confirm transaction.
-				</Text>
-				<Text style={styles.subtitle} lightColor="#5F5E62">
-					Enter code or fingerprint linked with your account.
-				</Text>
-			</View>
+			<ScrollView>
+				<View>
+					<Text style={styles.text}>
+						Enter your pin or fingerprint to confirm transaction.
+					</Text>
+					<Text style={styles.subtitle} lightColor="#5F5E62">
+						Enter code or fingerprint linked with your account.
+					</Text>
+				</View>
 
-			<AuthenticationPinPad
-				onPinEntered={handlePinEntered}
-				handleBiometricLogin={handleBiometricLogin}
-				showBiometricAuth={true}
-			/>
+				<AuthenticationPinPad
+					onPinEntered={handlePinEntered}
+					handleBiometricLogin={handleBiometricLogin}
+					showBiometricAuth={true}
+				/>
+
+				<View style={{ paddingBottom: 30 }} />
+			</ScrollView>
 		</SafeAreaView>
 	);
 };
