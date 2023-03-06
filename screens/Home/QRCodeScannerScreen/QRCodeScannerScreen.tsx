@@ -53,7 +53,8 @@ const QRCodeScannerScreen: React.FC<HomeStackScreenProps<'Scanner'>> = ({
 			[
 				{
 					text: 'Ok',
-					onPress: () => navigation.navigate('Authorize')
+					onPress: () =>
+						navigation.navigate('Authorize', { type: 'send' } as never)
 				}
 			]
 		);

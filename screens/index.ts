@@ -1,10 +1,11 @@
 export { HomeScreen } from './Home/HomeScreen';
 export { TransactionStatementScreen } from './Home/TransactionStatementScreen';
 export { RecieveScreen } from './Home/RecieveScreen';
-export { SendScreen } from './Home/SendScreen';
+export { SendScreen } from './Home/Send';
 export { QRCodeScannerScreen } from './Home/QRCodeScannerScreen';
 export { AuthorizeScreen } from './Home/AuthorizeTransaction';
 export { DebitSummaryScreen } from './Home/Debit';
+export { WithdrawalScreen } from './Home/Withdraw';
 export { ReferralScreen } from './Referral/ReferralScreen';
 export { SettingsScreen } from './Settings/SettingsScreen';
 export { ProfileScreen } from './Settings/ProfileScreen';

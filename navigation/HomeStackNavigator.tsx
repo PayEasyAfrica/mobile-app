@@ -11,7 +11,8 @@ import {
 	QRCodeScannerScreen,
 	RecieveScreen,
 	SendScreen,
-	TransactionsModal
+	TransactionsModal,
+	WithdrawalScreen
 } from '../screens';
 import { HomeStackParamList } from '../types';
 
@@ -81,6 +82,14 @@ function HomeStackScreen() {
 				component={DebitSummaryScreen}
 				options={{
 					headerTitle: 'Transaction'
+				}}
+			/>
+
+			<HomeStack.Screen
+				name="Withdraw"
+				component={WithdrawalScreen}
+				options={{
+					headerTitle: 'Withdraw Money'
 				}}
 			/>
 

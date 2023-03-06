@@ -37,6 +37,7 @@ export type HomeStackParamList = {
 	Scanner: undefined;
 	Authorize: undefined;
 	DebitSummary: undefined;
+	Withdraw: undefined;
 };
 
 export type SettingStackParamList = {
