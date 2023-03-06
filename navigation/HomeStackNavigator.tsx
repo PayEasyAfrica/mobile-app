@@ -1,17 +1,18 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Platform, TouchableOpacity } from 'react-native';
-import { CalenderIcon, HomeTabBarIcon } from '../components/CustomIcons';
+import { CalenderIcon } from '../components/CustomIcons';
 import Colors from '../constants/Colors';
 import { FONT_500 } from '../constants/Style';
 import useColorScheme from '../hooks/useColorScheme';
 import {
+	AuthorizeScreen,
+	DebitSummaryScreen,
 	HomeScreen,
 	QRCodeScannerScreen,
 	RecieveScreen,
 	SendScreen,
 	TransactionsModal
 } from '../screens';
-import AuthorizeScreen from '../screens/Home/AuthorizeTransaction/AuthorizeScreen';
 import { HomeStackParamList } from '../types';
 
 const HomeStack = createNativeStackNavigator<HomeStackParamList>();
@@ -72,6 +73,14 @@ function HomeStackScreen() {
 				component={AuthorizeScreen}
 				options={{
 					headerTitle: ''
+				}}
+			/>
+
+			<HomeStack.Screen
+				name="DebitSummary"
+				component={DebitSummaryScreen}
+				options={{
+					headerTitle: 'Transaction'
 				}}
 			/>
 

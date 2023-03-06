@@ -3,6 +3,8 @@ export { TransactionStatementScreen } from './Home/TransactionStatementScreen';
 export { RecieveScreen } from './Home/RecieveScreen';
 export { SendScreen } from './Home/SendScreen';
 export { QRCodeScannerScreen } from './Home/QRCodeScannerScreen';
+export { AuthorizeScreen } from './Home/AuthorizeTransaction';
+export { DebitSummaryScreen } from './Home/Debit';
 export { ReferralScreen } from './Referral/ReferralScreen';
 export { SettingsScreen } from './Settings/SettingsScreen';
 export { ProfileScreen } from './Settings/ProfileScreen';

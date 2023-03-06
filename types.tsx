@@ -36,6 +36,7 @@ export type HomeStackParamList = {
 	Send: undefined;
 	Scanner: undefined;
 	Authorize: undefined;
+	DebitSummary: undefined;
 };
 
 export type SettingStackParamList = {

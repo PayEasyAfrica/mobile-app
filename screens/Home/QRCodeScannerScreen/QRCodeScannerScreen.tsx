@@ -29,6 +29,15 @@ const QRCodeScannerScreen: React.FC<HomeStackScreenProps<'Scanner'>> = ({
 
 	const { iconBackground, orange } = Colors[colorScheme];
 
+	// !IMPORTANT: Temporary Code, Remove
+	useEffect(() => {
+		const timeout = setTimeout(() => {
+			navigation.navigate('Authorize');
+		}, 2000);
+
+		return () => clearTimeout(timeout);
+	}, []);
+
 	useEffect(() => {
 		(async () => {
 			const { status } = await BarCodeScanner.requestPermissionsAsync();
