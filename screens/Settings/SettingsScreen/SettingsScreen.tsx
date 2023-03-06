@@ -1,5 +1,6 @@
 import React from 'react';
 import { Platform, SectionList, TouchableOpacity } from 'react-native';
+import { useAppDispatch } from '../../../app/hooks';
 import {
 	AgentIcon,
 	LockIcon,
@@ -11,6 +12,7 @@ import {
 } from '../../../components/CustomIcons';
 import { SafeAreaView, Text, View } from '../../../components/Themed';
 import Colors from '../../../constants/Colors';
+import { logout } from '../../../features/auth/authSlice';
 import useColorScheme from '../../../hooks/useColorScheme';
 import { SettingsStackScreenProps } from '../../../types';
 import styles from './SettingsScreen.styles';
@@ -104,6 +106,7 @@ const SettingsScreen: React.FC<SettingsStackScreenProps<'Settings'>> = ({
 	navigation
 }) => {
 	const colorScheme = useColorScheme();
+	const dispatch = useAppDispatch();
 	const { border, orange, text: textColor } = Colors[colorScheme];
 
 	return (
@@ -119,6 +122,10 @@ const SettingsScreen: React.FC<SettingsStackScreenProps<'Settings'>> = ({
 						onPress={() => {
 							if (item.navigationLink) {
 								navigation.navigate(item.navigationLink);
+							}
+
+							if (item.name === 'Log Out') {
+								dispatch(logout());
 							}
 						}}
 					>

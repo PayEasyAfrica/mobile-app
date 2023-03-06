@@ -187,9 +187,7 @@ const HomeScreen: React.FC<HomeStackScreenProps<'Home'>> = ({ navigation }) => {
 							styles.button,
 							{ backgroundColor: Colors[colorScheme].iconBackground }
 						]}
-						onPress={() => {
-							dispatch(logout());
-						}}
+						onPress={() => {}}
 					>
 						<WithdrawIcon color={orange} />
 						<Text

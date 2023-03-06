@@ -48,99 +48,103 @@ const SendScreen: React.FC<HomeStackScreenProps<'Send'>> = ({ navigation }) => {
 
 	return (
 		<TouchableWithoutFeedback onPress={handlePressOutside}>
-			<View style={styles.container}>
-				<TouchableOpacity
-					onPress={() => {
-						navigation.navigate('Scanner');
-					}}
-				>
-					<View
-						style={[styles.scanButton, { backgroundColor: iconBackground }]}
+			<ScrollView>
+				<View style={styles.container}>
+					<TouchableOpacity
+						onPress={() => {
+							navigation.navigate('Scanner');
+						}}
 					>
-						<QRIcon color={orange} />
-						<Text style={[styles.scanButtonText, { color: orange }]}>Scan</Text>
+						<View
+							style={[styles.scanButton, { backgroundColor: iconBackground }]}
+						>
+							<QRIcon color={orange} />
+							<Text style={[styles.scanButtonText, { color: orange }]}>
+								Scan
+							</Text>
+						</View>
+					</TouchableOpacity>
+
+					<View style={styles.inputContainer}>
+						<Text style={styles.label}>Money Tag</Text>
+						<TextInput
+							placeholder="Enter tag"
+							ref={(ref) => ref && (inputRefs.current[0] = ref)}
+							style={[
+								styles.input,
+								focusedIndex === 0 && { borderColor: orange },
+								colorScheme === 'dark' && { color: '#fff' }
+							]}
+							value={formData.name}
+							onChangeText={(text) => handleInputChange('name', text)}
+							onFocus={() => handleFocus(0)}
+							onBlur={handleBlur}
+						/>
 					</View>
-				</TouchableOpacity>
 
-				<View style={styles.inputContainer}>
-					<Text style={styles.label}>Money Tag</Text>
-					<TextInput
-						placeholder="Enter tag"
-						ref={(ref) => ref && (inputRefs.current[0] = ref)}
-						style={[
-							styles.input,
-							focusedIndex === 0 && { borderColor: orange },
-							colorScheme === 'dark' && { color: '#fff' }
-						]}
-						value={formData.name}
-						onChangeText={(text) => handleInputChange('name', text)}
-						onFocus={() => handleFocus(0)}
-						onBlur={handleBlur}
-					/>
-				</View>
+					<View style={styles.inputContainer}>
+						<Text style={styles.label}>Recipient’s Name</Text>
+						<TextInput
+							placeholder="Tag Holder Name"
+							ref={(ref) => ref && (inputRefs.current[1] = ref)}
+							style={[
+								styles.input,
+								focusedIndex === 1 && { borderColor: orange },
+								colorScheme === 'dark' && { color: '#fff' }
+							]}
+							value={formData.name}
+							onChangeText={(text) => handleInputChange('name', text)}
+							onFocus={() => handleFocus(0)}
+							onBlur={handleBlur}
+						/>
+					</View>
 
-				<View style={styles.inputContainer}>
-					<Text style={styles.label}>Recipient’s Name</Text>
-					<TextInput
-						placeholder="Tag Holder Name"
-						ref={(ref) => ref && (inputRefs.current[1] = ref)}
-						style={[
-							styles.input,
-							focusedIndex === 1 && { borderColor: orange },
-							colorScheme === 'dark' && { color: '#fff' }
-						]}
-						value={formData.name}
-						onChangeText={(text) => handleInputChange('name', text)}
-						onFocus={() => handleFocus(0)}
-						onBlur={handleBlur}
-					/>
-				</View>
+					<View style={styles.inputContainer}>
+						<Text style={styles.label}>Amount</Text>
+						<TextInput
+							placeholder="000,000.00"
+							ref={(ref) => ref && (inputRefs.current[2] = ref)}
+							style={[
+								styles.input,
+								focusedIndex === 2 && { borderColor: orange },
+								colorScheme === 'dark' && { color: '#fff' }
+							]}
+							value={formData.amount}
+							onChangeText={(text) => handleInputChange('amount', text)}
+							onFocus={() => handleFocus(1)}
+							onBlur={handleBlur}
+						/>
+					</View>
+					<View style={styles.inputContainer}>
+						<Text style={styles.label}>Description</Text>
+						<TextInput
+							ref={(ref) => ref && (inputRefs.current[3] = ref)}
+							style={[
+								styles.input,
+								focusedIndex === 3 && { borderColor: orange },
+								colorScheme === 'dark' && { color: '#fff' }
+							]}
+							value={formData.description}
+							onChangeText={(text) => handleInputChange('description', text)}
+							onFocus={() => handleFocus(2)}
+							onBlur={handleBlur}
+						/>
+					</View>
 
-				<View style={styles.inputContainer}>
-					<Text style={styles.label}>Amount</Text>
-					<TextInput
-						placeholder="000,000.00"
-						ref={(ref) => ref && (inputRefs.current[2] = ref)}
-						style={[
-							styles.input,
-							focusedIndex === 2 && { borderColor: orange },
-							colorScheme === 'dark' && { color: '#fff' }
-						]}
-						value={formData.amount}
-						onChangeText={(text) => handleInputChange('amount', text)}
-						onFocus={() => handleFocus(1)}
-						onBlur={handleBlur}
-					/>
-				</View>
-				<View style={styles.inputContainer}>
-					<Text style={styles.label}>Description</Text>
-					<TextInput
-						ref={(ref) => ref && (inputRefs.current[3] = ref)}
-						style={[
-							styles.input,
-							focusedIndex === 3 && { borderColor: orange },
-							colorScheme === 'dark' && { color: '#fff' }
-						]}
-						value={formData.description}
-						onChangeText={(text) => handleInputChange('description', text)}
-						onFocus={() => handleFocus(2)}
-						onBlur={handleBlur}
-					/>
-				</View>
-
-				<TouchableOpacity
-					style={[styles.button, { backgroundColor: orange }]}
-					onPress={handleSend}
-				>
-					<Text
-						style={styles.buttonText}
-						lightColor={lightBackground}
-						darkColor={darkBackground}
+					<TouchableOpacity
+						style={[styles.button, { backgroundColor: orange }]}
+						onPress={handleSend}
 					>
-						Send
-					</Text>
-				</TouchableOpacity>
-			</View>
+						<Text
+							style={styles.buttonText}
+							lightColor={lightBackground}
+							darkColor={darkBackground}
+						>
+							Send
+						</Text>
+					</TouchableOpacity>
+				</View>
+			</ScrollView>
 		</TouchableWithoutFeedback>
 	);
 };
