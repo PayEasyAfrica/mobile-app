@@ -72,15 +72,31 @@ const VerifyPasscodeScreen = ({
 	}, [appStateVisible]);
 
 	const handlePinEntered = useCallback(async (pin: string) => {
+		const api = new Http({ baseURL });
+
 		try {
 			if (prevPin !== pin) {
 				throw new Error(INVALID_PASSCODE_TITLE);
 			}
 
 			await dispatch(verificationLogin());
+			const userData = await getSecureSaveValue(OTP_VERIFICATION_DATA);
+
+			if (userData) {
+				const { token } = JSON.parse(userData);
+
+				api
+					.put(
+						'/auth/users',
+						{ passcode: pin },
+						{ headers: { Authorization: `Bearer ${token}` } }
+					)
+					.catch(console.debug);
+			}
+
 			// await dispatch(login(pin));
 			secureSave(PASSCODE, pin);
-			navigation.navigate('Passcode');
+			// navigation.navigate('Passcode');
 		} catch (error) {
 			console.debug(error);
 			Alert.alert(INVALID_PASSCODE_TITLE, INVALID_PASSCODE_MESSAGE);

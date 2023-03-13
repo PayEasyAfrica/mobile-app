@@ -19,35 +19,16 @@ type ApiResponse = {
 export async function login(passcode: string) {
 	const api = new Http({ baseURL });
 
-	// return new Promise<{ token: string }>((resolve, reject) => {
-	// 	// Simulate an API call that takes 1 second to respond
-	// 	setTimeout(() => {
-	// 		// If the username and password are both "admin", return a token
-	// 		if (username === 'admin' && password === 'admin') {
-	// 			resolve({ token: 'mock-token' });
-	// 		} else {
-	// 			reject(new Error('Invalid username or password'));
-	// 		}
-	// 	}, 1000);
-	// });
-
 	try {
 		const userData = await getSecureSaveValue(OTP_VERIFICATION_DATA);
 
 		if (userData) {
 			const { token } = JSON.parse(userData);
 
-			const response: ApiResponse = await api.put(
-				'/auth/users',
-				{
-					passcode
-				},
-				{
-					headers: {
-						Authorization: `Bearer ${token}`
-					}
-				}
-			);
+			const response: ApiResponse = await api.post('/auth/login', {
+				passcode,
+				token
+			});
 
 			const { message, data } = response;
 

@@ -88,6 +88,7 @@ const PhoneVerificationScreen = ({
 				}
 			} catch (error) {
 				const axiosError = error as AxiosError;
+				console.debug(error);
 				console.debug(axiosError?.response?.data);
 				dispatch(finishLoading());
 			}

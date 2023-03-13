@@ -53,7 +53,7 @@ export const verificationLogin = () => {
 				// Dispatch action to update Redux store with token
 				setTimeout(() => {
 					dispatch(signinSuccess(resData.token));
-				}, 1000);
+				}, 3000);
 			}
 		} catch (err) {
 			console.debug(err);

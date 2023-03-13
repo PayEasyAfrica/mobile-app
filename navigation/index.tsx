@@ -18,11 +18,7 @@ import { getSecureSaveValue } from '../components/utils/functions';
 
 import Colors from '../constants/Colors';
 import { FONT_500 } from '../constants/Style';
-import {
-	OTP_VERIFICATION_DATA,
-	PASSCODE_TOKEN,
-	PASSCODE_VERIFICATION_DATA
-} from '../constants/Variables';
+import { PASSCODE_TOKEN } from '../constants/Variables';
 import { checkTokenAsync } from '../features/auth/authSlice';
 import { checkVerificationTokenAsync } from '../features/signin/signinSlice';
 import useColorScheme from '../hooks/useColorScheme';
@@ -108,9 +104,9 @@ function RootNavigator({ isLoading }: { isLoading: boolean }) {
 		console.log('Loading...', { isLoading }, { signinLoading });
 	}, [isLoading, signinLoading]);
 
-	if (isLoading || signinLoading) {
-		return <LoadingScreen />;
-	}
+	// if (isLoading || signinLoading) {
+	// 	return <LoadingScreen />;
+	// }
 
 	return (
 		<Stack.Navigator

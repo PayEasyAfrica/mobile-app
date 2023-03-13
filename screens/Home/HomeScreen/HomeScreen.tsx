@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, Pressable, SectionList, TouchableOpacity } from 'react-native';
 import {
 	EyeIcon,
@@ -14,9 +14,14 @@ import Colors from '../../../constants/Colors';
 import useColorScheme from '../../../hooks/useColorScheme';
 import { HomeStackScreenProps } from '../../../types';
 import { useAppDispatch } from '../../../app/hooks';
-import { logout } from '../../../features/auth/authSlice';
 import Modal from '../../../components/Modal';
 import { FONT_400, FONT_500, FONT_700 } from '../../../constants/Style';
+import { Http, baseURL } from '../../../components/utils/http';
+import { getSecureSaveValue } from '../../../components/utils/functions';
+import { PASSCODE_VERIFICATION_DATA } from '../../../constants/Variables';
+import { finishLoading, startLoading } from '../../../features/loadingSlice';
+import LoadingScreen from '../../LoadingScreen';
+import { logout } from '../../../features/auth/authSlice';
 
 const DATA = [
 	{
@@ -40,8 +45,52 @@ const HomeScreen: React.FC<HomeStackScreenProps<'Home'>> = ({ navigation }) => {
 	const colorScheme = useColorScheme();
 	const dispatch = useAppDispatch();
 	const [modalVisible, setModalVisible] = useState(false);
+	const [userData, setUserData] = useState<unknown[]>([]);
 
 	const { orange, gray, lightBackground, darkBackground } = Colors[colorScheme];
+
+	useEffect(() => {
+		dispatch(startLoading());
+		const api = new Http({ baseURL });
+
+		(async () => {
+			const passcodeToken = await getSecureSaveValue(
+				PASSCODE_VERIFICATION_DATA
+			);
+
+			const { token } = passcodeToken && JSON.parse(passcodeToken);
+
+			// console.log('token', token);
+
+			api
+				.get('/payments/transactions', {
+					params: { page: 1, limit: 20 },
+					headers: {
+						Authorization: `Bearer ${token}`
+					}
+				})
+				.then((res) => {
+					const apiResponse = res as { data: unknown[] };
+
+					setUserData(apiResponse.data || []);
+
+					dispatch(finishLoading());
+				})
+				.catch((error) => {
+					console.debug(error);
+					const { status } = error?.response;
+
+					if (status === 401) {
+						dispatch(logout());
+						dispatch(finishLoading());
+					}
+				});
+		})();
+	}, []);
+
+	useEffect(() => {
+		console.log({ userData });
+	}, [userData]);
 
 	const handleShowModal = () => {
 		setModalVisible(true);
@@ -51,6 +100,10 @@ const HomeScreen: React.FC<HomeStackScreenProps<'Home'>> = ({ navigation }) => {
 		setModalVisible(false);
 		// Do any necessary cleanup or state changes here
 	};
+
+	if (userData.length === 0) {
+		return <LoadingScreen />;
+	}
 
 	return (
 		<SafeAreaView style={styles.container}>
