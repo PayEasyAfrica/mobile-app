@@ -1,16 +1,24 @@
-import { useCallback, useEffect, useState } from 'react';
-import { Alert, TouchableOpacity } from 'react-native';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { Alert, AppState, TouchableOpacity } from 'react-native';
 
-import { useAppDispatch } from '../../../app/hooks';
 import { SafeAreaView, Text, View } from '../../../components/Themed';
 import Colors from '../../../constants/Colors';
 import useColorScheme from '../../../hooks/useColorScheme';
 
 import styles from './PasscodeScreen.styles';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RootStackScreenProps } from '../../../types';
 import { useRoute } from '@react-navigation/native';
 import AuthenticationPinPad from '../../../components/AuthenticationPinPad';
+import { Http, baseURL } from '../../../components/utils/http';
+import {
+	deleteSecureSaveItem,
+	getSecureSaveValue,
+	secureSave
+} from '../../../components/utils/functions';
+import { OTP_VERIFICATION_DATA, PASSCODE } from '../../../constants/Variables';
+import { useAppDispatch } from '../../../app/hooks';
+import { login } from '../../../features/auth/authSlice';
+import { verificationLogin } from '../../../features/signin/signinSlice';
 
 const INVALID_PASSCODE_TITLE = 'Passcode Mismatch';
 const INVALID_PASSCODE_MESSAGE = 'Your passcode does not match';
@@ -18,10 +26,10 @@ const INVALID_PASSCODE_MESSAGE = 'Your passcode does not match';
 const VerifyPasscodeScreen = ({
 	navigation
 }: RootStackScreenProps<'VerifyPasscode'>) => {
-	const dispatch = useAppDispatch();
+	const appState = useRef(AppState.currentState);
+	const [appStateVisible, setAppStateVisible] = useState(false);
 	const colorScheme = useColorScheme();
-
-	const [userFirstname, setUserFirstname] = useState('');
+	const dispatch = useAppDispatch();
 
 	const { orange } = Colors[colorScheme];
 
@@ -29,20 +37,52 @@ const VerifyPasscodeScreen = ({
 	const { pin: prevPin } = route.params as { pin: string };
 
 	useEffect(() => {
-		AsyncStorage.getItem('userData').then((userData) => {
-			if (userData) {
-				const { user, token } = JSON.parse(userData);
-				console.log(user, token);
-				setUserFirstname(user.name.split(' ')[0]);
+		const subscription = AppState.addEventListener('change', (nextAppState) => {
+			if (['inactive', 'background'].includes(nextAppState)) {
+				// App is closing
+				console.log('App is closing');
+				deleteSecureSaveItem(OTP_VERIFICATION_DATA);
 			}
+
+			if (
+				appState.current.match(/inactive|background/) &&
+				nextAppState === 'active'
+			) {
+				console.log('App has come to the foreground!');
+				setAppStateVisible((prev) => !prev);
+			}
+
+			appState.current = nextAppState;
+			console.log('AppState', appState.current);
 		});
+
+		return () => {
+			subscription.remove();
+		};
 	}, []);
 
+	useEffect(() => {
+		(async () => {
+			const userData = await getSecureSaveValue(OTP_VERIFICATION_DATA);
+
+			if (!userData) {
+				// TODO: This should be handled by the router
+			}
+		})();
+	}, [appStateVisible]);
+
 	const handlePinEntered = useCallback(async (pin: string) => {
-		if (prevPin === pin) {
-			console.log(pin);
+		try {
+			if (prevPin !== pin) {
+				throw new Error(INVALID_PASSCODE_TITLE);
+			}
+
+			await dispatch(verificationLogin());
+			// await dispatch(login(pin));
+			secureSave(PASSCODE, pin);
 			navigation.navigate('Passcode');
-		} else {
+		} catch (error) {
+			console.debug(error);
 			Alert.alert(INVALID_PASSCODE_TITLE, INVALID_PASSCODE_MESSAGE);
 		}
 	}, []);

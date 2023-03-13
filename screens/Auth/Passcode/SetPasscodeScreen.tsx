@@ -1,36 +1,19 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback } from 'react';
 import { Alert, TouchableOpacity } from 'react-native';
 
-import { useAppDispatch } from '../../../app/hooks';
-import { SafeAreaView, Text, View } from '../../../components/Themed';
-import Colors from '../../../constants/Colors';
-import useColorScheme from '../../../hooks/useColorScheme';
-
 import styles from './PasscodeScreen.styles';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import Colors from '../../../constants/Colors';
 import { RootStackScreenProps } from '../../../types';
+import useColorScheme from '../../../hooks/useColorScheme';
+import { SafeAreaView, Text, View } from '../../../components/Themed';
 import AuthenticationPinPad from '../../../components/AuthenticationPinPad';
 
 const SetPasscodeScreen = ({
 	navigation
 }: RootStackScreenProps<'SetPasscode'>) => {
-	const dispatch = useAppDispatch();
 	const colorScheme = useColorScheme();
 
-	const [userFirstname, setUserFirstname] = useState('');
-
 	const { orange } = Colors[colorScheme];
-
-	useEffect(() => {
-		AsyncStorage.getItem('userData').then((userData) => {
-			if (userData) {
-				const { user, token } = JSON.parse(userData);
-				console.log(user, token);
-				// dispatch(login(username, password));
-				setUserFirstname(user.name.split(' ')[0]);
-			}
-		});
-	}, []);
 
 	const handlePinEntered = useCallback(
 		(pin: string, handleResetPin?: () => void) => {

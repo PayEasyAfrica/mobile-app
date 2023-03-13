@@ -1,15 +1,24 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Alert, TouchableOpacity } from 'react-native';
 
-import { useAppDispatch } from '../../../app/hooks';
-import { SafeAreaView, Text, View } from '../../../components/Themed';
+import {
+	deleteSecureSaveItem,
+	getSecureSaveValue
+} from '../../../components/utils/functions';
+import {
+	OTP_VERIFICATION_DATA,
+	PASSCODE,
+	PASSCODE_VERIFICATION_DATA
+} from '../../../constants/Variables';
+import styles from './PasscodeScreen.styles';
 import Colors from '../../../constants/Colors';
+import { useAppDispatch } from '../../../app/hooks';
 import { login } from '../../../features/auth/authSlice';
+import { verificationLogout } from '../../../features/signin/signinSlice';
 import useColorScheme from '../../../hooks/useColorScheme';
 
-import styles from './PasscodeScreen.styles';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import AuthenticationPinPad from '../../../components/AuthenticationPinPad';
+import { SafeAreaView, Text, View } from '../../../components/Themed';
 
 const PasscodeScreen = () => {
 	const dispatch = useAppDispatch();
@@ -20,41 +29,74 @@ const PasscodeScreen = () => {
 	const { orange } = Colors[colorScheme];
 
 	useEffect(() => {
-		AsyncStorage.getItem('userData').then((userData) => {
+		getSecureSaveValue(OTP_VERIFICATION_DATA).then((userData) => {
 			if (userData) {
 				const { user, token } = JSON.parse(userData);
-				console.log(user, token);
+				console.log('PasscodeScreen: ', user, token);
 				// dispatch(login(username, password));
 				setUserFirstname(user.name.split(' ')[0]);
 			}
 		});
 	}, []);
 
-	const handlePinEntered = useCallback(async (pin: string) => {
-		// TODO: Use the pin enter to handle login
-		console.log(pin);
-		handleLoginDispatch();
-	}, []);
+	const handlePinEntered = useCallback(
+		async (pin: string, handleResetPin?: () => void) => {
+			// TODO: Use the pin enter to handle login
+			console.log('handlePinEntered', pin);
+
+			getSecureSaveValue(PASSCODE)
+				.then((passcode) => {
+					if (passcode !== pin) {
+						throw new Error('Invalid Passcode');
+					}
+
+					handleLoginDispatch(passcode);
+				})
+				.catch((error) => {
+					console.debug(error);
+					Alert.alert('Invalid Passcode', 'Please enter a valid passcode', [
+						{ text: 'OK', onPress: handleResetPin }
+					]);
+				});
+		},
+		[]
+	);
 
 	const handleBiometricLogin = useCallback(async () => {
-		handleLoginDispatch();
+		getSecureSaveValue(PASSCODE)
+			.then((passcode) => {
+				if (passcode) {
+					handleLoginDispatch(passcode);
+				}
+			})
+			.catch((error) => {
+				console.debug(error);
+				Alert.alert('Error signing in', 'Please try again');
+			});
 	}, []);
 
-	const handleLoginDispatch = useCallback(async () => {
+	const handleLogoutPasscode = useCallback(async () => {
+		Alert.alert('Sign out', 'Are you sure you want to logout??', [
+			{
+				text: 'Yes',
+				onPress: () => {
+					dispatch(verificationLogout());
+				}
+			},
+			{
+				text: 'No',
+				onPress: () => console.log('No pressed')
+			}
+		]);
+	}, []);
+
+	const handleLoginDispatch = useCallback(async (passcode?: string) => {
 		/* Dispatching the login action to the redux store. */
-		await dispatch(login('admin', 'admin'))
-			.then(() => {
-				// Do nothing
-			})
-			.catch((error: Error) => {
-				console.log(error.message);
-				Alert.alert('Login failed', error.message, [
-					{
-						text: 'Retry',
-						onPress: () => console.log('retry pressed')
-					}
-				]);
-			});
+		passcode &&
+			(await dispatch(login(passcode)).catch((error: Error) => {
+				console.debug('PasscodeScreen', error.message);
+				Alert.alert('Login failed', error.message);
+			}));
 	}, []);
 
 	return (
@@ -75,20 +117,7 @@ const PasscodeScreen = () => {
 
 			<View style={styles.signoutContainer}>
 				<Text style={styles.signoutText}>Not your account? </Text>
-				<TouchableOpacity
-					onPress={() => {
-						Alert.alert('Sign out', 'Are you sure you want to logout??', [
-							{
-								text: 'Yes',
-								onPress: () => console.log('Yes pressed')
-							},
-							{
-								text: 'No',
-								onPress: () => console.log('No pressed')
-							}
-						]);
-					}}
-				>
+				<TouchableOpacity onPress={handleLogoutPasscode}>
 					<Text style={[styles.signoutText, { color: orange, fontSize: 16 }]}>
 						Log out
 					</Text>

@@ -5,7 +5,7 @@ import axios, {
 	CreateAxiosDefaults
 } from 'axios';
 
-export const baseURL = 'https://8408-102-91-4-207.ngrok.io';
+export const baseURL = 'http://localhost:2001';
 
 export class HttpError extends Error {
 	public isHttpException = true;

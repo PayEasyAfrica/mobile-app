@@ -5,14 +5,14 @@ import {
 	PayloadAction
 } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { login as apiLogin, checkToken as apiCheckToken } from './authAPI';
-
-export interface AuthState {
-	token: string | null;
-	error: string | null;
-	loading: boolean;
-}
+import { PASSCODE_TOKEN } from '../../constants/Variables';
+import {
+	deleteSecureSaveItem,
+	getSecureSaveValue,
+	secureSave
+} from '../../components/utils/functions';
+import { AuthAction, AuthState } from './type';
 
 const initialState: AuthState = {
 	token: null,
@@ -22,7 +22,7 @@ const initialState: AuthState = {
 
 export const checkTokenAsync = createAsyncThunk('auth/checkToken', async () => {
 	try {
-		const token = await AsyncStorage.getItem('token');
+		const token = await getSecureSaveValue(PASSCODE_TOKEN);
 		if (!token) {
 			throw new Error('No token found');
 		}
@@ -33,26 +33,21 @@ export const checkTokenAsync = createAsyncThunk('auth/checkToken', async () => {
 	}
 });
 
-type AuthAction =
-	| ReturnType<typeof authStart>
-	| ReturnType<typeof authSuccess>
-	| ReturnType<typeof authFail>
-	| ReturnType<typeof authLogout>;
-
-export const login = (username: string, password: string) => {
+export const login = (passcode: string) => {
 	return async (dispatch: Dispatch<AuthAction>) => {
 		dispatch(authStart());
 		try {
 			// Make API call to authenticate user
-			const resData = await apiLogin(username, password);
+			const resData = await apiLogin(passcode);
 
-			// Save token to AsyncStorage
-			await AsyncStorage.setItem('token', JSON.stringify(resData.token));
+			if (resData) {
+				secureSave(PASSCODE_TOKEN, JSON.stringify(resData.token));
 
-			// Dispatch action to update Redux store with token
-			dispatch(authSuccess(resData.token));
+				// Dispatch action to update Redux store with token
+				dispatch(authSuccess(resData.token));
+			}
 		} catch (err) {
-			console.log(err);
+			console.debug(err);
 			if (typeof err === 'string') {
 				dispatch(authFail(err));
 				throw new Error(err);
@@ -67,7 +62,7 @@ export const login = (username: string, password: string) => {
 export const logout = () => {
 	return async (dispatch: Dispatch<AuthAction>) => {
 		// Remove token from AsyncStorage
-		await AsyncStorage.removeItem('token');
+		deleteSecureSaveItem(PASSCODE_TOKEN);
 
 		// Dispatch action to update Redux store with null token
 		dispatch(authLogout());

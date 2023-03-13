@@ -16,10 +16,12 @@ import { RootStackScreenProps } from '../../types';
 import { finishLoading, startLoading } from '../../features/loadingSlice';
 import { useAppDispatch } from '../../app/hooks';
 
-import axios, { AxiosError } from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AxiosError } from 'axios';
 import { baseURL, Http } from '../../components/utils/http';
 import { BORDER_RADIUS, FONT_400, FONT_500 } from '../../constants/Style';
+import { secureSave } from '../../components/utils/functions';
+import { OTP_VERIFICATION_DATA } from '../../constants/Variables';
+import { verificationLogin } from '../../features/signin/signinSlice';
 
 const INVALID_OTP_TITLE = 'Invalid OTP';
 const INVALID_OTP_MESSAGE = 'Please enter a valid OTP';
@@ -44,10 +46,6 @@ const OTPVerificationScreen = ({
 		[phoneNumber]
 	);
 
-	useEffect(() => {
-		console.log('valid phone number', phoneNumber);
-	}, []);
-
 	const handleOTPChange = useCallback(
 		(index: number, value: string) => {
 			const newOTP = [...otp];
@@ -71,58 +69,44 @@ const OTPVerificationScreen = ({
 	};
 
 	const handleOTPVerification = useCallback(async () => {
+		// TODO: Implement OTP verification with backend
 		dispatch(startLoading());
-
+		const api = new Http({ baseURL });
 		const isValidOTP = otp.some(
 			(value) => !isNaN(Number(value)) && value !== ''
 		);
 
-		if (isValidOTP) {
-			setTimeout(() => {
+		try {
+			if (isValidOTP) {
+				// All elements in otp are valid numbers
+				// dispatch(verificationLogin(phoneNumber, otp.join('')));
+
+				const response = await api.post('/auth/login', {
+					phoneNumber,
+					otp: otp.join('')
+				});
+
+				const { message, data } = response as {
+					message: string;
+					data: unknown;
+				};
+
+				console.log('OTPVerificationScreen: ', data, message);
+				if (data) {
+					secureSave(OTP_VERIFICATION_DATA, JSON.stringify(data));
+				}
+
 				dispatch(finishLoading());
+
 				navigation.navigate('SetPasscode');
-			}, 2000);
-		} else {
+			}
+		} catch (error) {
+			const axiosError = error as AxiosError;
+			console.debug(axiosError.response?.data);
 			dispatch(finishLoading());
+
 			Alert.alert(INVALID_OTP_TITLE, INVALID_OTP_MESSAGE);
 		}
-
-		// TODO: Implement OTP verification with backend
-		// dispatch(startLoading());
-		// const api = new Http({ baseURL });
-		// const isValidOTP = otp.some(
-		// 	(value) => !isNaN(Number(value)) && value !== ''
-		// );
-
-		// try {
-		// 	if (isValidOTP) {
-		// 		// All elements in otp are valid numbers
-		// 		console.log('Before request', otp.join(''));
-
-		// 		const apiResponse = await api.post('/auth/login', {
-		// 			phoneNumber,
-		// 			otp: otp.join('')
-		// 		});
-
-		// 		const { message, data } = apiResponse as {
-		// 			message: string;
-		// 			data: unknown;
-		// 		};
-
-		// 		console.log(message);
-
-		// 		AsyncStorage.setItem('userData', JSON.stringify(data));
-		// 		dispatch(finishLoading());
-
-		// 		navigation.navigate('SetPasscode');
-		// 	}
-		// } catch (error) {
-		// 	const axiosError = error as AxiosError;
-		// 	console.debug(axiosError.response?.data);
-		// 	dispatch(finishLoading());
-
-		// 	Alert.alert(INVALID_OTP_TITLE, INVALID_OTP_MESSAGE);
-		// }
 	}, [otp]);
 
 	const handleKeyPress = (index: number, event: any) => {

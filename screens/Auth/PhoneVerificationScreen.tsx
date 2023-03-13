@@ -52,47 +52,48 @@ const PhoneVerificationScreen = ({
 	}, [phoneInputRef.current]);
 
 	const handleContinue = useCallback(async () => {
-		if (phoneNumber && phoneNumber.length >= 11) {
-			dispatch(startLoading());
-
-			setTimeout(() => {
-				dispatch(finishLoading());
-				navigation.navigate('OTPVerification', { phoneNumber } as never);
-			}, 2000);
-		} else {
-			Alert.alert(INVALID_PHONE_NUMBER_TITLE, INVALID_PHONE_NUMBER_MESSAGE);
-		}
-
-		// TODO: Implement Phone verification with backend
-		// const api = new Http({ baseURL });
 		// if (phoneNumber && phoneNumber.length >= 11) {
 		// 	dispatch(startLoading());
-		// 	try {
-		// 		const apiResponse = await api.get('/auth/checks', {
-		// 			params: { phoneNumber }
-		// 		});
-		// 		const {
-		// 			message,
-		// 			data: { userExists }
-		// 		} = apiResponse as {
-		// 			message: string;
-		// 			data: { userExists: boolean };
-		// 		};
-		// 		if (userExists) {
-		// 			api.post('/auth/otps', { phoneNumber }).catch(console.debug);
-		// 			dispatch(finishLoading());
-		// 			navigation.navigate('OTPVerification', { phoneNumber } as never);
-		// 		} else {
-		// 			// navigation.navigate('SignUp', { phoneNumber });
-		// 		}
-		// 	} catch (error) {
-		// 		const axiosError = error as AxiosError;
-		// 		console.debug(axiosError?.response?.data);
+		// 	setTimeout(() => {
 		// 		dispatch(finishLoading());
-		// 	}
+		// 		navigation.navigate('OTPVerification', { phoneNumber } as never);
+		// 	}, 2000);
 		// } else {
 		// 	Alert.alert(INVALID_PHONE_NUMBER_TITLE, INVALID_PHONE_NUMBER_MESSAGE);
 		// }
+
+		// TODO: Implement Phone verification with backend
+		const api = new Http({ baseURL });
+		if (phoneNumber && phoneNumber.length >= 11) {
+			dispatch(startLoading());
+			try {
+				const apiResponse = await api.get('/auth/checks', {
+					params: { phoneNumber }
+				});
+
+				const {
+					message,
+					data: { userExists }
+				} = apiResponse as {
+					message: string;
+					data: { userExists: boolean };
+				};
+
+				if (userExists) {
+					api.post('/auth/otps', { phoneNumber }).catch(console.debug);
+					dispatch(finishLoading());
+					navigation.navigate('OTPVerification', { phoneNumber } as never);
+				} else {
+					// navigation.navigate('SignUp', { phoneNumber });
+				}
+			} catch (error) {
+				const axiosError = error as AxiosError;
+				console.debug(axiosError?.response?.data);
+				dispatch(finishLoading());
+			}
+		} else {
+			Alert.alert(INVALID_PHONE_NUMBER_TITLE, INVALID_PHONE_NUMBER_MESSAGE);
+		}
 	}, [phoneNumber]);
 
 	return (

@@ -9,15 +9,22 @@ import {
 	DarkTheme
 } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { ColorSchemeName, Platform, TouchableOpacity } from 'react-native';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { RootState } from '../app/store';
 import ActivityIndicator from '../components/ActivityIndicator';
+import { getSecureSaveValue } from '../components/utils/functions';
 
 import Colors from '../constants/Colors';
 import { FONT_500 } from '../constants/Style';
+import {
+	OTP_VERIFICATION_DATA,
+	PASSCODE_TOKEN,
+	PASSCODE_VERIFICATION_DATA
+} from '../constants/Variables';
 import { checkTokenAsync } from '../features/auth/authSlice';
+import { checkVerificationTokenAsync } from '../features/signin/signinSlice';
 import useColorScheme from '../hooks/useColorScheme';
 import {
 	LoadingScreen,
@@ -40,8 +47,9 @@ export default function Navigation({
 }) {
 	const dispatch = useAppDispatch();
 
-	const { token: isLoggedIn, loading } = useAppSelector(
-		(state: RootState) => state.auth
+	const { loading } = useAppSelector((state: RootState) => state.auth);
+	const { loading: signinLoading } = useAppSelector(
+		(state: RootState) => state.signin
 	);
 
 	const { isLoading } = useAppSelector((state: RootState) => state.loading);
@@ -55,8 +63,8 @@ export default function Navigation({
 			linking={LinkingConfiguration}
 			theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
 		>
-			{(loading || isLoading) && <ActivityIndicator />}
-			<RootNavigator isLoggedIn={!!isLoggedIn} isLoading={loading} />
+			{(loading || isLoading || signinLoading) && <ActivityIndicator />}
+			<RootNavigator isLoading={loading} />
 		</NavigationContainer>
 	);
 }
@@ -67,17 +75,48 @@ export default function Navigation({
  */
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-function RootNavigator({
-	isLoggedIn,
-	isLoading
-}: {
-	isLoggedIn: boolean;
-	isLoading: boolean;
-}) {
+function RootNavigator({ isLoading }: { isLoading: boolean }) {
+	const [passcodeToken, setPasscodeToken] = useState('');
 	const colorScheme = useColorScheme();
+	const dispatch = useAppDispatch();
 	const { background } = Colors[colorScheme];
+
+	const { token: signinToken, loading: signinLoading } = useAppSelector(
+		(state: RootState) => state.signin
+	);
+
+	const { token: isLoggedIn } = useAppSelector(
+		(state: RootState) => state.auth
+	);
+
+	useEffect(() => {
+		dispatch(checkVerificationTokenAsync());
+	}, []);
+
+	useEffect(() => {
+		(async () => {
+			const token = await getSecureSaveValue(PASSCODE_TOKEN);
+			token && setPasscodeToken(token);
+		})();
+	}, [signinToken]);
+
+	useEffect(() => {
+		console.log('passcodeToken', !!passcodeToken);
+	}, [passcodeToken]);
+
+	useEffect(() => {
+		console.log('Loading...', { isLoading }, { signinLoading });
+	}, [isLoading, signinLoading]);
+
+	if (isLoading || signinLoading) {
+		return <LoadingScreen />;
+	}
+
 	return (
 		<Stack.Navigator
+			initialRouteName={
+				isLoggedIn ? 'Root' : signinToken ? 'Passcode' : 'PhoneVerification'
+			}
 			screenOptions={{
 				headerStyle: {
 					backgroundColor: background
@@ -90,26 +129,8 @@ function RootNavigator({
 				...(Platform.OS === 'android' && { headerTitleAlign: 'center' })
 			}}
 		>
-			{isLoading ? (
-				<Stack.Screen
-					name="Loading"
-					component={LoadingScreen}
-					options={{ headerShown: false }}
-				/>
-			) : isLoggedIn ? (
-				<>
-					<Stack.Screen
-						name="Root"
-						component={BottomTabNavigator}
-						options={{ headerShown: false }}
-					/>
-					<Stack.Screen
-						name="NotFound"
-						component={NotFoundScreen}
-						options={{ title: 'Oops!' }}
-					/>
-				</>
-			) : (
+			{/* View 1 */}
+			{!isLoggedIn && !signinToken && (
 				<>
 					<Stack.Screen
 						name="PhoneVerification"
@@ -138,10 +159,30 @@ function RootNavigator({
 							headerTitle: ''
 						}}
 					/>
+				</>
+			)}
+
+			{/* View 2 */}
+			{!isLoggedIn && signinToken && (
+				<Stack.Screen
+					name="Passcode"
+					component={PasscodeScreen}
+					options={{ headerShown: false }}
+				/>
+			)}
+
+			{/* View 3 */}
+			{isLoggedIn && (
+				<>
 					<Stack.Screen
-						name="Passcode"
-						component={PasscodeScreen}
+						name="Root"
+						component={BottomTabNavigator}
 						options={{ headerShown: false }}
+					/>
+					<Stack.Screen
+						name="NotFound"
+						component={NotFoundScreen}
+						options={{ title: 'Oops!' }}
 					/>
 				</>
 			)}
