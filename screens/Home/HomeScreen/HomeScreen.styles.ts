@@ -21,7 +21,8 @@ const styles = StyleSheet.create({
 	},
 	moneyTagId: {
 		fontSize: 14,
-		fontFamily: FONT_500
+		fontFamily: FONT_500,
+		textTransform: 'uppercase'
 	},
 	addButton: { flexDirection: 'row', alignItems: 'center' },
 	addButtonTitle: {

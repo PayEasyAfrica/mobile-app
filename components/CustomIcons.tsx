@@ -79,7 +79,7 @@ export const SendIcon: React.FC<IconProps> = (props) => {
 		<Svg width={18} height={18} fill={color}>
 			<Path
 				d="m3.787 15.254-1.041-1.041 9.157-9.158H6.645V3.57h7.785v7.785h-1.485V6.097l-9.158 9.157Z"
-				fill="#EF672A"
+				fill={color}
 			/>
 		</Svg>
 	);

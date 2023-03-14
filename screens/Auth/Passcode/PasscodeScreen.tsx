@@ -31,9 +31,7 @@ const PasscodeScreen = () => {
 	useEffect(() => {
 		getSecureSaveValue(OTP_VERIFICATION_DATA).then((userData) => {
 			if (userData) {
-				const { user, token } = JSON.parse(userData);
-				console.log('PasscodeScreen: ', user, token);
-				// dispatch(login(username, password));
+				const { user } = JSON.parse(userData);
 				setUserFirstname(user.name.split(' ')[0]);
 			}
 		});
@@ -93,9 +91,25 @@ const PasscodeScreen = () => {
 	const handleLoginDispatch = useCallback(async (passcode?: string) => {
 		/* Dispatching the login action to the redux store. */
 		passcode &&
-			(await dispatch(login(passcode)).catch((error: Error) => {
+			(await dispatch(login(passcode)).catch(async (error: Error) => {
 				console.debug('PasscodeScreen', error.message);
-				Alert.alert('Login failed', error.message);
+				if (error.message === 'HttpException: invalid credentials') {
+					dispatch(verificationLogout());
+					Alert.alert(
+						'Login failed',
+						"Sorry, we couldn't authenticate your credentials",
+						[
+							{
+								text: 'OK',
+								onPress: () => {
+									dispatch(verificationLogout());
+								}
+							}
+						]
+					);
+				} else {
+					Alert.alert('Login failed', error.message);
+				}
 			}));
 	}, []);
 

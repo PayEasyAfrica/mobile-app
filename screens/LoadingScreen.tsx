@@ -1,12 +1,9 @@
 import React from 'react';
-import { StyleSheet, View, ActivityIndicator } from 'react-native';
+import { StyleSheet } from 'react-native';
+import { View } from '../components/Themed';
 
 const LoadingScreen = () => {
-	return (
-		<View style={styles.container}>
-			{/* <ActivityIndicator size="large" color="#EF672A" /> */}
-		</View>
-	);
+	return <View style={styles.container} />;
 };
 
 const styles = StyleSheet.create({

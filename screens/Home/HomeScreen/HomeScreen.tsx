@@ -17,11 +17,16 @@ import { useAppDispatch } from '../../../app/hooks';
 import Modal from '../../../components/Modal';
 import { FONT_400, FONT_500, FONT_700 } from '../../../constants/Style';
 import { Http, baseURL } from '../../../components/utils/http';
-import { getSecureSaveValue } from '../../../components/utils/functions';
+import {
+	formattedCurrency,
+	formattedDateTime,
+	getSecureSaveValue
+} from '../../../components/utils/functions';
 import { PASSCODE_VERIFICATION_DATA } from '../../../constants/Variables';
 import { finishLoading, startLoading } from '../../../features/loadingSlice';
 import LoadingScreen from '../../LoadingScreen';
 import { logout } from '../../../features/auth/authSlice';
+import { iUserData, PaymentTransaction, TransactionGroup } from './type';
 
 const DATA = [
 	{
@@ -41,11 +46,40 @@ const DATA = [
 	}
 ];
 
+const TransactionGroups = (transactions: PaymentTransaction[]) => {
+	return transactions.reduce(
+		(groups: TransactionGroup[], transaction: PaymentTransaction) => {
+			// extract date string from transaction createdAt
+			const date = new Date(transaction.createdAt).toLocaleDateString('en-US', {
+				year: 'numeric',
+				month: 'short',
+				day: 'numeric'
+			});
+
+			// check if there's already a group with the same date
+			const existingGroup = groups.find((group) => group.createdAt === date);
+
+			// add transaction to existing group or create new group
+			if (existingGroup) {
+				existingGroup.data.push(transaction);
+			} else {
+				groups.push({ createdAt: date, data: [transaction] });
+			}
+
+			return groups;
+		},
+		[]
+	);
+};
+
 const HomeScreen: React.FC<HomeStackScreenProps<'Home'>> = ({ navigation }) => {
 	const colorScheme = useColorScheme();
 	const dispatch = useAppDispatch();
 	const [modalVisible, setModalVisible] = useState(false);
-	const [userData, setUserData] = useState<unknown[]>([]);
+	const [userData, setUserData] = useState({} as iUserData);
+	const [userTransaction, setUserTransaction] = useState<PaymentTransaction[]>(
+		[]
+	);
 
 	const { orange, gray, lightBackground, darkBackground } = Colors[colorScheme];
 
@@ -60,8 +94,6 @@ const HomeScreen: React.FC<HomeStackScreenProps<'Home'>> = ({ navigation }) => {
 
 			const { token } = passcodeToken && JSON.parse(passcodeToken);
 
-			// console.log('token', token);
-
 			api
 				.get('/payments/transactions', {
 					params: { page: 1, limit: 20 },
@@ -70,9 +102,9 @@ const HomeScreen: React.FC<HomeStackScreenProps<'Home'>> = ({ navigation }) => {
 					}
 				})
 				.then((res) => {
-					const apiResponse = res as { data: unknown[] };
+					const apiResponse = res as { data: PaymentTransaction[] };
 
-					setUserData(apiResponse.data || []);
+					setUserTransaction(apiResponse.data || []);
 
 					dispatch(finishLoading());
 				})
@@ -89,8 +121,19 @@ const HomeScreen: React.FC<HomeStackScreenProps<'Home'>> = ({ navigation }) => {
 	}, []);
 
 	useEffect(() => {
-		console.log({ userData });
-	}, [userData]);
+		getSecureSaveValue(PASSCODE_VERIFICATION_DATA).then((userData) => {
+			if (userData) {
+				const { user } = JSON.parse(userData);
+				setUserData(user);
+			}
+		});
+	}, []);
+
+	//
+	useEffect(() => {
+		console.log({ userTransaction });
+		console.log({ TransactionGroups: TransactionGroups(userTransaction) });
+	}, [userTransaction]);
 
 	const handleShowModal = () => {
 		setModalVisible(true);
@@ -101,7 +144,7 @@ const HomeScreen: React.FC<HomeStackScreenProps<'Home'>> = ({ navigation }) => {
 		// Do any necessary cleanup or state changes here
 	};
 
-	if (userData.length === 0) {
+	if (userTransaction.length === 0) {
 		return <LoadingScreen />;
 	}
 
@@ -117,7 +160,7 @@ const HomeScreen: React.FC<HomeStackScreenProps<'Home'>> = ({ navigation }) => {
 						>
 							Money Tag
 						</Text>
-						<Text style={styles.moneyTagId}>123765BF</Text>
+						<Text style={styles.moneyTagId}>{userData.moneyTag}</Text>
 					</View>
 
 					<View>
@@ -178,7 +221,7 @@ const HomeScreen: React.FC<HomeStackScreenProps<'Home'>> = ({ navigation }) => {
 						lightColor={lightBackground}
 						darkColor={darkBackground}
 					>
-						₦ 20,000.00
+						{formattedCurrency(userTransaction[0].balance)}
 					</Text>
 					<Text
 						style={{
@@ -189,7 +232,7 @@ const HomeScreen: React.FC<HomeStackScreenProps<'Home'>> = ({ navigation }) => {
 						lightColor={lightBackground}
 						darkColor={darkBackground}
 					>
-						Blessing Mark
+						{userData.name}
 					</Text>
 				</View>
 
@@ -201,8 +244,6 @@ const HomeScreen: React.FC<HomeStackScreenProps<'Home'>> = ({ navigation }) => {
 						]}
 						onPress={() => {
 							navigation.navigate('Receive');
-
-							// dispatch(logout());
 						}}
 					>
 						<RecieveIcon color={orange} />
@@ -256,8 +297,8 @@ const HomeScreen: React.FC<HomeStackScreenProps<'Home'>> = ({ navigation }) => {
 
 			<SectionList
 				style={{ flex: 1, marginBottom: 5 }}
-				sections={DATA}
-				keyExtractor={(item, index) => item.time + index}
+				sections={TransactionGroups(userTransaction)}
+				keyExtractor={(item, index) => item.createdAt + index}
 				renderItem={({ item }) => (
 					<View
 						style={[
@@ -290,12 +331,18 @@ const HomeScreen: React.FC<HomeStackScreenProps<'Home'>> = ({ navigation }) => {
 								lightColor={lightBackground}
 								darkColor={darkBackground}
 							>
-								<RecieveIcon color={orange} />
+								{item.kind === 'Credit' ? (
+									<RecieveIcon color={orange} />
+								) : item.category === 'withdrawal' ? (
+									<WithdrawIcon color={orange} />
+								) : (
+									<SendIcon color={orange} />
+								)}
 							</View>
 
 							<View lightColor={lightBackground} darkColor={darkBackground}>
 								<Text style={{ fontSize: 14, fontFamily: FONT_500 }}>
-									{item.name}
+									{item.title}
 								</Text>
 								<Text
 									style={{
@@ -305,7 +352,7 @@ const HomeScreen: React.FC<HomeStackScreenProps<'Home'>> = ({ navigation }) => {
 										marginTop: 4
 									}}
 								>
-									{item.time}
+									{formattedDateTime(item.createdAt).formattedTime}
 								</Text>
 							</View>
 						</View>
@@ -315,16 +362,16 @@ const HomeScreen: React.FC<HomeStackScreenProps<'Home'>> = ({ navigation }) => {
 								fontSize: 12,
 								fontFamily: FONT_500,
 								color:
-									item.amount.charAt(0) === '+'
-										? '#04D400'
-										: Colors[colorScheme].text
+									item.kind === 'Credit' ? '#04D400' : Colors[colorScheme].text
+								// color: Colors[colorScheme].text
 							}}
 						>
-							{item.amount}
+							{item.kind === 'Credit' ? '+' : '-'}
+							{formattedCurrency(item.amount)}
 						</Text>
 					</View>
 				)}
-				renderSectionHeader={({ section: { date } }) => (
+				renderSectionHeader={({ section: { createdAt } }) => (
 					<View style={styles.containerPadding}>
 						<Text
 							style={{
@@ -334,7 +381,7 @@ const HomeScreen: React.FC<HomeStackScreenProps<'Home'>> = ({ navigation }) => {
 								marginBottom: 16
 							}}
 						>
-							{date}
+							{createdAt}
 						</Text>
 					</View>
 				)}

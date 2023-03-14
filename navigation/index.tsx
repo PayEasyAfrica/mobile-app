@@ -9,16 +9,14 @@ import {
 	DarkTheme
 } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { useEffect, useState } from 'react';
-import { ColorSchemeName, Platform, TouchableOpacity } from 'react-native';
+import { useEffect } from 'react';
+import { ColorSchemeName, Platform } from 'react-native';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { RootState } from '../app/store';
 import ActivityIndicator from '../components/ActivityIndicator';
-import { getSecureSaveValue } from '../components/utils/functions';
 
 import Colors from '../constants/Colors';
 import { FONT_500 } from '../constants/Style';
-import { PASSCODE_TOKEN } from '../constants/Variables';
 import { checkTokenAsync } from '../features/auth/authSlice';
 import { checkVerificationTokenAsync } from '../features/signin/signinSlice';
 import useColorScheme from '../hooks/useColorScheme';
@@ -72,7 +70,6 @@ export default function Navigation({
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator({ isLoading }: { isLoading: boolean }) {
-	const [passcodeToken, setPasscodeToken] = useState('');
 	const colorScheme = useColorScheme();
 	const dispatch = useAppDispatch();
 	const { background } = Colors[colorScheme];
@@ -89,24 +86,9 @@ function RootNavigator({ isLoading }: { isLoading: boolean }) {
 		dispatch(checkVerificationTokenAsync());
 	}, []);
 
-	useEffect(() => {
-		(async () => {
-			const token = await getSecureSaveValue(PASSCODE_TOKEN);
-			token && setPasscodeToken(token);
-		})();
-	}, [signinToken]);
-
-	useEffect(() => {
-		console.log('passcodeToken', !!passcodeToken);
-	}, [passcodeToken]);
-
-	useEffect(() => {
-		console.log('Loading...', { isLoading }, { signinLoading });
-	}, [isLoading, signinLoading]);
-
-	// if (isLoading || signinLoading) {
-	// 	return <LoadingScreen />;
-	// }
+	if (isLoading || signinLoading) {
+		return <LoadingScreen />;
+	}
 
 	return (
 		<Stack.Navigator
