@@ -27,6 +27,7 @@ import {
 	PasscodeScreen,
 	PhoneVerificationScreen,
 	SetPasscodeScreen,
+	SignupScreen,
 	VerifyPasscodeScreen
 } from '../screens';
 
@@ -107,12 +108,17 @@ function RootNavigator({ isLoading }: { isLoading: boolean }) {
 				...(Platform.OS === 'android' && { headerTitleAlign: 'center' })
 			}}
 		>
-			{/* View 1 */}
 			{!isLoggedIn && !signinToken && (
 				<>
 					<Stack.Screen
 						name="PhoneVerification"
 						component={PhoneVerificationScreen}
+						options={{ headerShown: false }}
+					/>
+
+					<Stack.Screen
+						name="Signup"
+						component={SignupScreen}
 						options={{ headerShown: false }}
 					/>
 
@@ -140,7 +146,6 @@ function RootNavigator({ isLoading }: { isLoading: boolean }) {
 				</>
 			)}
 
-			{/* View 2 */}
 			{!isLoggedIn && signinToken && (
 				<Stack.Screen
 					name="Passcode"
@@ -149,7 +154,6 @@ function RootNavigator({ isLoading }: { isLoading: boolean }) {
 				/>
 			)}
 
-			{/* View 3 */}
 			{isLoggedIn && (
 				<>
 					<Stack.Screen

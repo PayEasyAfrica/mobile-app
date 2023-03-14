@@ -206,8 +206,8 @@ const styles = StyleSheet.create({
 	},
 	keypadButton: {
 		borderRadius: 50,
-		width: Layout.isSmallDevice ? 50 : 65,
-		height: Layout.isSmallDevice ? 50 : 65,
+		width: 50,
+		height: 50,
 		marginVertical: 19,
 		marginHorizontal: 27,
 		alignItems: 'center',

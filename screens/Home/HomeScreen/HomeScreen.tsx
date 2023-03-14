@@ -28,24 +28,6 @@ import LoadingScreen from '../../LoadingScreen';
 import { logout } from '../../../features/auth/authSlice';
 import { iUserData, PaymentTransaction, TransactionGroup } from './type';
 
-const DATA = [
-	{
-		date: '12 Feb, 2023',
-		data: [
-			{ name: 'Abolorunke Blessing', time: '12:20pm', amount: '+₦10,000' },
-			{ name: 'Abolorunke Blessing', time: '12:20pm', amount: '-₦10,000' }
-		]
-	},
-	{
-		date: '08 Feb, 2023',
-		data: [
-			{ name: 'Abolorunke Blessing', time: '12:20pm', amount: '-₦10,000' },
-			{ name: 'Abolorunke Blessing', time: '12:20pm', amount: '+₦10,000' },
-			{ name: 'Abolorunke Blessing', time: '12:20pm', amount: '+₦10,000' }
-		]
-	}
-];
-
 const TransactionGroups = (transactions: PaymentTransaction[]) => {
 	return transactions.reduce(
 		(groups: TransactionGroup[], transaction: PaymentTransaction) => {
@@ -77,6 +59,7 @@ const HomeScreen: React.FC<HomeStackScreenProps<'Home'>> = ({ navigation }) => {
 	const dispatch = useAppDispatch();
 	const [modalVisible, setModalVisible] = useState(false);
 	const [userData, setUserData] = useState({} as iUserData);
+	const [loadingData, setLoadingData] = useState(true);
 	const [userTransaction, setUserTransaction] = useState<PaymentTransaction[]>(
 		[]
 	);
@@ -85,6 +68,7 @@ const HomeScreen: React.FC<HomeStackScreenProps<'Home'>> = ({ navigation }) => {
 
 	useEffect(() => {
 		dispatch(startLoading());
+		setLoadingData(true);
 		const api = new Http({ baseURL });
 
 		(async () => {
@@ -105,8 +89,6 @@ const HomeScreen: React.FC<HomeStackScreenProps<'Home'>> = ({ navigation }) => {
 					const apiResponse = res as { data: PaymentTransaction[] };
 
 					setUserTransaction(apiResponse.data || []);
-
-					dispatch(finishLoading());
 				})
 				.catch((error) => {
 					console.debug(error);
@@ -114,8 +96,11 @@ const HomeScreen: React.FC<HomeStackScreenProps<'Home'>> = ({ navigation }) => {
 
 					if (status === 401) {
 						dispatch(logout());
-						dispatch(finishLoading());
 					}
+				})
+				.finally(() => {
+					setLoadingData(false);
+					dispatch(finishLoading());
 				});
 		})();
 	}, []);
@@ -144,7 +129,7 @@ const HomeScreen: React.FC<HomeStackScreenProps<'Home'>> = ({ navigation }) => {
 		// Do any necessary cleanup or state changes here
 	};
 
-	if (userTransaction.length === 0) {
+	if (loadingData) {
 		return <LoadingScreen />;
 	}
 
@@ -204,7 +189,7 @@ const HomeScreen: React.FC<HomeStackScreenProps<'Home'>> = ({ navigation }) => {
 							lightColor={lightBackground}
 							darkColor={darkBackground}
 						>
-							Avaliable Funds
+							Avalable Funds
 						</Text>
 
 						<TouchableOpacity onPress={() => {}}>
@@ -221,7 +206,9 @@ const HomeScreen: React.FC<HomeStackScreenProps<'Home'>> = ({ navigation }) => {
 						lightColor={lightBackground}
 						darkColor={darkBackground}
 					>
-						{formattedCurrency(userTransaction[0].balance)}
+						{(userTransaction.length > 0 &&
+							formattedCurrency(userTransaction[0].balance)) ||
+							'₦0.00'}
 					</Text>
 					<Text
 						style={{
@@ -295,122 +282,132 @@ const HomeScreen: React.FC<HomeStackScreenProps<'Home'>> = ({ navigation }) => {
 				</View>
 			</View>
 
-			<SectionList
-				style={{ flex: 1, marginBottom: 5 }}
-				sections={TransactionGroups(userTransaction)}
-				keyExtractor={(item, index) => item.createdAt + index}
-				renderItem={({ item }) => (
-					<View
-						style={[
-							{
-								flexDirection: 'row',
-								justifyContent: 'space-between',
-								alignItems: 'center',
-								marginBottom: 24
-							},
-							styles.containerPadding
-						]}
-						lightColor={lightBackground}
-						darkColor={darkBackground}
-					>
+			{TransactionGroups(userTransaction).length > 0 ? (
+				<SectionList
+					style={{ flex: 1, marginBottom: 5 }}
+					sections={TransactionGroups(userTransaction)}
+					keyExtractor={(item, index) => item.createdAt + index}
+					renderItem={({ item }) => (
 						<View
-							style={{ flexDirection: 'row', alignItems: 'center' }}
+							style={[
+								{
+									flexDirection: 'row',
+									justifyContent: 'space-between',
+									alignItems: 'center',
+									marginBottom: 24
+								},
+								styles.containerPadding
+							]}
 							lightColor={lightBackground}
 							darkColor={darkBackground}
 						>
 							<View
-								style={{
-									width: 30,
-									height: 30,
-									alignItems: 'center',
-									justifyContent: 'center',
-									borderRadius: 50,
-									backgroundColor: Colors[colorScheme].iconBackground,
-									marginRight: 16
-								}}
+								style={{ flexDirection: 'row', alignItems: 'center' }}
 								lightColor={lightBackground}
 								darkColor={darkBackground}
 							>
-								{item.kind === 'Credit' ? (
-									<RecieveIcon color={orange} />
-								) : item.category === 'withdrawal' ? (
-									<WithdrawIcon color={orange} />
-								) : (
-									<SendIcon color={orange} />
-								)}
-							</View>
-
-							<View lightColor={lightBackground} darkColor={darkBackground}>
-								<Text style={{ fontSize: 14, fontFamily: FONT_500 }}>
-									{item.title}
-								</Text>
-								<Text
+								<View
 									style={{
-										color: Colors[colorScheme].gray,
-										fontSize: 10,
-										fontFamily: FONT_500,
-										marginTop: 4
+										width: 30,
+										height: 30,
+										alignItems: 'center',
+										justifyContent: 'center',
+										borderRadius: 50,
+										backgroundColor: Colors[colorScheme].iconBackground,
+										marginRight: 16
 									}}
+									lightColor={lightBackground}
+									darkColor={darkBackground}
 								>
-									{formattedDateTime(item.createdAt).formattedTime}
-								</Text>
-							</View>
-						</View>
+									{item.kind === 'Credit' ? (
+										<RecieveIcon color={orange} />
+									) : item.category === 'withdrawal' ? (
+										<WithdrawIcon color={orange} />
+									) : (
+										<SendIcon color={orange} />
+									)}
+								</View>
 
-						<Text
-							style={{
-								fontSize: 12,
-								fontFamily: FONT_500,
-								color:
-									item.kind === 'Credit' ? '#04D400' : Colors[colorScheme].text
-								// color: Colors[colorScheme].text
-							}}
-						>
-							{item.kind === 'Credit' ? '+' : '-'}
-							{formattedCurrency(item.amount)}
-						</Text>
-					</View>
-				)}
-				renderSectionHeader={({ section: { createdAt } }) => (
-					<View style={styles.containerPadding}>
-						<Text
-							style={{
-								color: Colors[colorScheme].gray,
-								fontSize: 10,
-								fontFamily: FONT_500,
-								marginBottom: 16
-							}}
-						>
-							{createdAt}
-						</Text>
-					</View>
-				)}
-				ListFooterComponent={
-					<TouchableOpacity onPress={() => navigation.navigate('Transactions')}>
-						<View
-							style={{
-								position: 'relative',
-								flexDirection: 'row',
-								alignSelf: 'center',
-								alignItems: 'center',
-								backgroundColor: Colors[colorScheme].iconBackground,
-								paddingVertical: 8,
-								paddingHorizontal: 12,
-								borderRadius: 8
-							}}
-						>
-							<MoreSearchIcon color={orange} />
+								<View lightColor={lightBackground} darkColor={darkBackground}>
+									<Text style={{ fontSize: 14, fontFamily: FONT_500 }}>
+										{item.title}
+									</Text>
+									<Text
+										style={{
+											color: Colors[colorScheme].gray,
+											fontSize: 10,
+											fontFamily: FONT_500,
+											marginTop: 4
+										}}
+									>
+										{formattedDateTime(item.createdAt).formattedTime}
+									</Text>
+								</View>
+							</View>
+
 							<Text
-								style={[styles.buttonText, { marginLeft: 4 }]}
-								lightColor={orange}
-								darkColor={orange}
+								style={{
+									fontSize: 12,
+									fontFamily: FONT_500,
+									color:
+										item.kind === 'Credit'
+											? '#04D400'
+											: Colors[colorScheme].text
+									// color: Colors[colorScheme].text
+								}}
 							>
-								View more
+								{item.kind === 'Credit' ? '+' : '-'}
+								{formattedCurrency(item.amount)}
 							</Text>
 						</View>
-					</TouchableOpacity>
-				}
-			/>
+					)}
+					renderSectionHeader={({ section: { createdAt } }) => (
+						<View style={styles.containerPadding}>
+							<Text
+								style={{
+									color: Colors[colorScheme].gray,
+									fontSize: 10,
+									fontFamily: FONT_500,
+									marginBottom: 16
+								}}
+							>
+								{createdAt}
+							</Text>
+						</View>
+					)}
+					ListFooterComponent={
+						<TouchableOpacity
+							onPress={() => navigation.navigate('Transactions')}
+						>
+							<View
+								style={{
+									position: 'relative',
+									flexDirection: 'row',
+									alignSelf: 'center',
+									alignItems: 'center',
+									backgroundColor: Colors[colorScheme].iconBackground,
+									paddingVertical: 8,
+									paddingHorizontal: 12,
+									borderRadius: 8
+								}}
+							>
+								<MoreSearchIcon color={orange} />
+								<Text
+									style={[styles.buttonText, { marginLeft: 4 }]}
+									lightColor={orange}
+									darkColor={orange}
+								>
+									View more
+								</Text>
+							</View>
+						</TouchableOpacity>
+					}
+				/>
+			) : (
+				<View>
+					<Text> You have no Transactions</Text>
+				</View>
+			)}
 
 			<Modal
 				visible={modalVisible}

@@ -20,11 +20,6 @@ import { SafeAreaView, Text, View } from '../../components/Themed';
 import { BORDER_RADIUS, FONT_400, FONT_500 } from '../../constants/Style';
 import ErrorText from '../../components/ErrorText';
 
-const INVALID_PHONE_NUMBER_TITLE = 'Invalid phone number';
-const INVALID_PHONE_NUMBER_MESSAGE = 'Please enter a valid phone number';
-
-const PHONE_NUMBER_PLACEHOLDER = 'Enter phone number';
-
 const validationSchema = Yup.object().shape({
 	phoneNumber: Yup.string()
 		.required('This is required.')
@@ -52,34 +47,33 @@ const PhoneVerificationScreen = ({
 		async (values: { phoneNumber: string }) => {
 			const { phoneNumber } = values;
 			const api = new Http({ baseURL });
-			if (phoneNumber && phoneNumber.length >= 11) {
-				dispatch(startLoading());
-				try {
-					const apiResponse = await api.get('/auth/checks', {
-						params: { phoneNumber }
-					});
-					const {
-						message,
-						data: { userExists }
-					} = apiResponse as {
-						message: string;
-						data: { userExists: boolean };
-					};
-					if (userExists) {
-						api.post('/auth/otps', { phoneNumber }).catch(console.debug);
-						dispatch(finishLoading());
-						navigation.navigate('OTPVerification', { phoneNumber } as never);
-					} else {
-						// navigation.navigate('SignUp', { phoneNumber });
-					}
-				} catch (error) {
-					const axiosError = error as AxiosError;
-					console.debug(error);
-					console.debug(axiosError?.response?.data);
-					dispatch(finishLoading());
+
+			dispatch(startLoading());
+			try {
+				const apiResponse = await api.get('/auth/checks', {
+					params: { phoneNumber }
+				});
+
+				const {
+					message,
+					data: { userExists }
+				} = apiResponse as {
+					message: string;
+					data: { userExists: boolean };
+				};
+
+				if (userExists) {
+					api.post('/auth/otps', { phoneNumber }).catch(console.debug);
+					navigation.navigate('OTPVerification', { phoneNumber } as never);
+				} else {
+					navigation.navigate('Signup', { phoneNumber } as never);
 				}
-			} else {
-				Alert.alert(INVALID_PHONE_NUMBER_TITLE, INVALID_PHONE_NUMBER_MESSAGE);
+			} catch (error) {
+				const axiosError = error as AxiosError;
+				console.debug(error);
+				console.debug(axiosError?.response?.data);
+			} finally {
+				dispatch(finishLoading());
 			}
 		},
 		[]
@@ -110,15 +104,16 @@ const PhoneVerificationScreen = ({
 							<View style={styles.inputContainer}>
 								<Text style={styles.label}>Phone Number</Text>
 								<TextInput
-									placeholder={PHONE_NUMBER_PLACEHOLDER}
+									placeholder="Enter phone number"
+									placeholderTextColor={gray}
 									value={values.phoneNumber}
 									onChangeText={handleChange('phoneNumber')}
 									keyboardType="phone-pad"
-									maxLength={14}
+									maxLength={13}
 									style={[
 										styles.phoneInput,
-										isFocused && { borderColor: orange },
 										colorScheme === 'dark' && { color: '#fff' },
+										isFocused && { borderColor: orange },
 										touched.phoneNumber && errors.phoneNumber
 											? { borderColor: '#BA1A1A' }
 											: null

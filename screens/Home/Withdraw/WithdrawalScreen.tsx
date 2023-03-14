@@ -51,6 +51,7 @@ const WithdrawalScreen: React.FC<HomeStackScreenProps<'Withdraw'>> = ({
 						<Text style={styles.label}>Money Tag</Text>
 						<TextInput
 							placeholder="Enter tag"
+							placeholderTextColor={gray}
 							ref={(ref) => ref && (inputRefs.current[0] = ref)}
 							style={[
 								styles.input,
@@ -68,6 +69,7 @@ const WithdrawalScreen: React.FC<HomeStackScreenProps<'Withdraw'>> = ({
 						<Text style={styles.label}>Recipient’s Name</Text>
 						<TextInput
 							placeholder="Tag Holder Name"
+							placeholderTextColor={gray}
 							ref={(ref) => ref && (inputRefs.current[1] = ref)}
 							style={[
 								styles.input,
@@ -85,6 +87,7 @@ const WithdrawalScreen: React.FC<HomeStackScreenProps<'Withdraw'>> = ({
 						<Text style={styles.label}>Amount</Text>
 						<TextInput
 							placeholder="000,000.00"
+							placeholderTextColor={gray}
 							ref={(ref) => ref && (inputRefs.current[2] = ref)}
 							style={[
 								styles.input,

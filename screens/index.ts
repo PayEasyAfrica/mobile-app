@@ -13,6 +13,7 @@ export { NotificationsScreen } from './Settings/ NotificationsScreen';
 export { default as TransactionsModal } from './Modals/TransactionsModal';
 export { default as LoadingScreen } from './LoadingScreen';
 export { default as NotFoundScreen } from './NotFoundScreen';
+export { default as SignupScreen } from './Signup/SignupScreen';
 export {
 	PasscodeScreen,
 	SetPasscodeScreen,

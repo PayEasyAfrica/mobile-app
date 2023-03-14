@@ -35,7 +35,7 @@ const RecieveScreen: React.FC<HomeStackScreenProps<'Receive'>> = ({
 	const colorScheme = useColorScheme();
 	const dispatch = useAppDispatch();
 
-	const { orange, lightBackground, darkBackground, iconBackground } =
+	const { gray, orange, lightBackground, darkBackground, iconBackground } =
 		Colors[colorScheme];
 
 	const handleAmountChange = (amountFig: string) => {
@@ -101,6 +101,7 @@ const RecieveScreen: React.FC<HomeStackScreenProps<'Receive'>> = ({
 						<Text style={styles.label}>Enter amount (optional)</Text>
 						<TextInput
 							placeholder="000,000.00"
+							placeholderTextColor={gray}
 							value={amount}
 							onChangeText={handleAmountChange}
 							keyboardType="phone-pad"

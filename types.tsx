@@ -25,6 +25,7 @@ export type RootStackParamList = {
 	VerifyPasscode: undefined;
 	PhoneVerification: undefined;
 	OTPVerification: undefined;
+	Signup: undefined;
 	Modal: undefined;
 	Loading: undefined;
 };
