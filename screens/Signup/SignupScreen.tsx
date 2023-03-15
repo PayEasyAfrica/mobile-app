@@ -19,7 +19,7 @@ import { useAppDispatch } from '../../app/hooks';
 import { finishLoading, startLoading } from '../../features/loadingSlice';
 import { AxiosError } from 'axios';
 
-interface SiginData {
+interface SignupData {
 	firstname: string;
 	lastname: string;
 	phoneNumber: string;
@@ -55,13 +55,14 @@ const SignupScreen: React.FC<RootStackScreenProps<'Signup'>> = ({
 		setFocusedIndex(index);
 	};
 
-	const handleContinue = async (values: SiginData) => {
+	const handleContinue = async (values: SignupData) => {
 		// Handle sending form data to server
 		const api = new Http({ baseURL });
 
 		api
 			.post('/auth/otps', { phoneNumber: values.phoneNumber })
 			.catch(console.debug);
+
 		navigation.navigate('OTPVerification', { values } as never);
 
 		// dispatch(startLoading());
