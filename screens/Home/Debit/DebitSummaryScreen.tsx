@@ -29,7 +29,7 @@ const DebitSummaryScreen = ({
 		<SafeAreaView style={styles.container}>
 			<Text style={styles.amount}>₦10,000</Text>
 
-			<ScrollView>
+			<ScrollView showsVerticalScrollIndicator={false}>
 				<View
 					style={{
 						backgroundColor:

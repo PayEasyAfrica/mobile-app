@@ -17,9 +17,8 @@ const SetPasscodeScreen = ({
 
 	const handlePinEntered = useCallback(
 		(pin: string, handleResetPin?: () => void) => {
-			if (handleResetPin) {
-				handleResetPin();
-			}
+			/* A short-circuit evaluation. If `handleResetPin` is truthy, then it will call `handleResetPin()`. */
+			handleResetPin && handleResetPin();
 
 			navigation.navigate('VerifyPasscode', { pin } as never);
 		},

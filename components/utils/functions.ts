@@ -40,3 +40,19 @@ export const formattedDateTime = (createdAt: string) => {
 
 	return { formattedDate, formattedTime };
 };
+
+export const debounce = <T extends (...args: any[]) => void>(
+	func: T,
+	delay: number
+): ((...args: Parameters<T>) => void) => {
+	let timerId: ReturnType<typeof setTimeout>;
+
+	return function debouncedFunction(this: any, ...args: Parameters<T>) {
+		const context = this;
+
+		clearTimeout(timerId);
+		timerId = setTimeout(() => {
+			func.apply(context, args);
+		}, delay);
+	};
+};

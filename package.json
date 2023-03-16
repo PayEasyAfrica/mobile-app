@@ -45,7 +45,8 @@
     "react-native-view-shot": "3.4.0",
     "react-native-web": "~0.18.9",
     "react-redux": "^8.0.5",
-    "yup": "^1.0.2"
+    "yup": "^1.0.2",
+    "undefined": "lodash/debounce"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

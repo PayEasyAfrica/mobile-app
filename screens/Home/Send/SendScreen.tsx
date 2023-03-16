@@ -48,7 +48,7 @@ const SendScreen: React.FC<HomeStackScreenProps<'Send'>> = ({ navigation }) => {
 	return (
 		<TouchableWithoutFeedback onPress={handlePressOutside}>
 			<View style={styles.container}>
-				<ScrollView>
+				<ScrollView showsVerticalScrollIndicator={false}>
 					<TouchableOpacity
 						onPress={() => {
 							navigation.navigate('Scanner');

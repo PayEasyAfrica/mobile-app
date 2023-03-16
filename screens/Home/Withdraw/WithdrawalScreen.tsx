@@ -46,7 +46,7 @@ const WithdrawalScreen: React.FC<HomeStackScreenProps<'Withdraw'>> = ({
 	return (
 		<TouchableWithoutFeedback onPress={handlePressOutside}>
 			<View style={styles.container}>
-				<ScrollView>
+				<ScrollView showsVerticalScrollIndicator={false}>
 					<View style={styles.inputContainer}>
 						<Text style={styles.label}>Money Tag</Text>
 						<TextInput

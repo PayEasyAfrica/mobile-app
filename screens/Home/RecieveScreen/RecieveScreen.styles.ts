@@ -5,8 +5,8 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		paddingHorizontal: 24,
-		paddingTop: 30,
-		paddingBottom: 130
+		paddingTop: 30
+		// paddingBottom: 130
 	},
 	title: {
 		fontSize: 24,
@@ -35,12 +35,15 @@ const styles = StyleSheet.create({
 	},
 	qrContainer: {
 		alignItems: 'center',
-		marginTop: 70
+		marginTop: 20,
+		marginBottom: 80
+
+		// paddingHorizontal: 20
 	},
 	qrText: {
 		fontSize: 16,
-		fontFamily: FONT_400,
-		marginTop: 30
+		fontFamily: FONT_400
+		// marginTop: 30
 	},
 	button: {
 		flexDirection: 'row',

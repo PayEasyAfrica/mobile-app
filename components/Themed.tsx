@@ -6,7 +6,8 @@
 import {
 	Text as DefaultText,
 	View as DefaultView,
-	TextInput as DefaultTextInput
+	TextInput as DefaultTextInput,
+	ScrollView as DefaultScrollView
 } from 'react-native';
 import { SafeAreaView as DefaultSafeAreaView } from 'react-native-safe-area-context';
 
@@ -63,6 +64,22 @@ export function SafeAreaView(props: ViewProps) {
 
 	return (
 		<DefaultSafeAreaView style={[{ backgroundColor }, style]} {...otherProps} />
+	);
+}
+
+export function ScrollView(props: ViewProps) {
+	const { style, lightColor, darkColor, ...otherProps } = props;
+	const backgroundColor = useThemeColor(
+		{ light: lightColor, dark: darkColor },
+		'background'
+	);
+
+	return (
+		<DefaultScrollView
+			showsVerticalScrollIndicator={false}
+			style={[{ backgroundColor }, style]}
+			{...otherProps}
+		/>
 	);
 }
 

@@ -25,7 +25,7 @@ const AuthorizeScreen = ({ navigation }: HomeStackScreenProps<'Authorize'>) => {
 	return (
 		// Login screen UI code goes here
 		<SafeAreaView style={styles.container}>
-			<ScrollView>
+			<ScrollView showsVerticalScrollIndicator={false}>
 				<View>
 					<Text style={styles.text}>
 						Enter your pin or fingerprint to confirm transaction.

@@ -1,5 +1,6 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Platform } from 'react-native';
+import { useEffect, useRef, useState } from 'react';
+import { AppState, Platform } from 'react-native';
 import {
 	HomeTabBarIcon,
 	ReferralTabBarIcon,
@@ -20,8 +21,34 @@ import SettingsStackScreen from './SettingsStackNavigator';
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function BottomTabNavigator() {
+	const appState = useRef(AppState.currentState);
+	const [appStateVisible, setAppStateVisible] = useState(false);
 	const colorScheme = useColorScheme();
 	const { tabIconActive, tabIconInactive, background } = Colors[colorScheme];
+
+	useEffect(() => {
+		const subscription = AppState.addEventListener('change', (nextAppState) => {
+			if (nextAppState === 'background') {
+				// App is closing
+				console.log('App is closing');
+			}
+
+			// if (
+			// 	appState.current.match(/inactive|background/) &&
+			// 	nextAppState === 'active'
+			// ) {
+			// 	console.log('App has come to the foreground!');
+			// 	setAppStateVisible((prev) => !prev);
+			// }
+
+			// appState.current = nextAppState;
+			// console.log('AppState', appState.current);
+		});
+
+		return () => {
+			subscription.remove();
+		};
+	}, []);
 
 	return (
 		<BottomTab.Navigator

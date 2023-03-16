@@ -4,7 +4,42 @@ import Svg, { Path } from 'react-native-svg';
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 
-const Spinner = () => {
+export const MiniSpinner = ({ style }: { style: object }) => {
+	const spinValue = new Animated.Value(0);
+
+	useEffect(() => {
+		Animated.loop(
+			Animated.timing(spinValue, {
+				toValue: 1,
+				duration: 1000,
+				useNativeDriver: true
+			})
+		).start();
+	}, [spinValue]);
+
+	const spin = spinValue.interpolate({
+		inputRange: [0, 0.5, 1],
+		outputRange: ['0deg', '180deg', '360deg']
+	});
+
+	return (
+		<View style={style || styles.spinnerContainer}>
+			<Animated.View style={{ transform: [{ rotate: spin }] }}>
+				<Svg width={13} height={15} fill="none">
+					<Path
+						d="M11.092 12.48a6.178 6.178 0 0 1-7.108-.148C1.232 10.316.624 6.465 2.626 3.73 4.254 1.506 7.109.706 9.599 1.57"
+						stroke="#E7BEAF"
+						strokeWidth={2}
+						strokeMiterlimit={10}
+						strokeLinecap="round"
+					/>
+				</Svg>
+			</Animated.View>
+		</View>
+	);
+};
+
+export const Spinner = () => {
 	const spinValue = new Animated.Value(0);
 
 	useEffect(() => {

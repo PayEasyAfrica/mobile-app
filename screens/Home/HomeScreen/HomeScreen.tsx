@@ -206,9 +206,8 @@ const HomeScreen: React.FC<HomeStackScreenProps<'Home'>> = ({ navigation }) => {
 						lightColor={lightBackground}
 						darkColor={darkBackground}
 					>
-						{(userTransaction.length > 0 &&
-							formattedCurrency(userTransaction[0].balance)) ||
-							'₦0.00'}
+						{userTransaction.length > 0 &&
+							formattedCurrency(userTransaction[0].balance || 0.0)}
 					</Text>
 					<Text
 						style={{

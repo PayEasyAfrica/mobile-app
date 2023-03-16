@@ -1,10 +1,10 @@
 import { useRef, useState } from 'react';
 import {
 	ScrollView,
-	TextInput,
 	TouchableOpacity,
 	TouchableWithoutFeedback
 } from 'react-native';
+import { useRoute } from '@react-navigation/native';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { SafeAreaView, Text, View } from '../../components/Themed';
@@ -14,10 +14,6 @@ import { RootStackScreenProps } from '../../types';
 import styles from './SignupScreen.styles';
 import InputField from '../../components/InputField';
 import { Http, baseURL } from '../../components/utils/http';
-import { useRoute } from '@react-navigation/native';
-import { useAppDispatch } from '../../app/hooks';
-import { finishLoading, startLoading } from '../../features/loadingSlice';
-import { AxiosError } from 'axios';
 
 interface SignupData {
 	firstname: string;
@@ -40,8 +36,6 @@ const SignupScreen: React.FC<RootStackScreenProps<'Signup'>> = ({
 }) => {
 	const [focusedIndex, setFocusedIndex] = useState(-1);
 	const colorScheme = useColorScheme();
-	const inputRefs = useRef<Array<TextInput>>([]);
-	const dispatch = useAppDispatch();
 	const route = useRoute();
 	const { phoneNumber } = route.params as { phoneNumber: string };
 
@@ -64,34 +58,12 @@ const SignupScreen: React.FC<RootStackScreenProps<'Signup'>> = ({
 			.catch(console.debug);
 
 		navigation.navigate('OTPVerification', { values } as never);
-
-		// dispatch(startLoading());
-		// try {
-		// 	const response = await api.post('/auth/signup', {
-		// 		name: `${firstname} ${lastname}`,
-		// 		phoneNumber,
-		// 		...(referalTag && { referee: referalTag })
-		// 	});
-
-		// 	const { message, data } = response as {
-		// 		message: string;
-		// 		data: unknown;
-		// 	};
-
-		// 	console.log(message, data);
-		// } catch (error) {
-		// 	const axiosError = error as AxiosError;
-		// 	console.debug(error);
-		// 	console.debug(axiosError?.response);
-		// } finally {
-		// 	dispatch(finishLoading());
-		// }
 	};
 
 	return (
 		<SafeAreaView style={styles.container}>
 			<TouchableWithoutFeedback onPress={handlePressOutside}>
-				<ScrollView>
+				<ScrollView showsVerticalScrollIndicator={false}>
 					<Text style={styles.title}>Sign Up</Text>
 					<Text style={[styles.subtitle, { color: gray }]}>
 						Create an account.
@@ -167,7 +139,6 @@ const SignupScreen: React.FC<RootStackScreenProps<'Signup'>> = ({
 								<TouchableOpacity
 									style={[styles.button, { backgroundColor: orange }]}
 									onPress={() => handleSubmit()}
-									onFocus={() => handleFocus(4)}
 								>
 									<Text
 										style={styles.buttonText}
