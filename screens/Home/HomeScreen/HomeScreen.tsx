@@ -3,6 +3,7 @@ import { Button, Pressable, SectionList, TouchableOpacity } from 'react-native';
 import {
 	EyeIcon,
 	MoreSearchIcon,
+	NoDataIcon,
 	PlusIcon,
 	RecieveIcon,
 	SendIcon,
@@ -184,39 +185,27 @@ const HomeScreen: React.FC<HomeStackScreenProps<'Home'>> = ({ navigation }) => {
 						lightColor={orange}
 						darkColor={orange}
 					>
-						<Text
-							style={{ fontSize: 14, fontFamily: FONT_400 }}
-							lightColor={lightBackground}
-							darkColor={darkBackground}
-						>
+						<Text style={{ fontSize: 14, fontFamily: FONT_400, color: '#fff' }}>
 							Avalable Funds
 						</Text>
 
 						<TouchableOpacity onPress={() => {}}>
-							<EyeIcon
-								color={
-									colorScheme === 'light' ? lightBackground : darkBackground
-								}
-							/>
+							<EyeIcon color="#fff" />
 						</TouchableOpacity>
 					</View>
 
-					<Text
-						style={{ fontSize: 24, fontFamily: FONT_700 }}
-						lightColor={lightBackground}
-						darkColor={darkBackground}
-					>
-						{userTransaction.length > 0 &&
-							formattedCurrency(userTransaction[0].balance || 0.0)}
+					<Text style={{ fontSize: 24, fontFamily: FONT_700, color: '#fff' }}>
+						{(userTransaction.length > 0 &&
+							formattedCurrency(userTransaction[0].balance)) ||
+							'0.00'}
 					</Text>
 					<Text
 						style={{
 							fontSize: 16,
 							fontFamily: FONT_400,
-							marginTop: 34
+							marginTop: 34,
+							color: '#fff'
 						}}
-						lightColor={lightBackground}
-						darkColor={darkBackground}
 					>
 						{userData.name}
 					</Text>
@@ -279,6 +268,10 @@ const HomeScreen: React.FC<HomeStackScreenProps<'Home'>> = ({ navigation }) => {
 						</Text>
 					</TouchableOpacity>
 				</View>
+			</View>
+
+			<View style={[styles.containerPadding, { marginBottom: 24 }]}>
+				<Text style={styles.sectionTitle}>Transactions</Text>
 			</View>
 
 			{TransactionGroups(userTransaction).length > 0 ? (
@@ -403,8 +396,15 @@ const HomeScreen: React.FC<HomeStackScreenProps<'Home'>> = ({ navigation }) => {
 					}
 				/>
 			) : (
-				<View>
-					<Text> You have no Transactions</Text>
+				<View style={[styles.containerPadding, styles.noDataContainer]}>
+					<NoDataIcon />
+					<Text style={styles.noDataText}>
+						There’s no transaction to view yet.
+					</Text>
+
+					<Text style={[styles.noDataSubText, { color: gray }]}>
+						Ongoing transactions will appear here.
+					</Text>
 				</View>
 			)}
 

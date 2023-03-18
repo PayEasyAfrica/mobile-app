@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import Layout from '../../../constants/Layout';
-import { FONT_500 } from '../../../constants/Style';
+import { FONT_400, FONT_500 } from '../../../constants/Style';
 
 const styles = StyleSheet.create({
 	container: {
@@ -52,6 +52,23 @@ const styles = StyleSheet.create({
 	buttonText: {
 		marginLeft: 8,
 		fontFamily: FONT_500
+	},
+	sectionTitle: {
+		fontSize: 20,
+		fontFamily: FONT_500
+	},
+	noDataContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+	noDataText: {
+		textAlign: 'center',
+		marginTop: 24,
+		fontSize: 16,
+		fontFamily: FONT_500
+	},
+	noDataSubText: {
+		textAlign: 'center',
+		marginTop: 14,
+		fontSize: 12,
+		fontFamily: FONT_400
 	}
 });
 

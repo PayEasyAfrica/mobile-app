@@ -39,7 +39,7 @@ const Colors: { light: ColorScheme; dark: ColorScheme } = {
 		tabIconDefault: '#ccc',
 		tabIconActive: orangeColorDark,
 		tabIconInactive: inactiveTintColorDark,
-		iconBackground: '#191919'
+		iconBackground: 'rgba(208, 188, 255, 0.08)'
 	}
 };
 
