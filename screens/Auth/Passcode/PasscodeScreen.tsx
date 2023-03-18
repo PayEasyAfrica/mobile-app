@@ -93,23 +93,23 @@ const PasscodeScreen = () => {
 		passcode &&
 			(await dispatch(login(passcode)).catch(async (error: Error) => {
 				console.debug('PasscodeScreen', error.message);
-				if (error.message === 'HttpException: invalid credentials') {
-					dispatch(verificationLogout());
-					Alert.alert(
-						'Login failed',
-						"Sorry, we couldn't authenticate your credentials",
-						[
-							{
-								text: 'OK',
-								onPress: () => {
-									dispatch(verificationLogout());
-								}
-							}
-						]
-					);
-				} else {
-					Alert.alert('Login failed', error.message);
-				}
+				// if (error.message === 'HttpException: invalid credentials') {
+				// 	dispatch(verificationLogout());
+				// 	Alert.alert(
+				// 		'Login failed',
+				// 		"Sorry, we couldn't authenticate your credentials",
+				// 		[
+				// 			{
+				// 				text: 'OK',
+				// 				onPress: () => {
+				// 					dispatch(verificationLogout());
+				// 				}
+				// 			}
+				// 		]
+				// 	);
+				// } else {
+				// 	Alert.alert('Login failed', error.message);
+				// }
 			}));
 	}, []);
 

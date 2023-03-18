@@ -5,7 +5,9 @@ import axios, {
 	CreateAxiosDefaults
 } from 'axios';
 
-export const baseURL = 'http://localhost:2001';
+// export const baseURL = 'http://localhost:2001';
+export const baseURL =
+	'http://payeasy-load-balancer-2142199047.us-east-1.elb.amazonaws.com/';
 
 export class HttpError extends Error {
 	public isHttpException = true;

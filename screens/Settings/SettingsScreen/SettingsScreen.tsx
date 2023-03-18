@@ -114,7 +114,10 @@ const SettingsScreen: React.FC<SettingsStackScreenProps<'Settings'>> = ({
 			<Text style={styles.title}>Settings</Text>
 
 			<SectionList
-				style={{ marginBottom: Platform.OS === 'ios' ? 8 : 16 }}
+				style={{
+					marginBottom: Platform.OS === 'ios' ? 8 : 16,
+					paddingHorizontal: 24
+				}}
 				sections={DATA}
 				keyExtractor={(item, index) => item.name + index}
 				renderItem={({ item, index, section }) => (

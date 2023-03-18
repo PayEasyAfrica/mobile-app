@@ -3,8 +3,8 @@ import { FONT_500 } from '../../../constants/Style';
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
-		paddingHorizontal: 24
+		flex: 1
+		// paddingHorizontal: 24
 	},
 	title: {
 		fontSize: 24,
@@ -23,14 +23,16 @@ const styles = StyleSheet.create({
 		shadowRadius: 20
 	},
 	button: {
-		paddingVertical: 18,
+		flexDirection: 'row',
 		justifyContent: 'center',
 		alignItems: 'center',
+		paddingVertical: 18,
 		borderRadius: 8
 	},
 	buttonText: {
 		fontSize: 16,
-		fontFamily: FONT_500
+		fontFamily: FONT_500,
+		marginLeft: 22
 	}
 });
 

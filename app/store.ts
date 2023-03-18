@@ -1,5 +1,6 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import authReducer from '../features/auth/authSlice';
+import barcodeReducer from '../features/barcodeSlice';
 import loadingReducer from '../features/loadingSlice';
 import signinReducer from '../features/signin/signinSlice';
 
@@ -7,7 +8,8 @@ export const store = configureStore({
 	reducer: {
 		auth: authReducer,
 		loading: loadingReducer,
-		signin: signinReducer
+		signin: signinReducer,
+		barcode: barcodeReducer
 	}
 });
 

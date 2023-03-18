@@ -10,6 +10,8 @@ interface InputProps {
 	label: string;
 	placeholder: string;
 	keyboardType?: KeyboardTypeOptions | undefined;
+	editable?: boolean;
+	style?: object;
 	value: string;
 	error: string | undefined;
 	touched: boolean | undefined;
@@ -24,6 +26,8 @@ const InputField = (props: InputProps) => {
 		label,
 		placeholder,
 		keyboardType = 'default',
+		editable = true,
+		style,
 		value,
 		error,
 		touched,
@@ -44,11 +48,13 @@ const InputField = (props: InputProps) => {
 			<TextInput
 				placeholder={placeholder}
 				keyboardType={keyboardType}
+				editable={editable}
 				style={[
 					styles.input,
 					focusedIndex && { borderColor: orange },
 					colorScheme === 'dark' && { color: '#fff' },
-					touched && error ? { borderColor } : null
+					touched && error ? { borderColor } : null,
+					style && style
 				]}
 				placeholderTextColor={gray}
 				value={value}

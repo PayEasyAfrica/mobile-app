@@ -16,6 +16,8 @@ import {
 } from '../../../components/CustomIcons';
 import useColorScheme from '../../../hooks/useColorScheme';
 import Colors from '../../../constants/Colors';
+import { setValues } from '../../../features/barcodeSlice';
+import { useAppDispatch } from '../../../app/hooks';
 
 const QRCodeScannerScreen: React.FC<HomeStackScreenProps<'Scanner'>> = ({
 	navigation
@@ -25,18 +27,19 @@ const QRCodeScannerScreen: React.FC<HomeStackScreenProps<'Scanner'>> = ({
 	const [flashOn, setFlashOn] = useState<boolean>(false);
 	const cameraRef = useRef<Camera>(null);
 
+	const dispatch = useAppDispatch();
 	const colorScheme = useColorScheme();
 
 	const { iconBackground, orange } = Colors[colorScheme];
 
-	// !IMPORTANT: Temporary Code, Remove
-	useEffect(() => {
-		const timeout = setTimeout(() => {
-			navigation.navigate('Authorize');
-		}, 2000);
+	// // !IMPORTANT: Temporary Code, Remove
+	// useEffect(() => {
+	// 	const timeout = setTimeout(() => {
+	// 		navigation.navigate('Authorize');
+	// 	}, 2000);
 
-		return () => clearTimeout(timeout);
-	}, []);
+	// 	return () => clearTimeout(timeout);
+	// }, []);
 
 	useEffect(() => {
 		(async () => {
@@ -47,17 +50,35 @@ const QRCodeScannerScreen: React.FC<HomeStackScreenProps<'Scanner'>> = ({
 
 	const handleBarCodeScanned: BarCodeScannedCallback = ({ type, data }) => {
 		setScanned(true);
-		Alert.alert(
-			'',
-			`Bar code with type ${type} and data ${data} has been scanned!`,
-			[
-				{
-					text: 'Ok',
-					onPress: () =>
-						navigation.navigate('Authorize', { type: 'send' } as never)
-				}
-			]
-		);
+
+		const values = { moneyTag: '', amount: '' };
+
+		// Split the string by the delimiter '/'
+		const dataArr = data.split('/');
+		console.log(type, data, dataArr);
+
+		// Assign the values to an object
+		if (dataArr.length >= 4) {
+			values.moneyTag = dataArr[3];
+		}
+		if (dataArr.length >= 5) {
+			values.amount = dataArr[4];
+		}
+
+		dispatch(setValues(values));
+		navigation.goBack();
+
+		// Alert.alert(
+		// 	'',
+		// 	`Bar code with type ${type} and data ${data} has been scanned!`,
+		// 	[
+		// 		{
+		// 			text: 'Ok',
+		// 			onPress: () =>
+		// 				navigation.navigate('Authorize', { type: 'send' } as never)
+		// 		}
+		// 	]
+		// );
 	};
 
 	const toggleFlash = () => {

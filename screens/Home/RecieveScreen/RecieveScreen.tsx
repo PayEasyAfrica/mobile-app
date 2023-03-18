@@ -11,7 +11,6 @@ import {
 import { RefObject, useCallback, useEffect, useRef, useState } from 'react';
 import QRCode from 'react-native-qrcode-svg';
 import { captureRef } from 'react-native-view-shot';
-import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -89,14 +88,13 @@ const RecieveScreen: React.FC<HomeStackScreenProps<'Receive'>> = ({
 						}
 					);
 
-					console.log('apiResponse', apiResponse);
 					setBarcode(apiResponse.data);
 				}
 			} catch (error) {
 				console.debug(error);
 				const axiosError = error as AxiosError;
 				const status = axiosError?.response?.status;
-				console.log('status', status);
+
 				if (status === 401) {
 					dispatch(logout());
 				}
@@ -130,7 +128,6 @@ const RecieveScreen: React.FC<HomeStackScreenProps<'Receive'>> = ({
 	};
 
 	const handleAmountChange = debounce(async (value) => {
-		console.log('debounce value', value);
 		const api = new Http({ baseURL });
 
 		setLoading(true);
@@ -148,7 +145,6 @@ const RecieveScreen: React.FC<HomeStackScreenProps<'Receive'>> = ({
 					}
 				);
 
-				console.log('apiResponse', apiResponse);
 				setBarcode(apiResponse.data);
 			}
 		} catch (error) {
