@@ -14,6 +14,7 @@ import {
 	TransactionsModal,
 	WithdrawalScreen
 } from '../screens';
+import AddMoneyScreen from '../screens/Home/AddMoney/AddMoneyScreen';
 import { HomeStackParamList } from '../types';
 
 const HomeStack = createNativeStackNavigator<HomeStackParamList>();
@@ -42,6 +43,14 @@ function HomeStackScreen() {
 				options={{
 					title: 'Home',
 					headerShown: false
+				}}
+			/>
+
+			<HomeStack.Screen
+				name="AddMoney"
+				component={AddMoneyScreen}
+				options={{
+					headerTitle: 'Add Money'
 				}}
 			/>
 

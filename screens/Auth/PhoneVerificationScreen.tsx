@@ -132,11 +132,7 @@ const PhoneVerificationScreen = ({
 								style={{ marginTop: 101 }}
 							>
 								<View style={[styles.button, { backgroundColor: orange }]}>
-									<Text
-										style={styles.buttonText}
-										lightColor={lightBackground}
-										darkColor={darkBackground}
-									>
+									<Text style={styles.buttonText} lightColor={lightBackground}>
 										Continue
 									</Text>
 								</View>

@@ -78,7 +78,7 @@ export default function ReferralScreen() {
 			}
 		} catch (error) {
 			// @ts-ignore
-			alert(error.message);
+			Alert.alert(error.message);
 		}
 	};
 
@@ -206,11 +206,7 @@ export default function ReferralScreen() {
 						<ShareIcon
 							color={colorScheme === 'light' ? lightBackground : darkBackground}
 						/>
-						<Text
-							style={styles.buttonText}
-							lightColor={lightBackground}
-							darkColor={darkBackground}
-						>
+						<Text style={styles.buttonText} lightColor={lightBackground}>
 							Share
 						</Text>
 					</View>

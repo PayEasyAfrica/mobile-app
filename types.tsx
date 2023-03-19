@@ -38,6 +38,7 @@ export type HomeStackParamList = {
 	Scanner: undefined;
 	Authorize: undefined;
 	DebitSummary: undefined;
+	AddMoney: undefined;
 	Withdraw: undefined;
 };
 

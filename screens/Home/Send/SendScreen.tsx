@@ -122,6 +122,7 @@ const SendScreen: React.FC<HomeStackScreenProps<'Send'>> = ({ navigation }) => {
 	const handleSend = (values: SendData) => {
 		console.log(values);
 
+		navigation.navigate('Authorize', { type: 'send' } as never);
 		// Handle sending form data
 	};
 
@@ -235,11 +236,7 @@ const SendScreen: React.FC<HomeStackScreenProps<'Send'>> = ({ navigation }) => {
 									style={[styles.button, { backgroundColor: orange }]}
 									onPress={() => handleSubmit()}
 								>
-									<Text
-										style={styles.buttonText}
-										lightColor={lightBackground}
-										darkColor={darkBackground}
-									>
+									<Text style={styles.buttonText} lightColor={lightBackground}>
 										Send
 									</Text>
 								</TouchableOpacity>

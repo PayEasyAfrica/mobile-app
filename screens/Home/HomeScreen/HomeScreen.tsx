@@ -1,5 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Button, Pressable, SectionList, TouchableOpacity } from 'react-native';
+import {
+	Button,
+	Pressable,
+	ScrollView,
+	SectionList,
+	TouchableOpacity
+} from 'react-native';
 import {
 	EyeIcon,
 	MoreSearchIcon,
@@ -28,6 +34,7 @@ import { finishLoading, startLoading } from '../../../features/loadingSlice';
 import LoadingScreen from '../../LoadingScreen';
 import { logout } from '../../../features/auth/authSlice';
 import { iUserData, PaymentTransaction, TransactionGroup } from './type';
+import { verificationLogin } from '../../../features/signin/signinSlice';
 
 const TransactionGroups = (transactions: PaymentTransaction[]) => {
 	return transactions.reduce(
@@ -70,6 +77,7 @@ const HomeScreen: React.FC<HomeStackScreenProps<'Home'>> = ({ navigation }) => {
 	useEffect(() => {
 		dispatch(startLoading());
 		setLoadingData(true);
+
 		const api = new Http({ baseURL });
 
 		(async () => {
@@ -92,7 +100,7 @@ const HomeScreen: React.FC<HomeStackScreenProps<'Home'>> = ({ navigation }) => {
 					setUserTransaction(apiResponse.data || []);
 				})
 				.catch((error) => {
-					console.debug(error);
+					console.debug('HomeScreen', error);
 					const { status } = error?.response;
 
 					if (status === 401) {
@@ -116,10 +124,10 @@ const HomeScreen: React.FC<HomeStackScreenProps<'Home'>> = ({ navigation }) => {
 	}, []);
 
 	//
-	useEffect(() => {
-		console.log({ userTransaction });
-		console.log({ TransactionGroups: TransactionGroups(userTransaction) });
-	}, [userTransaction]);
+	// useEffect(() => {
+	// 	console.log({ userTransaction });
+	// 	console.log({ TransactionGroups: TransactionGroups(userTransaction) });
+	// }, [userTransaction]);
 
 	const handleShowModal = () => {
 		setModalVisible(true);
@@ -152,7 +160,7 @@ const HomeScreen: React.FC<HomeStackScreenProps<'Home'>> = ({ navigation }) => {
 					<View>
 						<Pressable
 							onPress={() => {
-								console.log('Add btn pressed!');
+								navigation.navigate('AddMoney');
 							}}
 							style={styles.addButton}
 						>
@@ -276,7 +284,7 @@ const HomeScreen: React.FC<HomeStackScreenProps<'Home'>> = ({ navigation }) => {
 
 			{TransactionGroups(userTransaction).length > 0 ? (
 				<SectionList
-					style={{ flex: 1, marginBottom: 5 }}
+					style={{ flex: 1 }}
 					sections={TransactionGroups(userTransaction)}
 					keyExtractor={(item, index) => item.createdAt + index}
 					renderItem={({ item }) => (
@@ -396,7 +404,12 @@ const HomeScreen: React.FC<HomeStackScreenProps<'Home'>> = ({ navigation }) => {
 					}
 				/>
 			) : (
-				<View style={[styles.containerPadding, styles.noDataContainer]}>
+				<ScrollView
+					contentContainerStyle={[
+						styles.containerPadding,
+						styles.noDataContainer
+					]}
+				>
 					<NoDataIcon />
 					<Text style={styles.noDataText}>
 						There’s no transaction to view yet.
@@ -405,7 +418,7 @@ const HomeScreen: React.FC<HomeStackScreenProps<'Home'>> = ({ navigation }) => {
 					<Text style={[styles.noDataSubText, { color: gray }]}>
 						Ongoing transactions will appear here.
 					</Text>
-				</View>
+				</ScrollView>
 			)}
 
 			<Modal

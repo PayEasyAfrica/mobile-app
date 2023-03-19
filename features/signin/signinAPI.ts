@@ -25,7 +25,7 @@ export async function signinApi() {
 			return JSON.parse(data);
 		}
 	} catch (error: any) {
-		console.debug('authAPI', error);
+		console.debug('signinAPI', error);
 		throw new Error(error);
 	}
 }

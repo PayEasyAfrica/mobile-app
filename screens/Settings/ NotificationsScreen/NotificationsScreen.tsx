@@ -109,11 +109,7 @@ export default function NotificationsScreen() {
 				ListFooterComponent={
 					<TouchableOpacity onPress={() => {}} style={{ marginTop: 52 }}>
 						<View style={[styles.button, { backgroundColor: orange }]}>
-							<Text
-								style={styles.buttonText}
-								lightColor={lightBackground}
-								darkColor={darkBackground}
-							>
+							<Text style={styles.buttonText} lightColor={lightBackground}>
 								Continue
 							</Text>
 						</View>

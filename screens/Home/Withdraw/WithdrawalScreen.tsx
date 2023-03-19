@@ -122,11 +122,7 @@ const WithdrawalScreen: React.FC<HomeStackScreenProps<'Withdraw'>> = ({
 							navigation.navigate('Authorize', { type: 'withdraw' } as never)
 						}
 					>
-						<Text
-							style={styles.buttonText}
-							lightColor={lightBackground}
-							darkColor={darkBackground}
-						>
+						<Text style={styles.buttonText} lightColor={lightBackground}>
 							Continue
 						</Text>
 					</TouchableOpacity>
