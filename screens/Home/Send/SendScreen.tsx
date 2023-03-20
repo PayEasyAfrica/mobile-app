@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
 	ScrollView,
-	TextInput,
 	TouchableOpacity,
 	TouchableWithoutFeedback
 } from 'react-native';
@@ -18,10 +17,12 @@ import styles from './SendScreen.styles';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { RootState } from '../../../app/store';
 import { clearValues } from '../../../features/barcodeSlice';
-import { getSecureSaveValue } from '../../../components/utils/functions';
+import {
+	debounce,
+	getSecureSaveValue
+} from '../../../components/utils/functions';
 import { PASSCODE_VERIFICATION_DATA } from '../../../constants/Variables';
 import { Http, baseURL } from '../../../components/utils/http';
-import { PaymentTransaction } from '../HomeScreen/type';
 import { logout } from '../../../features/auth/authSlice';
 import { MiniSpinner } from '../../../components/ActivityIndicator';
 
@@ -36,6 +37,9 @@ interface Values {
 	amount?: string;
 	moneyTag: string;
 }
+
+// Defining the debounce delay time (in milliseconds)
+const DEBOUNCE_DELAY = 2000;
 
 const validationSchema = Yup.object().shape({
 	moneyTag: Yup.string().required('This is required.'),
@@ -52,7 +56,7 @@ const SendScreen: React.FC<HomeStackScreenProps<'Send'>> = ({ navigation }) => {
 	const colorScheme = useColorScheme();
 	const dispatch = useAppDispatch();
 
-	const { gray, orange, lightBackground, darkBackground, iconBackground } =
+	const { orange, lightBackground, disabledInput, iconBackground } =
 		Colors[colorScheme];
 
 	const { values: barcodeValues } = useAppSelector(
@@ -75,6 +79,10 @@ const SendScreen: React.FC<HomeStackScreenProps<'Send'>> = ({ navigation }) => {
 			formikRef.current?.setFieldValue('amount', scannedValues.amount);
 		}
 	}, [scannedValues]);
+
+	const handleMoneyTagChange = debounce(async (value) => {
+		queryMoneyTag(value);
+	}, DEBOUNCE_DELAY);
 
 	const queryMoneyTag = async (moneyTag: string) => {
 		setLoadingData(true);
@@ -102,6 +110,8 @@ const SendScreen: React.FC<HomeStackScreenProps<'Send'>> = ({ navigation }) => {
 				console.debug(error);
 				const { status } = error?.response;
 
+				formikRef.current?.setFieldValue('recipientName', '');
+
 				if (status === 401) {
 					dispatch(logout());
 				}
@@ -122,7 +132,7 @@ const SendScreen: React.FC<HomeStackScreenProps<'Send'>> = ({ navigation }) => {
 	const handleSend = (values: SendData) => {
 		console.log(values);
 
-		navigation.navigate('Authorize', { type: 'send' } as never);
+		navigation.navigate('Authorize', { type: 'send', values } as never);
 		// Handle sending form data
 	};
 
@@ -171,7 +181,10 @@ const SendScreen: React.FC<HomeStackScreenProps<'Send'>> = ({ navigation }) => {
 									value={values.moneyTag}
 									error={errors.moneyTag}
 									touched={touched.moneyTag}
-									onChangeText={handleChange('moneyTag')}
+									onChangeText={(value) => {
+										handleChange('moneyTag')(value); // Call the original handleChange function
+										handleMoneyTagChange(value);
+									}}
 									onFocus={() => handleFocus(0)}
 									onBlur={() => handleBlur('moneyTag')}
 									focusedIndex={focusedIndex === 0}
@@ -196,7 +209,9 @@ const SendScreen: React.FC<HomeStackScreenProps<'Send'>> = ({ navigation }) => {
 										label="Recipient’s Name"
 										placeholder=""
 										editable={false}
-										style={{ backgroundColor: '#f6f6f6' }}
+										style={{
+											backgroundColor: disabledInput
+										}}
 										value={values.recipientName}
 										error={errors.recipientName}
 										touched={touched.recipientName}

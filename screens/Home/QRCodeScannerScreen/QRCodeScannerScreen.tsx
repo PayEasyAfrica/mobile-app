@@ -32,7 +32,7 @@ const QRCodeScannerScreen: React.FC<HomeStackScreenProps<'Scanner'>> = ({
 
 	const { iconBackground, orange } = Colors[colorScheme];
 
-	// // !IMPORTANT: Temporary Code, Remove
+	// !IMPORTANT: Temporary Code, Remove
 	// useEffect(() => {
 	// 	const timeout = setTimeout(() => {
 	// 		navigation.navigate('Authorize');

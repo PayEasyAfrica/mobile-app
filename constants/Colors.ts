@@ -14,6 +14,7 @@ const Colors: { light: ColorScheme; dark: ColorScheme } = {
 	light: {
 		text: '#000',
 		textInput: TextIputLight,
+		disabledInput: '#f6f6f6',
 		background: '#FFFBFF',
 		border: 'rgba(167, 58, 0, 0.05)',
 		lightBackground: '#fff',
@@ -29,6 +30,7 @@ const Colors: { light: ColorScheme; dark: ColorScheme } = {
 	dark: {
 		text: '#fff',
 		textInput: TextIputDark,
+		disabledInput: '#232323',
 		background: '#0F0F0F',
 		border: 'rgba(255, 197, 168, 0.1)',
 		darkBackground: '#131313',

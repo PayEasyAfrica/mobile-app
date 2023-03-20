@@ -12,13 +12,14 @@ interface InputProps {
 	keyboardType?: KeyboardTypeOptions | undefined;
 	editable?: boolean;
 	style?: object;
+	maxLength?: number;
 	value: string;
-	error: string | undefined;
-	touched: boolean | undefined;
+	error?: string | undefined;
+	touched?: boolean | undefined;
 	onChangeText: (text: string) => void;
-	onFocus: () => void;
-	onBlur: () => void;
-	focusedIndex: boolean | undefined;
+	onFocus?: () => void;
+	onBlur?: () => void;
+	focusedIndex?: boolean | undefined;
 }
 
 const InputField = (props: InputProps) => {
@@ -27,6 +28,7 @@ const InputField = (props: InputProps) => {
 		placeholder,
 		keyboardType = 'default',
 		editable = true,
+		maxLength,
 		style,
 		value,
 		error,
@@ -44,11 +46,12 @@ const InputField = (props: InputProps) => {
 
 	return (
 		<View style={styles.inputContainer}>
-			<Text style={styles.label}>{label}</Text>
+			{label && <Text style={styles.label}>{label}</Text>}
 			<TextInput
 				placeholder={placeholder}
 				keyboardType={keyboardType}
 				editable={editable}
+				maxLength={maxLength && maxLength}
 				style={[
 					styles.input,
 					focusedIndex && { borderColor: orange },

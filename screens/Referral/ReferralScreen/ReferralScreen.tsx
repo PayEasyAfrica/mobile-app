@@ -104,7 +104,7 @@ export default function ReferralScreen() {
 						lightColor={lightBackground}
 						darkColor={iconBackground}
 					>
-						<View
+						<RNView
 							style={{
 								position: 'absolute',
 								width: 40,
@@ -121,9 +121,9 @@ export default function ReferralScreen() {
 									resizeMode: 'cover'
 								}}
 							/>
-						</View>
+						</RNView>
 
-						<View style={{ width: 42, height: 42, top: 80, left: 85 }}>
+						<RNView style={{ width: 42, height: 42, top: 80, left: 85 }}>
 							<Image
 								source={require('../../../assets/images/ellipse2.png')}
 								style={{
@@ -132,9 +132,9 @@ export default function ReferralScreen() {
 									resizeMode: 'cover'
 								}}
 							/>
-						</View>
+						</RNView>
 
-						<View style={{ width: 27, height: 27, top: 30, left: 0 }}>
+						<RNView style={{ width: 27, height: 27, top: 30, left: 0 }}>
 							<Image
 								source={require('../../../assets/images/ellipse3.png')}
 								style={{
@@ -143,7 +143,7 @@ export default function ReferralScreen() {
 									resizeMode: 'cover'
 								}}
 							/>
-						</View>
+						</RNView>
 					</View>
 				</View>
 
@@ -203,9 +203,7 @@ export default function ReferralScreen() {
 
 				<TouchableOpacity onPress={handleShare} style={{ marginTop: 101 }}>
 					<View style={[styles.button, { backgroundColor: orange }]}>
-						<ShareIcon
-							color={colorScheme === 'light' ? lightBackground : darkBackground}
-						/>
+						<ShareIcon color="#fff" />
 						<Text style={styles.buttonText} lightColor={lightBackground}>
 							Share
 						</Text>

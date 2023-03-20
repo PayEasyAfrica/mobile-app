@@ -336,6 +336,15 @@ export const TouchlightIcon: React.FC<IconProps> = (props) => {
 	);
 };
 
+export const ArrowDropdown: React.FC<IconProps> = (props) => {
+	const { color } = props;
+	return (
+		<Svg width={24} height={24} fill="none" {...props}>
+			<Path d="m7 10 5 5 5-5H7Z" fill={color || '#7F7572'} />
+		</Svg>
+	);
+};
+
 export const NoDataIcon: React.FC<IconProps> = (props) => {
 	const colorScheme = useColorScheme();
 

@@ -29,7 +29,11 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/splash/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "favicon": "./assets/splash/favicon.png"
@@ -41,6 +45,11 @@
           "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera."
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "e3c80a32-0e05-488d-9f49-ea1a0d057f02"
+      }
+    }
   }
 }

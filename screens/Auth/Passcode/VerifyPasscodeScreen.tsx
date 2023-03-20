@@ -19,6 +19,7 @@ import { OTP_VERIFICATION_DATA, PASSCODE } from '../../../constants/Variables';
 import { useAppDispatch } from '../../../app/hooks';
 import { login } from '../../../features/auth/authSlice';
 import { verificationLogin } from '../../../features/signin/signinSlice';
+import { AxiosError } from 'axios';
 
 const INVALID_PASSCODE_TITLE = 'Passcode Mismatch';
 const INVALID_PASSCODE_MESSAGE = 'Your passcode does not match';
@@ -80,6 +81,7 @@ const VerifyPasscodeScreen = ({
 			}
 
 			await dispatch(verificationLogin());
+
 			const userData = await getSecureSaveValue(OTP_VERIFICATION_DATA);
 
 			if (userData) {
@@ -96,10 +98,17 @@ const VerifyPasscodeScreen = ({
 
 			// await dispatch(login(pin));
 			secureSave(PASSCODE, pin);
-			// navigation.navigate('Passcode');
+
+			// await dispatch(login(pin));
 		} catch (error) {
-			console.debug(error);
-			Alert.alert(INVALID_PASSCODE_TITLE, INVALID_PASSCODE_MESSAGE);
+			console.debug('VerifyPasscodeScreen', error);
+			const axiosError = error as AxiosError;
+			if (axiosError.message === INVALID_PASSCODE_TITLE) {
+				Alert.alert(INVALID_PASSCODE_TITLE, INVALID_PASSCODE_MESSAGE);
+				return;
+			}
+
+			Alert.alert('Something went wrong. Please try again.');
 		}
 	}, []);
 

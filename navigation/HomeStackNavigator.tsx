@@ -90,7 +90,9 @@ function HomeStackScreen() {
 				name="DebitSummary"
 				component={DebitSummaryScreen}
 				options={{
-					headerTitle: 'Transaction'
+					headerTitle: 'Transaction',
+					// headerLeft: () => null,
+					headerBackVisible: false
 				}}
 			/>
 

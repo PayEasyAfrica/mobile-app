@@ -285,14 +285,8 @@ const RecieveScreen: React.FC<HomeStackScreenProps<'Receive'>> = ({
 				style={[styles.button, { backgroundColor: orange }]}
 			>
 				<>
-					<ShareIcon
-						color={colorScheme === 'light' ? lightBackground : darkBackground}
-					/>
-					<Text
-						style={styles.buttonText}
-						lightColor={lightBackground}
-						darkColor={darkBackground}
-					>
+					<ShareIcon color="#fff" />
+					<Text style={styles.buttonText} lightColor={lightBackground}>
 						Share
 					</Text>
 				</>

@@ -19,20 +19,33 @@ import useColorScheme from '../../../hooks/useColorScheme';
 
 import AuthenticationPinPad from '../../../components/AuthenticationPinPad';
 import { SafeAreaView, Text, View } from '../../../components/Themed';
+import LoadingScreen from '../../LoadingScreen';
+import { finishLoading, startLoading } from '../../../features/loadingSlice';
 
 const PasscodeScreen = () => {
 	const dispatch = useAppDispatch();
 	const colorScheme = useColorScheme();
 
+	const [loading, setLoading] = useState(true);
 	const [userFirstname, setUserFirstname] = useState('');
 
 	const { orange } = Colors[colorScheme];
 
 	useEffect(() => {
+		dispatch(startLoading());
 		getSecureSaveValue(OTP_VERIFICATION_DATA).then((userData) => {
 			if (userData) {
 				const { user } = JSON.parse(userData);
 				setUserFirstname(user.name.split(' ')[0]);
+			}
+		});
+
+		getSecureSaveValue(PASSCODE).then((passcode) => {
+			if (passcode) {
+				dispatch(finishLoading());
+				setLoading(false);
+			} else {
+				dispatch(verificationLogout());
 			}
 		});
 	}, []);
@@ -91,27 +104,21 @@ const PasscodeScreen = () => {
 	const handleLoginDispatch = useCallback(async (passcode?: string) => {
 		/* Dispatching the login action to the redux store. */
 		passcode &&
-			(await dispatch(login(passcode)).catch(async (error: Error) => {
+			(await dispatch(login(passcode)).catch((error: Error) => {
 				console.debug('PasscodeScreen', error.message);
-				// if (error.message === 'HttpException: invalid credentials') {
-				// 	dispatch(verificationLogout());
-				// 	Alert.alert(
-				// 		'Login failed',
-				// 		"Sorry, we couldn't authenticate your credentials",
-				// 		[
-				// 			{
-				// 				text: 'OK',
-				// 				onPress: () => {
-				// 					dispatch(verificationLogout());
-				// 				}
-				// 			}
-				// 		]
-				// 	);
+
+				Alert.alert(
+					'Login failed',
+					"Sorry, we couldn't authenticate your credentials"
+				);
 				// } else {
 				// 	Alert.alert('Login failed', error.message);
-				// }
 			}));
 	}, []);
+
+	if (loading) {
+		return <LoadingScreen />;
+	}
 
 	return (
 		// Login screen UI code goes here
